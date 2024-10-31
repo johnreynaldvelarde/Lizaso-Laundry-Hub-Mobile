@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import COLORS from "../../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,24 +22,35 @@ export default function Forget() {
     console.log("Password reset link sent to:", email);
   };
 
+  const forgetImage = {
+    forget: require("@/assets/images/f_lock.png"),
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secondary }}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={24} color={COLORS.white} />
-        <Text style={styles.backText}>Back</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1 }}>
+
       <View style={styles.container}>
+      <Image source={forgetImage.forget} style={styles.image} />
         <Text style={styles.title}>Forgot Password?</Text>
         <Text style={styles.subtitle}>
           Enter your email address below and we will send you instructions to
           reset your password.
         </Text>
+
+        <View style={styles.formContainer}>
+          <View style={{ marginBottom: 10, marginTop: 10 }}>
+          <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 15
+                  }}> Email </Text>
+
         <TextInput
           style={styles.input}
-          placeholder="Email Address"
+          placeholder="example@gmail.com"
           placeholderTextColor="#A9A9A9"
           value={email}
           onChangeText={setEmail}
@@ -46,9 +58,11 @@ export default function Forget() {
           autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
-          <Text style={styles.buttonText}>Send Reset Link</Text>
+          <Text style={styles.buttonText}>Send</Text>
         </TouchableOpacity>
-        <Text style={styles.footerText}>
+      </View>
+      </View>
+      <Text style={styles.footerText}>
           Remember your password? <Text style={styles.link}>Log in</Text>
         </Text>
       </View>
@@ -64,55 +78,80 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   title: {
-    fontSize: 28,
+    fontSize: 38,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
+    textAlign: "left",
+    marginBottom: -30,
+    maxWidth: '90%',
+    color: COLORS.secondary,
+    padding: 20,
+    marginTop: -30,
   },
   subtitle: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: "left",
     marginBottom: 30,
     color: "#666",
+    marginBottom: 10,
+    padding: 20,
   },
+
   input: {
     height: 50,
+    width: 250,
     borderColor: "#A9A9A9",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 20,
+    marginBottom: 40,
+    marginLeft: 15,
   },
   button: {
     backgroundColor: COLORS.secondary,
-    padding: 15,
+    padding: 14,
     borderRadius: 5,
     alignItems: "center",
+    width: 250,
+    height: 50,
+    marginLeft: 15,
+    marginTop: -20,   
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "bold",
   },
   footerText: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: -20,
+    marginBottom: 150
+    
   },
   link: {
     color: COLORS.primary, // Set your link color
     fontWeight: "bold",
   },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 10,
-    marginVertical: 10,
-    marginBottom: 15,
+  image: {
+    width: "30%",
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: 50,
+    marginStart: 110,
+    marginTop: 40,
   },
-  backText: {
-    fontSize: 18,
-    marginLeft: 8,
-    color: COLORS.white,
-    fontFamily: fonts.SemiBold,
+  formContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    margin: 10,
+    padding: 10,
+    elevation: 6,
+    marginBottom: 40,
+    marginTop: -10
+   
   },
+
 });

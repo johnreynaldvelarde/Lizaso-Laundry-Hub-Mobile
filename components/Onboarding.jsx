@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  Button,
   SafeAreaView,
   StyleSheet,
   Dimensions,
@@ -14,16 +13,18 @@ import Swiper from "react-native-swiper"; // Import Swiper
 import { useRouter } from "expo-router";
 import COLORS from "@/constants/colors";
 import { fonts } from "@/constants/fonts";
+import { FontStyle } from "@shopify/react-native-skia";
 
 // Import sample images
 const onboardingImages = {
-  welcome: require("@/assets/images/start_convo.png"),
-  manage: require("@/assets/images/start_convo.png"),
-  getStarted: require("@/assets/images/start_convo.png"),
+  welcome: require("@/assets/images/w_scheduling.png"),
+  manage: require("@/assets/images/w_realtime.png"),
+  getStarted: require("@/assets/images/w_convenience.png"),
 };
 
 export default function Onboarding() {
   const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const completeOnboarding = async () => {
     try {
@@ -41,44 +42,76 @@ export default function Onboarding() {
     router.replace("auth/sign-in");
   };
 
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex < 2 ? prevIndex + 1 : prevIndex));
+  };
+
+  //const handleSkip = () => {
+   // setCurrentIndex(2); // Jump to the getstarted slide
+ // };
+
+  const backSlide = () => {
+    setCurrentIndex(0); // Jump to the first slide
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <TouchableOpacity style={styles.skipButton} onPress={skipOnboarding}>
-          <Text style={styles.skipText}>Skip</Text>
-        </TouchableOpacity>
-      </View>
-
       <Swiper
+        loop={false}
+        index={currentIndex}
+        onIndexChanged={(index) => setCurrentIndex(index)}
         style={styles.wrapper}
         showsButtons={false}
         paginationStyle={styles.pagination}
       >
-        <View style={styles.slide}>
+        <View style={styles.slide}> 
           <Image source={onboardingImages.welcome} style={styles.image} />
-          <Text style={styles.title}>Welcome to Lizaso Laundry Hub!</Text>
+          <Text style={styles.title}>Scheduling Made Easy</Text>
           <Text style={styles.subtitle}>
-            Your laundry management solution starts here.
+          Welcome to WASHN’CO! Schedule your laundry services in just a few taps and leave the rest to us.
           </Text>
+          
+          <TouchableOpacity style={styles.skipButton} onPress={skipOnboarding}>
+          <Text style={styles.skipText}>Skip</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style = {styles.nextButton} onPress={handleNext}>
+            <Text style = {styles.nextText}>Next</Text>
+          </TouchableOpacity>
+
         </View>
+
         <View style={styles.slide}>
           <Image source={onboardingImages.manage} style={styles.image} />
-          <Text style={styles.title}>Manage Your Laundry</Text>
+          <Text style={styles.title}>Real-Time Tracking</Text>
           <Text style={styles.subtitle}>
-            Easily track and manage your laundry orders.
+          Stay in the loop! Track your laundry in real-time from pickup to delivery, right from your phone.
           </Text>
+
+          <TouchableOpacity style={styles.skipButton} onPress={backSlide}>
+          <Text style={styles.skipText}>Back</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style = {styles.nextButton} onPress={handleNext}>
+            <Text style = {styles.nextText}>Next</Text>
+          </TouchableOpacity>
+
         </View>
+
         <View style={styles.slide}>
           <Image source={onboardingImages.getStarted} style={styles.image} />
-          <Text style={styles.title}>Get Started Now</Text>
-          <Text style={styles.subtitle}>Complete onboarding to begin.</Text>
-          <Button
-            title="Get Started"
-            onPress={completeOnboarding}
-            color={COLORS.secondary}
-          />
+          <Text style={styles.title}>Convenience at Your Fingertips</Text>
+          <Text style={styles.subtitle}>
+            Enjoy the convenience of effortless laundry care with WASHN’CO. Clean clothes, no worries!
+          </Text>
+
+          <TouchableOpacity style={styles.getStartedButton} onPress={completeOnboarding}>
+            <Text style = {styles.getStartedText}>Get Started</Text>
+          </TouchableOpacity>
+          
         </View>
       </Swiper>
+
     </SafeAreaView>
   );
 }
@@ -91,15 +124,61 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     position: "absolute",
-    top: 50,
-    right: 20,
-    padding: 10,
+    bottom: 50,
+    left: 30,
+    padding: 5,
     backgroundColor: COLORS.secondary, // Optional: add background color
     borderRadius: 5,
+    flex: 1,
+    height: 50,
+    width: 130,
+    borderWidth: 1,
+    backgroundColor: "transparent",
+    borderColor: COLORS.secondary
+
   },
   skipText: {
+    color: COLORS.secondary,
+    fontFamily: fonts.SemiBold,
+    textAlign: "center",
+    padding: 5,
+    fontSize: 20,
+  },
+  nextButton: {
+    position: "absolute",
+    bottom: 50,
+    right: 30,
+    padding: 5,
+    backgroundColor: COLORS.secondary, // Optional: add background color
+    borderRadius: 5,
+    flex: 1,
+    height: 50,
+    width: 150,
+  },
+  nextText: {
     color: COLORS.white,
     fontFamily: fonts.SemiBold,
+    textAlign: "center",
+    padding: 5,
+    fontSize: 20,
+  },
+  getStartedButton: {
+    position: "absolute",
+    bottom: 50,
+    right: 30,
+    padding: 5,
+    backgroundColor: COLORS.secondary, // Optional: add background color
+    borderRadius: 5,
+    flex: 1,
+    height: 50,
+    width: 300,
+  },
+  getStartedText:{
+    color: COLORS.white,
+    fontFamily: fonts.SemiBold,
+    textAlign: "center",
+    padding: 5,
+    fontSize: 20,
   },
   wrapper: {
     height: Dimensions.get("window").height,
@@ -115,20 +194,25 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: "contain",
     marginBottom: 20,
+
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    color: COLORS.secondary,
+    textAlign: "center",
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#666",
     textAlign: "center",
     marginBottom: 40,
+    marginTop: 10,
+    maxWidth: '90%',
+    lineHeight: 23,
   },
   pagination: {
-    bottom: 50,
+    bottom: 180,
   },
 });
 

@@ -20,6 +20,7 @@ import useAuth from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
+
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
   const [username, setUsername] = useState("juan12");
@@ -143,14 +144,7 @@ export default function SignIn() {
   };
 
   return (
-    <LinearGradient
-      colors={["#5787C8", "#71C7DA"]}
-      locations={[0, 0.8]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1.8, y: 0 }}
-      style={{ flex: 1 }}
-    >
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -161,35 +155,53 @@ export default function SignIn() {
                 source={require("../../../assets/images/lizaso_logo.png")}
                 style={styles.logo}
               />
-              <Text style={styles.welcomeText}>
-                Welcome to Lizaso Laundry Hub!
-              </Text>
             </View>
+            
+            <View style={styles.titleContainer}>
+              <Text style = {styles.welcomeText}> Welcome to</Text>
+              <View style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 5,
+                  gap: 2,
+                  marginBottom: -5,
+                  
+                }}>
+                  <Text
+                  style={styles.lizasoText}> Lizaso</Text>
+                  <Text style={styles.laundryhubText}> Laundry Hub </Text>
+              </View>
+
+
             <View style={styles.formContainer}>
+          
               {/* Username Field */}
-              <View style={{ marginBottom: 10, marginTop: 10 }}>
+              <View style={{ marginBottom: 10 }}>
                 <Text
                   style={{
                     fontSize: 16,
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
+                    marginLeft: 25,
                   }}
                 >
                   Username
                 </Text>
                 <View
                   style={{
-                    width: "100%",
+                    width: "85%",
                     height: 48,
-                    borderColor: errors.username
+                    borderColor: errors.password
                       ? COLORS.error
                       : COLORS.primary,
                     borderWidth: 1,
-                    borderRadius: 8,
+                    borderRadius: 10,
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "center", //hereeeee
                     paddingLeft: 22,
+                    marginLeft: 25
                   }}
                 >
                   <TextInput
@@ -224,22 +236,24 @@ export default function SignIn() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
+                    marginLeft: 25,
                   }}
                 >
                   Password
                 </Text>
                 <View
                   style={{
-                    width: "100%",
+                    width: "85%",
                     height: 48,
                     borderColor: errors.password
                       ? COLORS.error
                       : COLORS.primary,
                     borderWidth: 1,
-                    borderRadius: 8,
+                    borderRadius: 10,
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "center", //hereeeee
                     paddingLeft: 22,
+                    marginLeft: 25
                   }}
                 >
                   <TextInput
@@ -282,6 +296,7 @@ export default function SignIn() {
                     color: COLORS.primary,
                     marginVertical: 5,
                     fontFamily: fonts.Regular,
+                    marginRight: 25,
                   }}
                 >
                   Forget Password?
@@ -293,11 +308,13 @@ export default function SignIn() {
                 onPress={handleLogin}
                 style={{
                   backgroundColor: COLORS.secondary,
-                  borderRadius: 10,
+                  borderRadius: 40,
                   marginTop: 10,
                   padding: 10,
                   opacity: loading ? 0.7 : 1,
                   height: 50,
+                  width: 250,
+                  marginLeft: 25,
                   justifyContent: "center",
                 }}
               >
@@ -336,10 +353,12 @@ export default function SignIn() {
                   flexDirection: "row",
                   borderWidth: 2,
                   borderColor: COLORS.grayMedium,
-                  borderRadius: 10,
+                  borderRadius: 40,
+                  width: 250,
                   justifyContent: "center",
                   alignItems: "center",
                   padding: 8,
+                  marginLeft: 25,
                   marginBottom: 10,
                 }}
               >
@@ -358,21 +377,29 @@ export default function SignIn() {
                   Google
                 </Text>
               </TouchableOpacity>
+            </View>
+          </View>
+          </View>
+          
+          
 
-              {/* Register Link */}
-              <View
+          {/* Register Link */}
+          <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
                   marginVertical: 5,
                   gap: 2,
+                  marginBottom: 50,
+                  marginTop: -10,
+
                 }}
               >
                 <Text
                   style={{ color: COLORS.primary, fontFamily: fonts.Regular }}
                 >
-                  New User?
+                  Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
                   <Text
@@ -381,21 +408,21 @@ export default function SignIn() {
                       fontFamily: fonts.SemiBold,
                     }}
                   >
-                    Register Now
+                    Register
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          </View>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+      
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   logoContainer: {
     flex: 1,
@@ -418,18 +445,41 @@ const styles = StyleSheet.create({
     shadowRadius: 4, // Shadow radius
     elevation: 5, // For Android shadow
   },
+
   welcomeText: {
-    marginTop: 10,
+    marginTop: -50,
     fontSize: 18,
-    fontFamily: fonts.Bold,
-    color: COLORS.white,
+    color: COLORS.primary,
+    textAlign: "center",
+    fontFamily: fonts.Medium
   },
+
+  lizasoText:{
+    fontSize: 24,
+    color: COLORS.secondary,
+    fontFamily:fonts.SemiBold,
+    
+  },
+  laundryhubText:{
+    fontSize: 24,
+    color: COLORS.primary,
+    fontFamily:fonts.Medium,
+
+  },
+
   formContainer: {
     flex: 1,
     backgroundColor: COLORS.white,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    padding: 25,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    margin: 20,
+    padding: 10,
+    elevation: 6,
+    marginBottom: 30,
+   
+    
   },
   inputContainer: {
     width: "100%",
