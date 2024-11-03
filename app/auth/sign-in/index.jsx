@@ -20,6 +20,7 @@ import useAuth from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
+
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
   const [username, setUsername] = useState("velarde16");
@@ -143,7 +144,6 @@ export default function SignIn() {
   };
 
   return (
-<<<<<<< HEAD
     <LinearGradient
       colors={["#ffffff", "#ffffff", "#5787C8"]}
       locations={[0, 0.5, 4]}
@@ -151,7 +151,7 @@ export default function SignIn() {
       end={{ x: 0.5, y: 1 }}
       style={styles.gradient}
     >
-      <SafeAreaView style={{ flex: 1, }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -179,38 +179,10 @@ export default function SignIn() {
                   style={styles.lizasoText}> Lizaso</Text>
                   <Text style={styles.laundryhubText}> Laundry Hub </Text>
               </View>
-=======
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <View style={styles.container}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("../../../assets/images/lizaso_logo.png")}
-              style={styles.logo}
-            />
-          </View>
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
 
-          <View style={styles.titleContainer}>
-            <Text style={styles.welcomeText}> Welcome to</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginVertical: 5,
-                gap: 2,
-                marginBottom: -5,
-              }}
-            >
-              <Text style={styles.lizasoText}> Lizaso</Text>
-              <Text style={styles.laundryhubText}> Laundry Hub </Text>
-            </View>
 
             <View style={styles.formContainer}>
+          
               {/* Username Field */}
               <View style={{ marginBottom: 10 }}>
                 <Text
@@ -236,11 +208,7 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-<<<<<<< HEAD
-                  
-=======
-                    marginLeft: 25,
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
+                   
                   }}
                 >
                   <TextInput
@@ -275,7 +243,6 @@ export default function SignIn() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                   
                   }}
                 >
                   Password
@@ -292,10 +259,6 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-<<<<<<< HEAD
-=======
-                    marginLeft: 25,
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
                   }}
                 >
                   <TextInput
@@ -338,7 +301,6 @@ export default function SignIn() {
                     color: COLORS.primary,
                     marginVertical: 5,
                     fontFamily: fonts.Regular,
-                    
                   }}
                 >
                   Forget Password?
@@ -356,7 +318,6 @@ export default function SignIn() {
                   opacity: loading ? 0.7 : 1,
                   height: 50,
                   width: 270,
-         
                   justifyContent: "center",
                 }}
               >
@@ -383,7 +344,6 @@ export default function SignIn() {
                   fontSize: 14,
                   fontFamily: fonts.Regular,
                   color: COLORS.primary,
-                 
                 }}
               >
                 or continue with
@@ -401,7 +361,6 @@ export default function SignIn() {
                   justifyContent: "center",
                   alignItems: "center",
                   padding: 8,
-      
                   marginBottom: 10,
                 }}
               >
@@ -422,9 +381,10 @@ export default function SignIn() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+          </View>
+          
+          
 
-<<<<<<< HEAD
           {/* Register Link */}
           <View
                 style={{
@@ -435,7 +395,6 @@ export default function SignIn() {
                   gap: 2,
                   marginBottom: 50,
                   marginTop: -10,
-                  
 
                 }}
               >
@@ -454,56 +413,31 @@ export default function SignIn() {
                     Register
                   </Text>
                 </TouchableOpacity>
-              </View>
+                </View>
         </ScrollView>
       </SafeAreaView>
       </LinearGradient>
-=======
-        {/* Register Link */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 5,
-            gap: 2,
-            marginBottom: 50,
-            marginTop: -10,
-          }}
-        >
-          <Text style={{ color: COLORS.primary, fontFamily: fonts.Regular }}>
-            Don't have an account?
-          </Text>
-          <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
-            <Text
-              style={{
-                color: COLORS.secondary,
-                fontFamily: fonts.SemiBold,
-              }}
-            >
-              Register
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
+      
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-  
   },
-
   gradient: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  logoContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
   logoContainer: {
     flex: 1,
     justifyContent: "center",
@@ -515,36 +449,26 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
-    welcomeText: {
+  welcomeText: {
     marginTop: -40,
     fontSize: 20,
     color: COLORS.primary,
     textAlign: "center",
     fontFamily: fonts.Medium,
-<<<<<<< HEAD
-    marginBottom: -6
+    marginBottom: -6,
   },
 
   lizasoText:{
-    fontSize: 30,
-=======
-  },
-
-  lizasoText: {
     fontSize: 24,
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
     color: COLORS.secondary,
-    fontFamily: fonts.SemiBold,
+    fontFamily:fonts.SemiBold,
+    
   },
-<<<<<<< HEAD
   laundryhubText:{
-    fontSize: 30,
-=======
-  laundryhubText: {
     fontSize: 24,
->>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
     color: COLORS.primary,
-    fontFamily: fonts.Medium,
+    fontFamily:fonts.Medium,
+
   },
 
   formContainer: {
@@ -556,8 +480,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     margin: 20,
     padding: 20,
-    elevation: 5,
+    elevation: 6,
     marginBottom: 30,
+   
+    
   },
   inputContainer: {
     width: "100%",
@@ -572,9 +498,9 @@ const styles = StyleSheet.create({
   errorBorder: {
     borderColor: "red",
   },
-
   titleContainer: {
     marginTop: 20,
 
   },
+
 });
