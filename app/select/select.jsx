@@ -46,6 +46,9 @@ export default function Select() {
       case "name":
         setName(value);
         break;
+      case "notes":
+        setNotes(value);
+        break;
       default:
         break;
     }
@@ -237,6 +240,7 @@ export default function Select() {
                 style={styles.notesInput}
                 placeholder="Enter any special requests or notes here..."
                 multiline
+                onChangeText={handleInputChange("notes")}
               />
             </View>
           </View>
