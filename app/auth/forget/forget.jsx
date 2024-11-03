@@ -137,21 +137,18 @@ const styles = StyleSheet.create({
 
   input: {
     height: 50,
-    width: 250,
+    width: "auto",
     borderColor: "#A9A9A9",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 40,
-    marginLeft: 15,
   },
   button: {
     backgroundColor: COLORS.secondary,
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
-    width: 250,
-    marginLeft: 15,
     marginTop: -20,
   },
   buttonText: {
@@ -181,12 +178,9 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     backgroundColor: COLORS.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderRadius: 10,
     margin: 10,
-    padding: 10,
+    padding: 20,
     elevation: 5,
     marginBottom: 40,
     marginTop: -10,
