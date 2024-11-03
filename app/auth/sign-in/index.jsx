@@ -171,8 +171,8 @@ export default function SignIn() {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginVertical: 5,
-                  gap: 2,
+                  marginVertical: 1,
+                  gap: 1,
                   marginBottom: -5,
                 }}
               >
@@ -391,7 +391,7 @@ export default function SignIn() {
               marginTop: -10,
             }}
           >
-            <Text style={{ color: COLORS.black, fontFamily: fonts.Regular }}>
+            <Text style={{ color: COLORS.text, fontFamily: fonts.Medium }}>
               Don't have an account?
             </Text>
             <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
@@ -441,21 +441,21 @@ const styles = StyleSheet.create({
   welcomeText: {
     marginTop: -40,
     fontSize: 20,
-    color: COLORS.primary,
+    color: COLORS.subtitle,
     textAlign: "center",
-    fontFamily: fonts.Medium,
+    fontFamily: fonts.Regular,
     marginBottom: -6,
   },
 
   lizasoText: {
     fontSize: 24,
     color: COLORS.secondary,
-    fontFamily: fonts.SemiBold,
+    fontFamily: fonts.Bold,
   },
   laundryhubText: {
     fontSize: 24,
     color: COLORS.primary,
-    fontFamily: fonts.Medium,
+    fontFamily: fonts.Bold,
   },
 
   formContainer: {
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     margin: 20,
     padding: 20,
-    elevation: 6,
+    elevation: 5,
     marginBottom: 30,
   },
   inputContainer: {

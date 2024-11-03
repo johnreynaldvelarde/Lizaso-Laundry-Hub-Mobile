@@ -25,7 +25,7 @@ export default function RootLayout() {
                 name="auth/sign-up/index"
                 options={{
                   presentation: "modal",
-                  animation: "slide_from_right",
+                  animation: "ios",
                 }}
               />
               {/* <Stack.Screen

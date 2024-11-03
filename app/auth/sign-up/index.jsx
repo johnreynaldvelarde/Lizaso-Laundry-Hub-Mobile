@@ -1,4 +1,5 @@
-import { LinearGradient } from "expo-linear-gradient";import {
+import { LinearGradient } from "expo-linear-gradient";
+import {
   View,
   Text,
   TouchableOpacity,
@@ -213,506 +214,531 @@ export default function SignUp() {
 
   return (
     <LinearGradient
-    colors={["#ffffff", "#ffffff", "#5787C8"]}
-    locations={[0, 0.5, 4]}
-    start={{ x: 0.5, y: 0 }}
-    end={{ x: 0.5, y: 1 }}
-    style={styles.gradient}
-  >
-    <SafeAreaView style={{ flex: 1, }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <TouchableOpacity style = {styles.backButton}
-      onPress={() => navigation.goBack()}>
+      colors={["#ffffff", "#ffffff", "#5787C8"]}
+      locations={[0, 0.5, 4]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={styles.gradient}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back-sharp"
+              size={30}
+              color={COLORS.secondary}
+            ></Ionicons>
+            <Text style={styles.backText}>Back</Text>
+          </TouchableOpacity>
 
-        <Ionicons name = "arrow-back-sharp" size={30} color={COLORS.secondary}></Ionicons>
-        <Text style = {styles.backText}>Back</Text>
-      </TouchableOpacity>
-
-        <View style={{ flex: 1, marginHorizontal: 22 }}>
-          <View style={{ marginVertical: 10 }}>
-            <Text
-              style={{
-                marginTop: 15,
-                fontSize: 30,
-                fontFamily: fonts.Bold,
-                marginVertical: 12,
-                color: COLORS.secondary,
-                marginLeft: 10,
-                marginTop: -5,
-              }}
-            >
-              Create an Account
-            </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: fonts.Regular,
-                color: COLORS.primary,
-                marginLeft:10,
-                marginTop: -10
-              }}
-            >
-              Fast and easy laundry service at hand!
-            </Text>
-          </View>
-
-          <View style = {styles.formContainer}>
-          {/* MOBILE NUMBER */}
-          <View style={{ marginBottom: 10 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-                marginTop: 20,
-              }}
-            >
-              Mobile Number
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.phoneNumber ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingLeft: 15,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="+63"
-                placeholderTextColor={COLORS.primary}
-                editable={false}
-                style={{
-                  width: "13%",
-                  borderRightWidth: 1,
-                  borderRightColor: errors.phoneNumber
-                    ? COLORS.error
-                    : COLORS.primary,
-                  height: "100%",
-                  fontFamily: fonts.Medium,
-                }}
-              />
-              <TextInput
-                placeholder="Enter your phone number"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="numeric"
-                value={phoneNumber}
-                onChangeText={handleInputChange("phoneNumber")}
-                style={{ width: "80%", fontFamily: fonts.Regular }}
-              />
-            </View>
-            {errors.phoneNumber && (
+          <View style={{ flex: 1, marginHorizontal: 10 }}>
+            <View style={{ marginVertical: 10 }}>
               <Text
                 style={{
-                  color: COLORS.error,
-                  fontFamily: fonts.Regular,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
+                  marginTop: 15,
+                  fontSize: 30,
+                  fontFamily: fonts.Bold,
+                  marginVertical: 12,
+                  color: COLORS.secondary,
+                  marginLeft: 10,
+                  marginTop: -5,
                 }}
               >
-                {errors.phoneNumber}
+                Create an Account
               </Text>
-            )}
-          </View>
-
-          {/* Email */}
-          <View style={{ marginBottom: 12 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Email
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.email ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 22,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your email address"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="default"
-                value={email}
-                onChangeText={handleInputChange("email")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
-            </View>
-            {errors.email && (
               <Text
                 style={{
+                  fontSize: 15,
                   fontFamily: fonts.Regular,
-                  color: COLORS.error,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
+                  color: COLORS.primary,
+                  marginLeft: 10,
+                  marginTop: -10,
                 }}
               >
-                {errors.email}
+                Fast and easy laundry service at hand!
               </Text>
-            )}
-          </View>
-
-          {/* First name */}
-          <View style={{ marginBottom: 12 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Firstname
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.firstname ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 22,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your first name"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="default"
-                value={firstname}
-                onChangeText={handleInputChange("firstname")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
             </View>
-            {errors.firstname && (
-              <Text
-                style={{
-                  fontFamily: fonts.Regular,
-                  color: COLORS.error,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
-                }}
-              >
-                {errors.firstname}
-              </Text>
-            )}
-          </View>
 
-          {/* Middle name */}
-          <View style={{ marginBottom: 12 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Middlename
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 10,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your middle name (if applicable)"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="default"
-                value={middlename}
-                onChangeText={handleInputChange("middlename")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
-            </View>
-          </View>
-
-          {/* Last name */}
-          <View style={{ marginBottom: 12 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Lastname
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.lastname ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 22,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your lastname"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="default"
-                value={lastname}
-                onChangeText={handleInputChange("lastname")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
-            </View>
-            {errors.lastname && (
-              <Text
-                style={{
-                  fontFamily: fonts.Regular,
-                  color: COLORS.error,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
-                }}
-              >
-                {errors.lastname}
-              </Text>
-            )}
-          </View>
-
-          {/* Username */}
-          <View style={{ marginBottom: 12 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Username
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.username ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 22,
-                marginLeft: 13,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your username"
-                placeholderTextColor={COLORS.grey}
-                keyboardType="default"
-                value={username}
-                onChangeText={handleInputChange("username")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
-            </View>
-            {errors.username && (
-              <Text
-                style={{
-                  fontFamily: fonts.Regular,
-                  color: COLORS.error,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
-                }}
-              >
-                {errors.username}
-              </Text>
-            )}
-          </View>
-
-          {/* PASSWORD */}
-          <View style={{ marginBottom: 15 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: fonts.Medium,
-                marginVertical: 8,
-                color: COLORS.primary,
-                marginLeft: 13,
-              }}
-            >
-              Password
-            </Text>
-            <View
-              style={{
-                width: "90%",
-                height: 48,
-                borderColor: errors.password ? COLORS.error : COLORS.primary,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 22,
-                marginLeft: 13,
-                marginBottom: 10,
-              }}
-            >
-              <TextInput
-                placeholder="Enter your password"
-                placeholderTextColor={COLORS.grey}
-                secureTextEntry={isPasswordShown}
-                value={password}
-                onChangeText={handleInputChange("password")}
-                style={{ width: "100%", fontFamily: fonts.Regular }}
-              />
-
-              <TouchableOpacity
-                onPress={() => setIsPasswordShown(!isPasswordShown)}
-                style={{ position: "absolute", right: 12 }}
-              >
-                {isPasswordShown == true ? (
-                  <Ionicons name="eye-off" size={24} color={COLORS.primary} />
-                ) : (
-                  <Ionicons name="eye" size={24} color={COLORS.primary} />
-                )}
-              </TouchableOpacity>
-            </View>
-            {errors.password && (
-              <Text
-                style={{
-                  fontFamily: fonts.Regular,
-                  color: COLORS.error,
-                  fontSize: 12,
-                  marginTop: 4,
-                  marginStart: 10,
-                }}
-              >
-                {errors.password}
-              </Text>
-            )}
-          </View>
-          </View>
-
-          {/* Terms and Conditons */}
-          <View style={{ marginBottom: 5, marginLeft: 13 }}>
-            <View style={{ flexDirection: "row", marginVertical: 6 }}>
-              <Checkbox
-                value={isChecked}
-                onValueChange={setIsChecked}
-                color={isChecked ? COLORS.secondary : undefined}
-                style={{ marginRight: 8 }}
-              />
-              <Text
-                style={{
-                  color: COLORS.black,
-                  fontSize: 13,
-                  fontFamily: fonts.Regular,
-                }}
-              >
-                I agree with terms the{" "}
-              </Text>
-              <TouchableOpacity onPress={handleTermAndConditons}>
+            <View style={styles.formContainer}>
+              {/* MOBILE NUMBER */}
+              <View style={{ marginBottom: 10 }}>
                 <Text
                   style={{
-                    color: COLORS.white,
-                    fontSize: 13,
-                    fontFamily: fonts.Regular,
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                    marginTop: 20,
                   }}
                 >
-                  terms and conditions.{" "}
+                  Mobile Number
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.phoneNumber
+                      ? COLORS.error
+                      : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingLeft: 15,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="+63"
+                    placeholderTextColor={COLORS.primary}
+                    editable={false}
+                    style={{
+                      width: "13%",
+                      borderRightWidth: 1,
+                      borderRightColor: errors.phoneNumber
+                        ? COLORS.error
+                        : COLORS.primary,
+                      height: "100%",
+                      fontFamily: fonts.Medium,
+                    }}
+                  />
+                  <TextInput
+                    placeholder="Enter your phone number"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="numeric"
+                    value={phoneNumber}
+                    onChangeText={handleInputChange("phoneNumber")}
+                    style={{ width: "80%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+                {errors.phoneNumber && (
+                  <Text
+                    style={{
+                      color: COLORS.error,
+                      fontFamily: fonts.Regular,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.phoneNumber}
+                  </Text>
+                )}
+              </View>
+
+              {/* Email */}
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Email
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.email ? COLORS.error : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your email address"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="default"
+                    value={email}
+                    onChangeText={handleInputChange("email")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+                {errors.email && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.email}
+                  </Text>
+                )}
+              </View>
+
+              {/* First name */}
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Firstname
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.firstname
+                      ? COLORS.error
+                      : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your first name"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="default"
+                    value={firstname}
+                    onChangeText={handleInputChange("firstname")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+                {errors.firstname && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.firstname}
+                  </Text>
+                )}
+              </View>
+
+              {/* Middle name */}
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Middlename
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 10,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your middle name (if applicable)"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="default"
+                    value={middlename}
+                    onChangeText={handleInputChange("middlename")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+              </View>
+
+              {/* Last name */}
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Lastname
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.lastname
+                      ? COLORS.error
+                      : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your lastname"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="default"
+                    value={lastname}
+                    onChangeText={handleInputChange("lastname")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+                {errors.lastname && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.lastname}
+                  </Text>
+                )}
+              </View>
+
+              {/* Username */}
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Username
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.username
+                      ? COLORS.error
+                      : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                    marginLeft: 13,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your username"
+                    placeholderTextColor={COLORS.grey}
+                    keyboardType="default"
+                    value={username}
+                    onChangeText={handleInputChange("username")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+                </View>
+                {errors.username && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.username}
+                  </Text>
+                )}
+              </View>
+
+              {/* PASSWORD */}
+              <View style={{ marginBottom: 15 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                    marginLeft: 13,
+                  }}
+                >
+                  Password
+                </Text>
+                <View
+                  style={{
+                    width: "90%",
+                    height: 48,
+                    borderColor: errors.password
+                      ? COLORS.error
+                      : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                    marginLeft: 13,
+                    marginBottom: 10,
+                  }}
+                >
+                  <TextInput
+                    placeholder="Enter your password"
+                    placeholderTextColor={COLORS.grey}
+                    secureTextEntry={isPasswordShown}
+                    value={password}
+                    onChangeText={handleInputChange("password")}
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => setIsPasswordShown(!isPasswordShown)}
+                    style={{ position: "absolute", right: 12 }}
+                  >
+                    {isPasswordShown == true ? (
+                      <Ionicons
+                        name="eye-off"
+                        size={24}
+                        color={COLORS.primary}
+                      />
+                    ) : (
+                      <Ionicons name="eye" size={24} color={COLORS.primary} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+                {errors.password && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.password}
+                  </Text>
+                )}
+              </View>
+            </View>
+
+            {/* Terms and Conditons */}
+            <View
+              style={{
+                marginBottom: 5,
+                marginLeft: 13,
+                justifyContent: "center",
+              }}
+            >
+              <View style={{ flexDirection: "row", marginVertical: 6 }}>
+                <Checkbox
+                  value={isChecked}
+                  onValueChange={setIsChecked}
+                  color={isChecked ? COLORS.accent : undefined}
+                  style={{ marginRight: 8 }}
+                />
+                <Text
+                  style={{
+                    color: COLORS.text,
+                    fontSize: 13,
+                    fontFamily: fonts.Medium,
+                  }}
+                >
+                  I agree with terms the{" "}
+                </Text>
+                <TouchableOpacity onPress={handleTermAndConditons}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontSize: 13,
+                      fontFamily: fonts.Medium,
+                    }}
+                  >
+                    terms and conditions.{" "}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={handleSignup}
+              disabled={loading}
+              style={{
+                backgroundColor: COLORS.white,
+                borderRadius: 10,
+                marginTop: 10,
+                padding: 10,
+                opacity: loading ? 0.7 : 1,
+                height: 50,
+                justifyContent: "center",
+              }}
+            >
+              {loading ? (
+                <ActivityIndicator size="large" color={COLORS.white} />
+              ) : (
+                <Text
+                  style={{
+                    color: COLORS.secondary,
+                    fontSize: 15,
+                    fontFamily: fonts.Bold,
+                    textAlign: "center",
+                  }}
+                >
+                  Register
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 15,
+                marginBottom: 20,
+                gap: 2,
+              }}
+            >
+              <Text style={{ color: COLORS.black, fontFamily: fonts.Regular }}>
+                Already have account?
+              </Text>
+              <TouchableOpacity
+                onPress={() => router.navigate("/auth/sign-in")}
+              >
+                <Text
+                  style={{ color: COLORS.white, fontFamily: fonts.SemiBold }}
+                >
+                  Sign in
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-
-          <TouchableOpacity
-            onPress={handleSignup}
-            disabled={loading}
-            style={{
-              backgroundColor: COLORS.white,
-              borderRadius: 10,
-              marginTop: 10,
-              padding: 10,
-              opacity: loading ? 0.7 : 1,
-              height: 50,
-              width: 280,
-              marginLeft: 10,
-              justifyContent: "center",
-            }}
-          >
-            {loading ? (
-              <ActivityIndicator size="large" color={COLORS.white} />
-            ) : (
-              <Text
-                style={{
-                  color: COLORS.secondary,
-                  fontSize: 15,
-                  fontFamily: fonts.Bold,
-                  textAlign: "center",
-                }}
-              >
-                Register
-              </Text>
-            )}
-          </TouchableOpacity>
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 15,
-              marginBottom: 20,
-              gap: 2,
-            }}
-          >
-            <Text style={{ color: COLORS.black, fontFamily: fonts.Regular }}>
-              Already have account?
-            </Text>
-            <TouchableOpacity onPress={() => router.navigate("/auth/sign-in")}>
-              <Text
-                style={{ color: COLORS.white, fontFamily: fonts.SemiBold }}
-              >
-                Sign in
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
@@ -721,12 +747,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-  
   },
   gradient: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     height: 40,
@@ -739,16 +764,16 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 20,
+    marginLeft: 5,
     marginVertical: 10,
     marginBottom: 15,
   },
- backText: {
+  backText: {
     fontSize: 24,
-    marginLeft: 20,
+    marginLeft: 10,
     color: COLORS.secondary,
-    fontFamily:fonts.SemiBold,
-    textAlign: "center"
+    fontFamily: fonts.SemiBold,
+    textAlign: "center",
   },
   formContainer: {
     flex: 1,
@@ -759,7 +784,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     elevation: 6,
     marginBottom: 15,
-
-
+    padding: 5,
   },
 });
