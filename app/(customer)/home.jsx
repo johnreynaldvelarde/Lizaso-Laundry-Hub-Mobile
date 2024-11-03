@@ -11,17 +11,13 @@ import { ServiceItem } from "../../components/customer/ServiceItem";
 import usePolling from "../../hooks/usePolling";
 import { getLaundryServices } from "../../data/api/getApi";
 import useAuth from "../context/AuthContext";
-import { SelectServiceBottomSheet } from "../../components/customer/SelectServiceBottomSheet";
-import { center } from "@shopify/react-native-skia";
 
 export default function Home() {
   const navigation = useNavigation();
   const { userDetails } = useAuth();
   const [notiCount, setNotiCount] = useState({ count: 1 });
   const [expandedItems, setExpandedItems] = useState({});
-  const [selectedService, setSelectedService] = useState(null);
   const bottomSelectedSheet = useRef(null);
-  const snapSelectedPoints = useMemo(() => ["50%", "70%"], []);
 
   const fetchLaundryServices = useCallback(async () => {
     const response = await getLaundryServices(userDetails.storeId);
@@ -162,14 +158,6 @@ export default function Home() {
             />
           </View>
         </View>
-
-        {/* <SelectServiceBottomSheet
-          ref={bottomSelectedSheet}
-          snapPoints={snapSelectedPoints}
-          selectedService={selectedService}
-          closeSelectModal={closeSelectModal}
-          handleGetLaundry={handleSubmit}
-        /> */}
       </SafeAreaView>
     </LinearGradient>
   );
@@ -281,31 +269,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-{
-  /* Title for Laundry Items */
-}
-{
-  /* <View style={styles.carouselTitleContainer}>
-          <Text style={styles.carouselTitle}>Available Laundry Items</Text>
-        </View> */
-}
-{
-  /* Carousel for Laundry Items */
-}
-{
-  /* <View style={styles.carouselContainer}>
-          <FlatList
-            data={laundryItems}
-            renderItem={({ item }) => (
-              <View style={styles.carouselItem}>
-                <Text style={styles.itemText}>{item.name}</Text>
-              </View>
-            )}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.carouselContent}
-          />
-        </View> */
-}

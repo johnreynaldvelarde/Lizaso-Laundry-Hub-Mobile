@@ -32,7 +32,7 @@ export default function Track() {
     loading,
     error,
     setIsPolling,
-  } = usePolling(fetchTrackOrder, 10000);
+  } = usePolling(fetchTrackOrder, 1000);
 
   useFocusEffect(
     useCallback(() => {
