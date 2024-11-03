@@ -16,7 +16,7 @@ import OrderItem from "../../components/customer/OrderItem";
 import { getLaundryTrackOrder } from "../../data/api/getApi";
 import usePolling from "../../hooks/usePolling";
 import { useFocusEffect } from "expo-router";
-import noOrdersImage from "../../assets/images/no_data.png";
+import noOrdersImage from "../../assets/images/no_data_table.jpg";
 import useAuth from "../context/AuthContext";
 
 export default function Track() {
@@ -32,7 +32,7 @@ export default function Track() {
     loading,
     error,
     setIsPolling,
-  } = usePolling(fetchTrackOrder, 10000);
+  } = usePolling(fetchTrackOrder, 1000);
 
   useFocusEffect(
     useCallback(() => {
@@ -72,7 +72,7 @@ export default function Track() {
                   style={styles.noOrdersImage}
                   resizeMode="contain"
                 />
-                <Text style={styles.noOrdersText}>No laundry orders yet.</Text>
+                <Text style={styles.noOrdersText}>No laundry orders yet</Text>
               </View>
             ) : (
               <FlatList
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.white,
   },
   listContainer: {
     flex: 1,
@@ -120,14 +120,14 @@ const styles = StyleSheet.create({
     padding: 20, // Optional padding
   },
   noOrdersImage: {
-    width: 150, // Set width of the image
-    height: 150, // Set height of the image
-    marginBottom: 20, // Space between the image and text
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
   noOrdersText: {
-    fontFamily: fonts.Bold,
+    fontFamily: fonts.SemiBold,
     fontSize: 18,
-    color: COLORS.primary,
+    color: COLORS.subtitle,
     textAlign: "center",
   },
 });

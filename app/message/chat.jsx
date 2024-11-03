@@ -55,7 +55,7 @@ export default function Chat() {
 
   const { setIsPolling: setUpdatePolling } = usePolling(
     fetchupdateMessageRead,
-    1000
+    2000
   );
 
   useFocusEffect(

@@ -8,9 +8,11 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { format } from "date-fns";
 import QRCode from "react-native-qrcode-svg";
+import { getCurrentDay } from "../../constants/method";
 
 export default function OrderItem({ item, index }) {
   const navigaton = useNavigation();
+  const currentDay = getCurrentDay();
   const [collapsedStates, setCollapsedStates] = useState(
     item.progress.map(() => true)
   );
@@ -26,6 +28,12 @@ export default function OrderItem({ item, index }) {
     navigaton.navigate("message/chat", {
       user_id: id,
       name: name,
+    });
+  };
+
+  const handleReview = async (id) => {
+    navigaton.navigate("review/review", {
+      service_request_id: id,
     });
   };
 
@@ -69,6 +77,11 @@ export default function OrderItem({ item, index }) {
     qr_code,
     payment_method,
     unread_messages,
+    promo_discount_price,
+    promo_is_active,
+    promo_valid_days,
+    promo_start_date,
+    promo_end_date,
   } = item.service_request;
 
   return (
@@ -82,7 +95,7 @@ export default function OrderItem({ item, index }) {
               Status:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
+                  fontFamily: fonts.SemiBold,
                   color:
                     request_status === "Pending Pickup"
                       ? COLORS.accent
@@ -95,7 +108,6 @@ export default function OrderItem({ item, index }) {
                       : "#6C757D",
                   paddingHorizontal: 10,
                   paddingVertical: 5,
-                  borderRadius: 5,
                 }}
               >
                 {request_status}
@@ -105,24 +117,48 @@ export default function OrderItem({ item, index }) {
               Selected Service:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
+                  fontFamily: fonts.SemiBold,
                   color: COLORS.secondary,
                 }}
               >
                 {service_name}
               </Text>
             </Text>
+
             <Text style={styles.orderInfo}>
               Base Price:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
-                  color: COLORS.secondary,
+                  fontFamily: fonts.SemiBold,
+                  color:
+                    promo_is_active === 1 &&
+                    promo_valid_days.includes(currentDay)
+                      ? "grey"
+                      : COLORS.secondary,
+                  textDecorationLine:
+                    promo_is_active === 1 &&
+                    promo_valid_days.includes(currentDay)
+                      ? "line-through"
+                      : "none",
                 }}
               >
-                {service_default_price}
+                ₱{service_default_price}
               </Text>
             </Text>
+
+            {promo_is_active === 1 && promo_valid_days.includes(currentDay) && (
+              <Text style={styles.orderInfo}>
+                Discount Promo:{" "}
+                <Text
+                  style={{
+                    fontFamily: fonts.SemiBold,
+                    color: COLORS.error,
+                  }}
+                >
+                  ₱{promo_discount_price}
+                </Text>
+              </Text>
+            )}
           </View>
           <View>
             <TouchableOpacity
@@ -201,26 +237,39 @@ export default function OrderItem({ item, index }) {
             </TouchableOpacity>
 
             {/* Message Button with Icon and Badge */}
+
             <View style={styles.iconWithBadge}>
               {user_id > 0 ? (
                 <>
-                  <TouchableOpacity
-                    style={styles.messageButton}
-                    onPress={() => handleGoToMessage(user_id, user_name)}
-                  >
-                    <Ionicons
-                      name="chatbubble-ellipses-outline"
-                      size={24}
-                      color={COLORS.secondary}
-                    />
-                  </TouchableOpacity>
-
-                  {/* Badge element */}
-                  {unread_messages > 0 && (
-                    <View style={styles.badge}>
-                      <Text style={styles.badgeText}>{unread_messages}</Text>
-                    </View>
+                  {request_status === "Completed Delivery" ||
+                  request_status === "Completed" ? (
+                    <TouchableOpacity
+                      style={styles.reviewButton}
+                      onPress={() => handleReview(id)}
+                    >
+                      <Ionicons name="star" size={24} color={COLORS.accent} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.messageButton}
+                      onPress={() => handleGoToMessage(user_id, user_name)}
+                    >
+                      <Ionicons
+                        name="chatbubble-ellipses-outline"
+                        size={24}
+                        color={COLORS.secondary}
+                      />
+                    </TouchableOpacity>
                   )}
+
+                  {/* Badge element: Only show if unread_messages > 0 and request_status is not "Completed Delivery" or "Completed" */}
+                  {unread_messages > 0 &&
+                    request_status !== "Completed Delivery" &&
+                    request_status !== "Completed" && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{unread_messages}</Text>
+                      </View>
+                    )}
                 </>
               ) : (
                 <TouchableOpacity
@@ -235,22 +284,6 @@ export default function OrderItem({ item, index }) {
                 </TouchableOpacity>
               )}
             </View>
-
-            {/* <View style={styles.iconWithBadge}>
-              <TouchableOpacity
-                style={styles.messageButton}
-                onPress={() => handleGoToMessage(user_id, user_name)}
-              >
-                <Ionicons
-                  name="chatbubble-ellipses-outline"
-                  size={24}
-                  color={COLORS.secondary}
-                />
-              </TouchableOpacity>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{unread_messages}</Text>
-              </View>
-            </View> */}
           </View>
         </View>
 
@@ -399,6 +432,16 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: COLORS.secondary,
+    borderRadius: 10,
+    alignItems: "center",
+    marginLeft: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  reviewButton: {
+    padding: 8,
+    borderWidth: 1,
+    borderColor: COLORS.accent,
     borderRadius: 10,
     alignItems: "center",
     marginLeft: 10,

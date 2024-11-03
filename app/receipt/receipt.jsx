@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
@@ -18,10 +19,13 @@ import logo from "../../assets/images/logo_small.png";
 import useAuth from "../context/AuthContext";
 import usePolling from "../../hooks/usePolling";
 import { getReceipt } from "../../data/api/getApi";
-import { formatDateNow } from "../../constants/method";
+import { formatDateNow, getCurrentDay } from "../../constants/method";
+import { captureRef } from "react-native-view-shot";
+import * as MediaLibrary from "expo-media-library";
 
 export default function Receipt() {
   const route = useRoute();
+  const currentDay = getCurrentDay();
   const { userDetails } = useAuth();
   const navigation = useNavigation();
   const { assignment_id, base_price, payment_method, service_name } =
@@ -39,6 +43,8 @@ export default function Receipt() {
     setIsPolling,
   } = usePolling(fetchReceipt, 50000);
 
+  const receiptRef = useRef();
+
   useFocusEffect(
     useCallback(() => {
       setIsPolling(true);
@@ -49,6 +55,26 @@ export default function Receipt() {
     }, [])
   );
 
+  const downloadReceipt = async () => {
+    try {
+      const uri = await captureRef(receiptRef, {
+        format: "png",
+        quality: 0.8,
+      });
+
+      const permission = await MediaLibrary.requestPermissionsAsync();
+      if (permission.status === "granted") {
+        await MediaLibrary.saveToLibraryAsync(uri);
+        Alert.alert("Success", "Receipt downloaded successfully!");
+      } else {
+        Alert.alert("Permission Denied", "Unable to access media library.");
+      }
+    } catch (error) {
+      console.error("Failed to capture and save receipt", error);
+      Alert.alert("Error", "Failed to download receipt. Please try again.");
+    }
+  };
+
   const relatedItems = receipt?.related_items || {
     item_ids: [],
     item_names: [],
@@ -57,14 +83,8 @@ export default function Receipt() {
     related_item_totals: [],
   };
 
-  // Example usage:
   const { item_ids, item_names, item_prices, quantities, related_item_totals } =
     relatedItems;
-
-  // const relatedItems = [
-  //   { itemName: "Laundry Detergent", quantity: 1, amount: "₱50" },
-  //   { itemName: "Fabric Softener", quantity: 1, amount: "₱30" },
-  // ];
 
   return (
     <LinearGradient
@@ -87,12 +107,12 @@ export default function Receipt() {
 
         <View style={styles.bottomContainer}>
           <ScrollView
+            ref={receiptRef} // Set the ref to the ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
             <View style={styles.breakdownContainer}>
-              {/* Store Logo and Name */}
               <View style={styles.storeHeader}>
                 <Image source={logo} style={styles.logo} />
                 <Text style={styles.storeName}>
@@ -100,7 +120,6 @@ export default function Receipt() {
                 </Text>
               </View>
 
-              {/* Customer and Payment Details */}
               <View style={styles.detailsContainer}>
                 <Text style={styles.detailText}>
                   <Text style={styles.boldText}>Customer Name: </Text>
@@ -116,7 +135,6 @@ export default function Receipt() {
                 </Text>
               </View>
 
-              {/* Service Type, Weight, Amount */}
               <View style={styles.serviceContainer}>
                 <View style={styles.serviceRow}>
                   <Text style={styles.serviceHeader}>Service Type</Text>
@@ -124,11 +142,43 @@ export default function Receipt() {
                   <Text style={styles.serviceHeader}>Amount</Text>
                 </View>
                 <View style={styles.serviceRow}>
-                  <View>
+                  <View style={styles.viewContainer}>
                     <Text style={styles.serviceText}>{service_name}</Text>
                     <Text style={styles.basePrice}>
-                      Base Price: ₱{base_price}
+                      Base Price:{" "}
+                      <Text
+                        style={{
+                          fontFamily: fonts.SemiBold,
+                          color:
+                            receipt.isActive === 1 &&
+                            receipt.valid_days.includes(currentDay)
+                              ? "grey"
+                              : COLORS.secondary,
+                          textDecorationLine:
+                            receipt.isActive === 1 &&
+                            receipt.valid_days.includes(currentDay)
+                              ? "line-through"
+                              : "none",
+                        }}
+                      >
+                        ₱{base_price}
+                      </Text>
                     </Text>
+
+                    {receipt.isActive === 1 &&
+                      receipt.valid_days.includes(currentDay) && (
+                        <Text style={styles.discountPrice}>
+                          Discount Promo:{" "}
+                          <Text
+                            style={{
+                              fontFamily: fonts.SemiBold,
+                              color: COLORS.error,
+                            }}
+                          >
+                            ₱{receipt.discount_price}
+                          </Text>
+                        </Text>
+                      )}
                   </View>
 
                   <View>
@@ -141,7 +191,6 @@ export default function Receipt() {
                 </View>
               </View>
 
-              {/* Related Items */}
               <View style={styles.relatedItemsContainer}>
                 <Text style={styles.relatedItemsTitle}>Related Items</Text>
                 <View style={styles.relatedItemsRow}>
@@ -150,7 +199,6 @@ export default function Receipt() {
                   <Text style={styles.relatedItemsHeader}>Amount</Text>
                 </View>
 
-                {/* Extract related items data */}
                 {receipt?.related_items?.item_names?.length > 0 ? (
                   receipt.related_items.item_names.map((name, index) => (
                     <View style={styles.relatedItemsRow} key={index}>
@@ -159,7 +207,7 @@ export default function Receipt() {
                         {receipt.related_items.quantities[index]}
                       </Text>
                       <Text style={styles.relatedItemsText}>
-                        {receipt.related_items.item_prices[index]}
+                        ₱{receipt.related_items.item_prices[index]}
                       </Text>
                     </View>
                   ))
@@ -168,27 +216,8 @@ export default function Receipt() {
                     No related items available
                   </Text>
                 )}
-
-                {/* {receipt.related_items.length > 0 ? (
-                  item_names.map((name, index) => (
-                    <View style={styles.relatedItemsRow} key={index}>
-                      <Text style={styles.relatedItemsText}>{name}</Text>
-                      <Text style={styles.relatedItemsText}>
-                        {quantities[index]}
-                      </Text>
-                      <Text style={styles.relatedItemsText}>
-                        {item_prices[index]}
-                      </Text>
-                    </View>
-                  ))
-                ) : (
-                  <Text style={styles.noItemsText}>
-                    No related items available
-                  </Text>
-                )} */}
               </View>
 
-              {/* Total Amount */}
               <View style={styles.totalAmountContainer}>
                 <Text style={styles.totalAmountText}>
                   Total Amount: ₱{receipt.final_total}
@@ -200,8 +229,11 @@ export default function Receipt() {
             </View>
           </ScrollView>
 
-          {/* Download Receipt */}
-          <TouchableOpacity style={styles.proceedButton}>
+          {/* Download Receipt Button */}
+          <TouchableOpacity
+            style={styles.proceedButton}
+            onPress={downloadReceipt}
+          >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <MaterialCommunityIcons
                 name="download"
@@ -306,9 +338,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   serviceHeader: {
-    fontFamily: fonts.Bold,
+    fontFamily: fonts.SemiBold,
     fontSize: 14,
-    color: COLORS.text,
+    color: COLORS.primary,
   },
   serviceText: {
     fontFamily: fonts.Regular,
@@ -321,13 +353,19 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: "center",
   },
+  discountPrice: {
+    fontFamily: fonts.Regular,
+    fontSize: 10,
+    color: COLORS.primary,
+    textAlign: "center",
+  },
   relatedItemsContainer: {
     marginVertical: 10,
   },
   relatedItemsTitle: {
-    fontFamily: fonts.Bold,
+    fontFamily: fonts.SemiBold,
     fontSize: 16,
-    color: COLORS.textDark,
+    color: COLORS.primary,
     textAlign: "center",
     marginBottom: 5,
   },
@@ -337,9 +375,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   relatedItemsHeader: {
-    fontFamily: fonts.Bold,
+    fontFamily: fonts.SemiBold,
     fontSize: 14,
-    color: COLORS.textDark,
+    color: COLORS.primary,
   },
   noItemsText: {
     marginTop: 10,
@@ -371,7 +409,7 @@ const styles = StyleSheet.create({
   },
   proceedButton: {
     backgroundColor: COLORS.secondary,
-    paddingVertical: 15,
+    paddingVertical: 13,
     borderRadius: 10,
     alignItems: "center",
   },
@@ -385,196 +423,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
     marginVertical: 15,
   },
+  viewContainer: {
+    alignItems: "flex-start", // Aligns all content within the View to the left
+  },
 });
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   headerContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     paddingVertical: 20,
-//     position: "relative",
-//   },
-//   backButton: {
-//     position: "absolute",
-//     left: 20,
-//   },
-//   headerTitle: {
-//     marginLeft: 20,
-//     fontSize: 18,
-//     fontFamily: fonts.Bold,
-//     color: COLORS.white,
-//   },
-//   bottomContainer: {
-//     flex: 1,
-//     backgroundColor: COLORS.white,
-//     paddingHorizontal: 20,
-//     paddingVertical: 10,
-//     justifyContent: "space-between",
-//     paddingBottom: 20,
-//   },
-//   breakdownContainer: {
-//     backgroundColor: COLORS.background,
-//     borderRadius: 10,
-//     padding: 15,
-//     marginVertical: 10,
-//     marginBottom: 20,
-//   },
-//   serviceTitle: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 18,
-//     marginBottom: 5,
-//     color: COLORS.primary,
-//   },
-//   servicePrice: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 24,
-//     color: COLORS.primary,
-//     textAlign: "center",
-//   },
-
-//   breakdownRow: {
-//     flexDirection: "column",
-//     alignItems: "center",
-//   },
-//   multiplicationSign: {
-//     fontFamily: fonts.SemiBold,
-//     fontSize: 20,
-//     color: COLORS.error,
-//   },
-//   laundryWeightLabel: {
-//     fontSize: 12,
-//     fontFamily: fonts.Regular,
-//     color: COLORS.primary,
-//     textAlign: "center",
-//   },
-//   breakdownLabel: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 16,
-//     color: COLORS.primary,
-//   },
-//   breakdownValue: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 16,
-//     color: COLORS.primary,
-//   },
-//   breakdownValueTotalCost: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 20,
-//     color: COLORS.secondary,
-//   },
-//   itemsUsedLabel: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 16,
-//     color: COLORS.primary,
-//   },
-//   itemRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     marginVertical: 3,
-//   },
-//   itemLabel: {
-//     fontFamily: fonts.Regular,
-//     fontSize: 14,
-//     color: COLORS.primary,
-//   },
-//   itemPrice: {
-//     fontFamily: fonts.Medium,
-//     fontSize: 14,
-//     color: COLORS.primary,
-//   },
-//   paymentMethodsContainer: {
-//     marginBottom: 20,
-//   },
-//   paymentMethodTitle: {
-//     fontFamily: fonts.Bold,
-//     fontSize: 16,
-//     marginBottom: 10,
-//   },
-//   paymentMethodButton: {
-//     paddingVertical: 15,
-//     borderRadius: 8,
-//     marginBottom: 10,
-//     alignItems: "center",
-//   },
-//   selected: {
-//     backgroundColor: COLORS.primary,
-//   },
-//   paymentMethodText: {
-//     fontFamily: fonts.Regular,
-//     color: COLORS.textDark,
-//   },
-//   outlined: {
-//     borderWidth: 1,
-//     borderColor: COLORS.primary,
-//     backgroundColor: COLORS.white,
-//     borderRadius: 10,
-//     paddingVertical: 15,
-//     marginBottom: 10,
-//     alignItems: "center",
-//   },
-
-//   outlinedText: {
-//     fontFamily: fonts.SemiBold,
-//     color: COLORS.primary,
-//   },
-
-//   selected: {
-//     backgroundColor: COLORS.primary,
-//     borderWidth: 0,
-//   },
-
-//   selectedText: {
-//     color: COLORS.white,
-//   },
-
-//   proceedButton: {
-//     backgroundColor: COLORS.secondary,
-//     paddingVertical: 15,
-//     borderRadius: 10,
-//     alignItems: "center",
-//   },
-//   proceedButtonText: {
-//     fontFamily: fonts.Bold,
-//     color: COLORS.white,
-//     fontSize: 16,
-//   },
-//   divider: {
-//     borderBottomWidth: 1,
-//     borderBottomColor: COLORS.border,
-//     marginVertical: 15,
-//   },
-// });
-
-{
-  /* <Text style={styles.serviceTitle}>{breakdown.service}</Text>
-              <View style={styles.breakdownRow}>
-                <Text style={styles.servicePrice}>
-                  {breakdown.servicePrice}
-                </Text>
-              </View>
-              <View style={styles.breakdownRow}>
-                <Text style={styles.multiplicationSign}>X</Text>
-                <Text style={styles.breakdownValue}>{breakdown.weight} kg</Text>
-              </View>
-              <Text style={styles.laundryWeightLabel}>Laundry Weight</Text>
-
-              <View style={styles.divider} />
-
-              <Text style={styles.itemsUsedLabel}>Items Used:</Text>
-              {breakdown.itemsUsedWithPrice.map((item, index) => (
-                <View key={index} style={styles.itemRow}>
-                  <Text style={styles.itemLabel}>{item.name}</Text>
-                  <Text style={styles.itemPrice}>{item.price}</Text>
-                </View>
-              ))}
-              <View style={styles.breakdownRow}>
-                <Text style={styles.breakdownLabel}>Total Cost</Text>
-                <Text style={styles.breakdownValueTotalCost}>
-                  {breakdown.totalCost}
-                </Text>
-              </View> */
-}

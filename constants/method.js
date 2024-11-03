@@ -81,6 +81,20 @@ export const decryptMessage = (encryptedMessage) => {
   return decryptedMessage;
 };
 
+export const getCurrentDay = () => {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = new Date();
+  return daysOfWeek[today.getDay()];
+};
+
 // export const encryptMessage = async (message) => {
 //   const encryptedMessage = await Crypto.digestStringAsync(
 //     Crypto.CryptoDigestAlgorithm.SHA256,

@@ -1,10 +1,10 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// const BASE_URL = "http://192.168.254.162:3002/api";
+const BASE_URL = "http://192.168.254.162:3002/api";
 // const BASE_URL = "http://192.168.254.139:3002/api";
- const BASE_URL = "http://192.168.100.63:3002/api";
-``
+// const BASE_URL = "http://192.168.100.63:3002/api";
+
 // Create an instance of axios
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -29,21 +29,6 @@ api.interceptors.request.use(
   }
 );
 
-// Request Interceptor
-// api.interceptors.request.use(
-//   (config) => {
-//     // Example: Add a token to every request
-//     const token = "your-token-here"; // Replace with actual token logic
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 // Response Interceptor
 api.interceptors.response.use(
   (response) => {
@@ -58,6 +43,21 @@ api.interceptors.response.use(
     return Promise.reject(error); // Pass error to the calling function
   }
 );
+
+// Request Interceptor
+// api.interceptors.request.use(
+//   (config) => {
+//     // Example: Add a token to every request
+//     const token = "your-token-here"; // Replace with actual token logic
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 // import axios from "axios";
 // const API_URL = "http://localhost:3002/api";

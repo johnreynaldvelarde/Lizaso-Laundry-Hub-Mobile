@@ -26,6 +26,15 @@ export const createNewServiceReuqest = async (userId, data) => {
   }
 };
 
+export const createFeedbackAndReview = async (data) => {
+  try {
+    const response = await api.post(`/customers/set-feedback-review`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // STAFF SECTION API REQUEST
 // export const createMessageSenderStaff = async (messageData) => {
 //   try {

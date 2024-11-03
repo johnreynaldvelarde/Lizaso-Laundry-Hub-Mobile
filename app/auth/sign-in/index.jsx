@@ -20,11 +20,10 @@ import useAuth from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
-
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
-  const [username, setUsername] = useState("juan12");
-  const [password, setPassword] = useState("lizaso12345");
+  const [username, setUsername] = useState("velarde16");
+  const [password, setPassword] = useState("secret12345");
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -144,6 +143,7 @@ export default function SignIn() {
   };
 
   return (
+<<<<<<< HEAD
     <LinearGradient
       colors={["#ffffff", "#ffffff", "#5787C8"]}
       locations={[0, 0.5, 4]}
@@ -179,10 +179,38 @@ export default function SignIn() {
                   style={styles.lizasoText}> Lizaso</Text>
                   <Text style={styles.laundryhubText}> Laundry Hub </Text>
               </View>
+=======
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../../../assets/images/lizaso_logo.png")}
+              style={styles.logo}
+            />
+          </View>
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
 
+          <View style={styles.titleContainer}>
+            <Text style={styles.welcomeText}> Welcome to</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 5,
+                gap: 2,
+                marginBottom: -5,
+              }}
+            >
+              <Text style={styles.lizasoText}> Lizaso</Text>
+              <Text style={styles.laundryhubText}> Laundry Hub </Text>
+            </View>
 
             <View style={styles.formContainer}>
-          
               {/* Username Field */}
               <View style={{ marginBottom: 10 }}>
                 <Text
@@ -208,7 +236,11 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
+<<<<<<< HEAD
                   
+=======
+                    marginLeft: 25,
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
                   }}
                 >
                   <TextInput
@@ -260,6 +292,10 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
+<<<<<<< HEAD
+=======
+                    marginLeft: 25,
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
                   }}
                 >
                   <TextInput
@@ -386,10 +422,9 @@ export default function SignIn() {
               </TouchableOpacity>
             </View>
           </View>
-          </View>
-          
-          
+        </View>
 
+<<<<<<< HEAD
           {/* Register Link */}
           <View
                 style={{
@@ -423,9 +458,38 @@ export default function SignIn() {
         </ScrollView>
       </SafeAreaView>
       </LinearGradient>
+=======
+        {/* Register Link */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 5,
+            gap: 2,
+            marginBottom: 50,
+            marginTop: -10,
+          }}
+        >
+          <Text style={{ color: COLORS.primary, fontFamily: fonts.Regular }}>
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
+            <Text
+              style={{
+                color: COLORS.secondary,
+                fontFamily: fonts.SemiBold,
+              }}
+            >
+              Register
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -457,20 +521,30 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: "center",
     fontFamily: fonts.Medium,
+<<<<<<< HEAD
     marginBottom: -6
   },
 
   lizasoText:{
     fontSize: 30,
-    color: COLORS.secondary,
-    fontFamily:fonts.SemiBold,
-    
+=======
   },
+
+  lizasoText: {
+    fontSize: 24,
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
+    color: COLORS.secondary,
+    fontFamily: fonts.SemiBold,
+  },
+<<<<<<< HEAD
   laundryhubText:{
     fontSize: 30,
+=======
+  laundryhubText: {
+    fontSize: 24,
+>>>>>>> dbd7d0da333f356844b16315186c5c585ac65dc3
     color: COLORS.primary,
-    fontFamily:fonts.Medium,
-
+    fontFamily: fonts.Medium,
   },
 
   formContainer: {
@@ -484,8 +558,6 @@ const styles = StyleSheet.create({
     padding: 20,
     elevation: 5,
     marginBottom: 30,
-   
-    
   },
   inputContainer: {
     width: "100%",

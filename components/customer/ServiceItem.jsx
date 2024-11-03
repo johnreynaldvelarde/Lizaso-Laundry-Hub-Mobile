@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -7,13 +7,15 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // or wherever you are importing this from
-import { fonts } from "../../constants/fonts";
-import COLORS from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
+import COLORS from "../../constants/colors";
+import { getCurrentDay } from "../../constants/method";
+import { fonts } from "../../constants/fonts";
 
 export const ServiceItem = ({ item, isExpanded, onToggle }) => {
   const navigation = useNavigation();
+
   const handleGoToSelectService = async (id, name) => {
     navigation.navigate("select/select", {
       service_id: id,
@@ -21,57 +23,65 @@ export const ServiceItem = ({ item, isExpanded, onToggle }) => {
     });
   };
 
+  const isPromoVisible = () => {
+    const currentDay = getCurrentDay();
+    return item.valid_days.includes(currentDay);
+  };
+
+  // Determine if the promo should be displayed based on active status and current day
+  const showPromo = item.isActive === 1 && isPromoVisible();
+
   return (
     <View style={styles.serviceItem}>
       <Image style={styles.serviceImage} />
 
       <View style={styles.serviceInfo}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-          }}
-        >
+        <View style={{ flex: 1, flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
             <Text style={styles.serviceName}>{item.service_name}</Text>
             {item.description ? (
               <Text style={styles.serviceDescription}>{item.description}</Text>
             ) : null}
-            <Text style={styles.servicePrice}>PHP {item.default_price}</Text>
-            {item.isActive &&
-              isExpanded && ( // Show promo details if expanded
+
+            <View style={styles.priceContainer}>
+              <Text
+                style={
+                  showPromo
+                    ? styles.defaultPriceStrikethrough
+                    : styles.servicePrice
+                }
+              >
+                ₱ {item.default_price}
+              </Text>
+              {showPromo && (
                 <>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
+                  <Text style={styles.arrow}> ➔ </Text>
+                  {/* Arrow pointing to the discount price */}
+                  <Text style={styles.discountPrice}>
+                    ₱ {item.discount_price}
                   </Text>
+                </>
+              )}
+            </View>
+
+            {isExpanded &&
+              showPromo && ( // Show promo details if expanded and conditions met
+                <>
+                  <Text style={styles.promoTitle}>Promo Valid Days:</Text>
                   <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
+                    {Array.isArray(item.valid_days)
+                      ? item.valid_days.join(", ")
+                      : item.valid_days}
                   </Text>
                 </>
               )}
           </View>
-          <View
-            style={{
-              padding: 10,
-              flexDirection: "row",
-            }}
-          >
-            {item.isActive && !isExpanded && (
-              <Text style={styles.promoBadge}>Promo</Text>
-            )}
-            {item.isActive && (
+          <View style={{ padding: 10, flexDirection: "row" }}>
+            {showPromo &&
+              !isExpanded && ( // Show promo badge only if promo is valid
+                <Text style={styles.promoBadge}>Promo</Text>
+              )}
+            {showPromo && ( // Show collapsible icon only if promo is valid
               <TouchableOpacity
                 onPress={onToggle}
                 style={styles.collapseIconContainer}
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
     color: COLORS.subtitle,
   },
   servicePrice: {
-    fontFamily: fonts.Bold,
+    fontFamily: fonts.SemiBold,
     fontSize: 15,
     color: COLORS.secondary,
   },
@@ -205,9 +215,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  promoDetails: {
+  promoTitle: {
     marginTop: 5,
-    fontStyle: "italic",
-    color: COLORS.gray,
+    color: COLORS.primary,
+    fontFamily: fonts.Bold,
+  },
+  promoDetails: {
+    marginTop: 2,
+    fontFamily: fonts.Regular,
+    color: COLORS.subtitle,
+  },
+
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  defaultPriceStrikethrough: {
+    textDecorationLine: "line-through",
+    color: "grey",
+    fontFamily: fonts.SemiBold,
+    fontSize: 15,
+  },
+
+  arrow: {
+    marginHorizontal: 2,
+    fontSize: 15,
+    color: COLORS.border,
+    fontFamily: fonts.SemiBold,
+  },
+
+  discountPrice: {
+    fontSize: 15,
+    fontFamily: fonts.SemiBold,
+    color: COLORS.error,
   },
 });
