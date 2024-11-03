@@ -128,3 +128,20 @@
     total_amount: null,
   },
 ];
+
+[
+  {
+    base_total_amount: "20.00",
+    discount_applied: { type: "promo_price", value: "20.00" },
+    final_total: "30.00",
+    related_items: {
+      item_ids: ["1"],
+      item_names: ["Ariel Soap"],
+      item_prices: ["10.00"],
+      quantities: ["1"],
+      related_item_totals: ["10.00"],
+    },
+    total_related_items: "10.00",
+    weight: "1",
+  },
+];
