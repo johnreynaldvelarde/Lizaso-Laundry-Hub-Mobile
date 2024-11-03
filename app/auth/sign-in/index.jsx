@@ -20,7 +20,6 @@ import useAuth from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
-
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
   const [username, setUsername] = useState("velarde16");
@@ -65,75 +64,76 @@ export default function SignIn() {
   };
 
   const handleLogin = async () => {
+    router.push("/(customer)/home");
     const newErrors = validateFields();
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      setLoading(true);
+    // if (Object.keys(newErrors).length === 0) {
+    //   setLoading(true);
 
-      const data = {
-        username: username,
-        password: password,
-      };
+    //   const data = {
+    //     username: username,
+    //     password: password,
+    //   };
 
-      try {
-        const response = await login(data);
+    //   try {
+    //     const response = await login(data);
 
-        if (response.success) {
-          await AsyncStorage.setItem("accessToken", response.accessToken);
+    //     if (response.success) {
+    //       await AsyncStorage.setItem("accessToken", response.accessToken);
 
-          await fetchUserDetails(response.accessToken);
+    //       await fetchUserDetails(response.accessToken);
 
-          // if (userDetails.user_type === "Customer") {
-          //   const details = await getCheckCustomerDetails(userDetails.userId);
+    //       // if (userDetails.user_type === "Customer") {
+    //       //   const details = await getCheckCustomerDetails(userDetails.userId);
 
-          //   if (details.success !== false) {
-          //     const { storeIdIsNull, addressIdIsNull } = details.data;
-          //     if (storeIdIsNull || addressIdIsNull) {
-          //       router.push("/auth/complete/address");
-          //     } else {
-          //       router.push("/(customer)/home");
-          //     }
-          //   }
-          // } else {
-          //   console.log(1);
-          // }
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            username: response.message,
-          }));
-        }
-      } catch (error) {
-        setLoading(false);
-      } finally {
-        setLoading(false);
-      }
-    }
+    //       //   if (details.success !== false) {
+    //       //     const { storeIdIsNull, addressIdIsNull } = details.data;
+    //       //     if (storeIdIsNull || addressIdIsNull) {
+    //       //       router.push("/auth/complete/address");
+    //       //     } else {
+    //       //       router.push("/(customer)/home");
+    //       //     }
+    //       //   }
+    //       // } else {
+    //       //   console.log(1);
+    //       // }
+    //     } else {
+    //       setErrors((prevErrors) => ({
+    //         ...prevErrors,
+    //         username: response.message,
+    //       }));
+    //     }
+    //   } catch (error) {
+    //     setLoading(false);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
   };
 
-  useEffect(() => {
-    if (userDetails.user_type) {
-      if (userDetails.user_type === "Customer") {
-        const fetchDetails = async () => {
-          const details = await getCheckCustomerDetails(userDetails.userId);
-          if (details.success !== false) {
-            const { storeIdIsNull, addressIdIsNull } = details.data;
-            if (storeIdIsNull || addressIdIsNull) {
-              router.push("/auth/complete/address");
-            } else {
-              router.push("/(customer)/home");
-            }
-          } else {
-            console.log(details);
-          }
-        };
-        fetchDetails();
-      } else {
-        router.push("/(staff)/pickup");
-      }
-    }
-  }, [userDetails]);
+  // useEffect(() => {
+  //   if (userDetails.user_type) {
+  //     if (userDetails.user_type === "Customer") {
+  //       const fetchDetails = async () => {
+  //         const details = await getCheckCustomerDetails(userDetails.userId);
+  //         if (details.success !== false) {
+  //           const { storeIdIsNull, addressIdIsNull } = details.data;
+  //           if (storeIdIsNull || addressIdIsNull) {
+  //             router.push("/auth/complete/address");
+  //           } else {
+  //             router.push("/(customer)/home");
+  //           }
+  //         } else {
+  //           console.log(details);
+  //         }
+  //       };
+  //       fetchDetails();
+  //     } else {
+  //       router.push("/(staff)/pickup");
+  //     }
+  //   }
+  // }, [userDetails]);
 
   const handleGoogleSignIn = () => {
     navigation.navigate("auth/google/google", {});
@@ -163,264 +163,253 @@ export default function SignIn() {
                 style={styles.logo}
               />
             </View>
-            
+
             <View style={styles.titleContainer}>
-              <Text style = {styles.welcomeText}> Welcome to</Text>
-              <View style={{
+              <Text style={styles.welcomeText}> Welcome to</Text>
+              <View
+                style={{
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
                   marginVertical: 5,
                   gap: 2,
                   marginBottom: -5,
-                  
-                }}>
-                  <Text
-                  style={styles.lizasoText}> Lizaso</Text>
-                  <Text style={styles.laundryhubText}> Laundry Hub </Text>
-              </View>
-
-
-            <View style={styles.formContainer}>
-          
-              {/* Username Field */}
-              <View style={{ marginBottom: 10 }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: fonts.Medium,
-                    marginVertical: 8,
-                    color: COLORS.primary,
-                  
-                  }}
-                >
-                  Username
-                </Text>
-                <View
-                  style={{
-                    width: "100%",
-                    height: 48,
-                    borderColor: errors.password
-                      ? COLORS.error
-                      : COLORS.primary,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    alignItems: "center",
-                    justifyContent: "center", //hereeeee
-                    paddingLeft: 22,
-                   
-                  }}
-                >
-                  <TextInput
-                    placeholder="Enter your username"
-                    placeholderTextColor={COLORS.grey}
-                    keyboardType="default"
-                    style={{ width: "100%", fontFamily: fonts.Regular }}
-                    value={username}
-                    onChangeText={handleInputChange("username")}
-                  />
-                </View>
-                {errors.username && (
-                  <Text
-                    style={{
-                      color: COLORS.error,
-                      fontFamily: fonts.Regular,
-                      fontSize: 12,
-                      marginTop: 4,
-                      marginStart: 10,
-                    }}
-                  >
-                    {errors.username}
-                  </Text>
-                )}
-              </View>
-
-              {/* Password Field */}
-              <View style={{ marginBottom: 10 }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: fonts.Medium,
-                    marginVertical: 8,
-                    color: COLORS.primary,
-                  }}
-                >
-                  Password
-                </Text>
-                <View
-                  style={{
-                    width: "100%",
-                    height: 48,
-                    borderColor: errors.password
-                      ? COLORS.error
-                      : COLORS.primary,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    alignItems: "center",
-                    justifyContent: "center", //hereeeee
-                    paddingLeft: 22,
-                  }}
-                >
-                  <TextInput
-                    placeholder="Enter your password"
-                    placeholderTextColor={COLORS.grey}
-                    secureTextEntry={!isPasswordShown}
-                    style={{ width: "100%", fontFamily: fonts.Regular }}
-                    value={password}
-                    onChangeText={handleInputChange("password")}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setIsPasswordShown(!isPasswordShown)}
-                    style={{ position: "absolute", right: 12 }}
-                  >
-                    <Ionicons
-                      name={isPasswordShown ? "eye-off" : "eye"}
-                      size={24}
-                      color={COLORS.primary}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {errors.password && (
-                  <Text
-                    style={{
-                      color: COLORS.error,
-                      fontSize: 12,
-                      marginTop: 4,
-                      marginStart: 10,
-                    }}
-                  >
-                    {errors.password}
-                  </Text>
-                )}
-              </View>
-
-              <TouchableOpacity onPress={handleForgetPassword}>
-                <Text
-                  style={{
-                    textAlign: "right",
-                    color: COLORS.primary,
-                    marginVertical: 5,
-                    fontFamily: fonts.Regular,
-                  }}
-                >
-                  Forget Password?
-                </Text>
-              </TouchableOpacity>
-
-              {/* Login Button */}
-              <TouchableOpacity
-                onPress={handleLogin}
-                style={{
-                  backgroundColor: COLORS.secondary,
-                  borderRadius: 40,
-                  marginTop: 10,
-                  padding: 10,
-                  opacity: loading ? 0.7 : 1,
-                  height: 50,
-                  width: 270,
-                  justifyContent: "center",
                 }}
               >
-                {loading ? (
-                  <ActivityIndicator size="large" color={COLORS.white} />
-                ) : (
+                <Text style={styles.lizasoText}> Lizaso</Text>
+                <Text style={styles.laundryhubText}> Laundry Hub </Text>
+              </View>
+
+              <View style={styles.formContainer}>
+                {/* Username Field */}
+                <View style={{ marginBottom: 10 }}>
                   <Text
                     style={{
-                      color: COLORS.white,
                       fontSize: 16,
-                      fontFamily: fonts.Bold,
-                      textAlign: "center",
+                      fontFamily: fonts.Medium,
+                      marginVertical: 8,
+                      color: COLORS.primary,
                     }}
                   >
-                    Login
+                    Username
                   </Text>
-                )}
-              </TouchableOpacity>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: 48,
+                      borderColor: errors.password
+                        ? COLORS.error
+                        : COLORS.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      alignItems: "center",
+                      justifyContent: "center", //hereeeee
+                      paddingLeft: 22,
+                    }}
+                  >
+                    <TextInput
+                      placeholder="Enter your username"
+                      placeholderTextColor={COLORS.grey}
+                      keyboardType="default"
+                      style={{ width: "100%", fontFamily: fonts.Regular }}
+                      value={username}
+                      onChangeText={handleInputChange("username")}
+                    />
+                  </View>
+                  {errors.username && (
+                    <Text
+                      style={{
+                        color: COLORS.error,
+                        fontFamily: fonts.Regular,
+                        fontSize: 12,
+                        marginTop: 4,
+                        marginStart: 10,
+                      }}
+                    >
+                      {errors.username}
+                    </Text>
+                  )}
+                </View>
 
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginVertical: 10,
-                  fontSize: 14,
-                  fontFamily: fonts.Regular,
-                  color: COLORS.primary,
-                }}
-              >
-                or continue with
-              </Text>
+                {/* Password Field */}
+                <View style={{ marginBottom: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: fonts.Medium,
+                      marginVertical: 8,
+                      color: COLORS.primary,
+                    }}
+                  >
+                    Password
+                  </Text>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: 48,
+                      borderColor: errors.password
+                        ? COLORS.error
+                        : COLORS.primary,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      alignItems: "center",
+                      justifyContent: "center", //hereeeee
+                      paddingLeft: 22,
+                    }}
+                  >
+                    <TextInput
+                      placeholder="Enter your password"
+                      placeholderTextColor={COLORS.grey}
+                      secureTextEntry={!isPasswordShown}
+                      style={{ width: "100%", fontFamily: fonts.Regular }}
+                      value={password}
+                      onChangeText={handleInputChange("password")}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setIsPasswordShown(!isPasswordShown)}
+                      style={{ position: "absolute", right: 12 }}
+                    >
+                      <Ionicons
+                        name={isPasswordShown ? "eye-off" : "eye"}
+                        size={24}
+                        color={COLORS.primary}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {errors.password && (
+                    <Text
+                      style={{
+                        color: COLORS.error,
+                        fontSize: 12,
+                        marginTop: 4,
+                        marginStart: 10,
+                      }}
+                    >
+                      {errors.password}
+                    </Text>
+                  )}
+                </View>
 
-              {/* Google Login Button */}
-              <TouchableOpacity
-                onPress={handleGoogleSignIn}
-                style={{
-                  flexDirection: "row",
-                  borderWidth: 2,
-                  borderColor: COLORS.grayMedium,
-                  borderRadius: 40,
-                  width: 270,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 8,
-                  marginBottom: 10,
-                }}
-              >
-                <Image
-                  source={require("../../../assets/images/google_icon.png")}
-                  style={{ height: 20, width: 20 }}
-                />
-                <Text
+                <TouchableOpacity onPress={handleForgetPassword}>
+                  <Text
+                    style={{
+                      textAlign: "right",
+                      color: COLORS.primary,
+                      marginVertical: 5,
+                      fontFamily: fonts.Regular,
+                    }}
+                  >
+                    Forget Password?
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Login Button */}
+                <TouchableOpacity
+                  onPress={handleLogin}
                   style={{
-                    fontSize: 16,
-                    color: COLORS.primary,
-                    fontFamily: fonts.Medium,
-                    marginLeft: 8,
+                    backgroundColor: COLORS.secondary,
+                    borderRadius: 40,
+                    marginTop: 10,
+                    padding: 10,
+                    opacity: loading ? 0.7 : 1,
+                    height: 50,
+                    width: 270,
+                    justifyContent: "center",
                   }}
                 >
-                  Google
+                  {loading ? (
+                    <ActivityIndicator size="large" color={COLORS.white} />
+                  ) : (
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontSize: 16,
+                        fontFamily: fonts.Bold,
+                        textAlign: "center",
+                      }}
+                    >
+                      Login
+                    </Text>
+                  )}
+                </TouchableOpacity>
+
+                <Text
+                  style={{
+                    textAlign: "center",
+                    marginVertical: 10,
+                    fontSize: 14,
+                    fontFamily: fonts.Regular,
+                    color: COLORS.primary,
+                  }}
+                >
+                  or continue with
                 </Text>
-              </TouchableOpacity>
+
+                {/* Google Login Button */}
+                <TouchableOpacity
+                  onPress={handleGoogleSignIn}
+                  style={{
+                    flexDirection: "row",
+                    borderWidth: 2,
+                    borderColor: COLORS.grayMedium,
+                    borderRadius: 40,
+                    width: 270,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 8,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/google_icon.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: COLORS.primary,
+                      fontFamily: fonts.Medium,
+                      marginLeft: 8,
+                    }}
+                  >
+                    Google
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-          </View>
-          
-          
 
           {/* Register Link */}
           <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 5,
+              gap: 2,
+              marginBottom: 50,
+              marginTop: -10,
+            }}
+          >
+            <Text style={{ color: COLORS.black, fontFamily: fonts.Regular }}>
+              Don't have an account?
+            </Text>
+            <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginVertical: 5,
-                  gap: 2,
-                  marginBottom: 50,
-                  marginTop: -10,
-
+                  color: COLORS.white,
+                  fontFamily: fonts.SemiBold,
                 }}
               >
-                <Text
-                  style={{ color: COLORS.black, fontFamily: fonts.Regular }}
-                >
-                  Don't have an account?
-                </Text>
-                <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
-                  <Text
-                    style={{
-                      color: COLORS.white,
-                      fontFamily: fonts.SemiBold,
-                    }}
-                  >
-                    Register
-                  </Text>
-                </TouchableOpacity>
-                </View>
+                Register
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </SafeAreaView>
-      </LinearGradient>
-      
+    </LinearGradient>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -429,8 +418,8 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoContainer: {
     flex: 1,
@@ -443,7 +432,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   logo: {
     width: 150,
@@ -458,17 +447,15 @@ const styles = StyleSheet.create({
     marginBottom: -6,
   },
 
-  lizasoText:{
+  lizasoText: {
     fontSize: 24,
     color: COLORS.secondary,
-    fontFamily:fonts.SemiBold,
-    
+    fontFamily: fonts.SemiBold,
   },
-  laundryhubText:{
+  laundryhubText: {
     fontSize: 24,
     color: COLORS.primary,
-    fontFamily:fonts.Medium,
-
+    fontFamily: fonts.Medium,
   },
 
   formContainer: {
@@ -482,8 +469,6 @@ const styles = StyleSheet.create({
     padding: 20,
     elevation: 6,
     marginBottom: 30,
-   
-    
   },
   inputContainer: {
     width: "100%",
@@ -500,7 +485,5 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     marginTop: 20,
-
   },
-
 });
