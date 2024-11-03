@@ -8,9 +8,11 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { format } from "date-fns";
 import QRCode from "react-native-qrcode-svg";
+import { getCurrentDay } from "../../constants/method";
 
 export default function OrderItem({ item, index }) {
   const navigaton = useNavigation();
+  const currentDay = getCurrentDay();
   const [collapsedStates, setCollapsedStates] = useState(
     item.progress.map(() => true)
   );
@@ -69,6 +71,11 @@ export default function OrderItem({ item, index }) {
     qr_code,
     payment_method,
     unread_messages,
+    promo_discount_price,
+    promo_is_active,
+    promo_valid_days,
+    promo_start_date,
+    promo_end_date,
   } = item.service_request;
 
   return (
@@ -82,7 +89,7 @@ export default function OrderItem({ item, index }) {
               Status:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
+                  fontFamily: fonts.SemiBold,
                   color:
                     request_status === "Pending Pickup"
                       ? COLORS.accent
@@ -95,7 +102,6 @@ export default function OrderItem({ item, index }) {
                       : "#6C757D",
                   paddingHorizontal: 10,
                   paddingVertical: 5,
-                  borderRadius: 5,
                 }}
               >
                 {request_status}
@@ -105,24 +111,48 @@ export default function OrderItem({ item, index }) {
               Selected Service:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
+                  fontFamily: fonts.SemiBold,
                   color: COLORS.secondary,
                 }}
               >
                 {service_name}
               </Text>
             </Text>
+
             <Text style={styles.orderInfo}>
               Base Price:{" "}
               <Text
                 style={{
-                  fontFamily: fonts.Bold,
-                  color: COLORS.secondary,
+                  fontFamily: fonts.SemiBold,
+                  color:
+                    promo_is_active === 1 &&
+                    promo_valid_days.includes(currentDay)
+                      ? "grey"
+                      : COLORS.secondary,
+                  textDecorationLine:
+                    promo_is_active === 1 &&
+                    promo_valid_days.includes(currentDay)
+                      ? "line-through"
+                      : "none",
                 }}
               >
-                {service_default_price}
+                ₱{service_default_price}
               </Text>
             </Text>
+
+            {promo_is_active === 1 && promo_valid_days.includes(currentDay) && (
+              <Text style={styles.orderInfo}>
+                Discount Promo:{" "}
+                <Text
+                  style={{
+                    fontFamily: fonts.SemiBold,
+                    color: COLORS.error,
+                  }}
+                >
+                  ₱{promo_discount_price}
+                </Text>
+              </Text>
+            )}
           </View>
           <View>
             <TouchableOpacity
