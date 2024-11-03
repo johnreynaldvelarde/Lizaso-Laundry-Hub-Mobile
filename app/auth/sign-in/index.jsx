@@ -20,11 +20,10 @@ import useAuth from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
-
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
-  const [username, setUsername] = useState("juan12");
-  const [password, setPassword] = useState("lizaso12345");
+  const [username, setUsername] = useState("velarde16");
+  const [password, setPassword] = useState("secret12345");
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -144,38 +143,36 @@ export default function SignIn() {
   };
 
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
-          <View style={styles.container}>
-            <View style={styles.logoContainer}>
-              <Image
-                source={require("../../../assets/images/lizaso_logo.png")}
-                style={styles.logo}
-              />
-            </View>
-            
-            <View style={styles.titleContainer}>
-              <Text style = {styles.welcomeText}> Welcome to</Text>
-              <View style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginVertical: 5,
-                  gap: 2,
-                  marginBottom: -5,
-                  
-                }}>
-                  <Text
-                  style={styles.lizasoText}> Lizaso</Text>
-                  <Text style={styles.laundryhubText}> Laundry Hub </Text>
-              </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../../../assets/images/lizaso_logo.png")}
+              style={styles.logo}
+            />
+          </View>
 
+          <View style={styles.titleContainer}>
+            <Text style={styles.welcomeText}> Welcome to</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 5,
+                gap: 2,
+                marginBottom: -5,
+              }}
+            >
+              <Text style={styles.lizasoText}> Lizaso</Text>
+              <Text style={styles.laundryhubText}> Laundry Hub </Text>
+            </View>
 
             <View style={styles.formContainer}>
-          
               {/* Username Field */}
               <View style={{ marginBottom: 10 }}>
                 <Text
@@ -201,7 +198,7 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-                    marginLeft: 25
+                    marginLeft: 25,
                   }}
                 >
                   <TextInput
@@ -253,7 +250,7 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-                    marginLeft: 25
+                    marginLeft: 25,
                   }}
                 >
                   <TextInput
@@ -379,45 +376,38 @@ export default function SignIn() {
               </TouchableOpacity>
             </View>
           </View>
-          </View>
-          
-          
+        </View>
 
-          {/* Register Link */}
-          <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginVertical: 5,
-                  gap: 2,
-                  marginBottom: 50,
-                  marginTop: -10,
-
-                }}
-              >
-                <Text
-                  style={{ color: COLORS.primary, fontFamily: fonts.Regular }}
-                >
-                  Don't have an account?
-                </Text>
-                <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
-                  <Text
-                    style={{
-                      color: COLORS.secondary,
-                      fontFamily: fonts.SemiBold,
-                    }}
-                  >
-                    Register
-                  </Text>
-                </TouchableOpacity>
-              </View>
-        </ScrollView>
-      </SafeAreaView>
-      
+        {/* Register Link */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 5,
+            gap: 2,
+            marginBottom: 50,
+            marginTop: -10,
+          }}
+        >
+          <Text style={{ color: COLORS.primary, fontFamily: fonts.Regular }}>
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
+            <Text
+              style={{
+                color: COLORS.secondary,
+                fontFamily: fonts.SemiBold,
+              }}
+            >
+              Register
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -451,20 +441,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: COLORS.primary,
     textAlign: "center",
-    fontFamily: fonts.Medium
+    fontFamily: fonts.Medium,
   },
 
-  lizasoText:{
+  lizasoText: {
     fontSize: 24,
     color: COLORS.secondary,
-    fontFamily:fonts.SemiBold,
-    
+    fontFamily: fonts.SemiBold,
   },
-  laundryhubText:{
+  laundryhubText: {
     fontSize: 24,
     color: COLORS.primary,
-    fontFamily:fonts.Medium,
-
+    fontFamily: fonts.Medium,
   },
 
   formContainer: {
@@ -478,8 +466,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 6,
     marginBottom: 30,
-   
-    
   },
   inputContainer: {
     width: "100%",

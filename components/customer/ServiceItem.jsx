@@ -41,23 +41,11 @@ export const ServiceItem = ({ item, isExpanded, onToggle }) => {
             {item.isActive &&
               isExpanded && ( // Show promo details if expanded
                 <>
+                  <Text style={styles.promoTitle}>Promo Valid Days:</Text>
                   <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
-                  </Text>
-                  <Text style={styles.promoDetails}>
-                    Special Promo Details!
+                    {Array.isArray(item.valid_days)
+                      ? item.valid_days.join(", ")
+                      : item.valid_days}
                   </Text>
                 </>
               )}
@@ -205,9 +193,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  promoDetails: {
+  promoTitle: {
     marginTop: 5,
-    fontStyle: "italic",
-    color: COLORS.gray,
+    color: COLORS.primary,
+    fontFamily: fonts.Bold,
+  },
+  promoDetails: {
+    marginTop: 2,
+    fontFamily: fonts.Regular,
+    color: COLORS.subtitle,
   },
 });

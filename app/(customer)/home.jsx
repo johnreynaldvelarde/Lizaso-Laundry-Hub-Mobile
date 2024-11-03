@@ -33,7 +33,7 @@ export default function Home() {
     loading,
     error,
     setIsPolling,
-  } = usePolling(fetchLaundryServices, 10000);
+  } = usePolling(fetchLaundryServices, 5000);
 
   useFocusEffect(
     useCallback(() => {
