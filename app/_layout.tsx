@@ -42,6 +42,13 @@ export default function RootLayout() {
                   animation: "ios",
                 }}
               />
+              <Stack.Screen
+                name="review/review"
+                options={{
+                  presentation: "modal",
+                  animation: "ios",
+                }}
+              />
               <Stack.Screen name="index" />
               <Stack.Screen
                 name="message/chat"

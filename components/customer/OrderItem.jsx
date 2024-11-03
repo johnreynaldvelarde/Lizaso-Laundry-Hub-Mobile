@@ -31,6 +31,12 @@ export default function OrderItem({ item, index }) {
     });
   };
 
+  const handleReview = async (id) => {
+    navigaton.navigate("review/review", {
+      service_request_id: id,
+    });
+  };
+
   // Going to message page
   const handleViewRecipt = async (
     id,
@@ -231,26 +237,39 @@ export default function OrderItem({ item, index }) {
             </TouchableOpacity>
 
             {/* Message Button with Icon and Badge */}
+
             <View style={styles.iconWithBadge}>
               {user_id > 0 ? (
                 <>
-                  <TouchableOpacity
-                    style={styles.messageButton}
-                    onPress={() => handleGoToMessage(user_id, user_name)}
-                  >
-                    <Ionicons
-                      name="chatbubble-ellipses-outline"
-                      size={24}
-                      color={COLORS.secondary}
-                    />
-                  </TouchableOpacity>
-
-                  {/* Badge element */}
-                  {unread_messages > 0 && (
-                    <View style={styles.badge}>
-                      <Text style={styles.badgeText}>{unread_messages}</Text>
-                    </View>
+                  {request_status === "Completed Delivery" ||
+                  request_status === "Completed" ? (
+                    <TouchableOpacity
+                      style={styles.reviewButton}
+                      onPress={() => handleReview(id)}
+                    >
+                      <Ionicons name="star" size={24} color={COLORS.accent} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.messageButton}
+                      onPress={() => handleGoToMessage(user_id, user_name)}
+                    >
+                      <Ionicons
+                        name="chatbubble-ellipses-outline"
+                        size={24}
+                        color={COLORS.secondary}
+                      />
+                    </TouchableOpacity>
                   )}
+
+                  {/* Badge element: Only show if unread_messages > 0 and request_status is not "Completed Delivery" or "Completed" */}
+                  {unread_messages > 0 &&
+                    request_status !== "Completed Delivery" &&
+                    request_status !== "Completed" && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{unread_messages}</Text>
+                      </View>
+                    )}
                 </>
               ) : (
                 <TouchableOpacity
@@ -265,22 +284,6 @@ export default function OrderItem({ item, index }) {
                 </TouchableOpacity>
               )}
             </View>
-
-            {/* <View style={styles.iconWithBadge}>
-              <TouchableOpacity
-                style={styles.messageButton}
-                onPress={() => handleGoToMessage(user_id, user_name)}
-              >
-                <Ionicons
-                  name="chatbubble-ellipses-outline"
-                  size={24}
-                  color={COLORS.secondary}
-                />
-              </TouchableOpacity>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{unread_messages}</Text>
-              </View>
-            </View> */}
           </View>
         </View>
 
@@ -429,6 +432,16 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: COLORS.secondary,
+    borderRadius: 10,
+    alignItems: "center",
+    marginLeft: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  reviewButton: {
+    padding: 8,
+    borderWidth: 1,
+    borderColor: COLORS.accent,
     borderRadius: 10,
     alignItems: "center",
     marginLeft: 10,
