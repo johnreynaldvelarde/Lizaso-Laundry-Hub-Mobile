@@ -22,42 +22,47 @@ export default function Forget() {
   const handleForgotPassword = () => {
     // Handle the password reset logic here
     console.log("Password reset link sent to:", email);
-  }; 
+  };
 
   const forgetImage = {
     forget: require("@/assets/images/f_lock.png"),
-  }
+  };
 
   return (
     <LinearGradient
-    colors={["#ffffff", "#ffffff", "#5787C8"]}
-    locations={[0, 0.5, 4]}
-    start={{ x: 0.5, y: 0 }}
-    end={{ x: 0.5, y: 1 }}
-    style={styles.gradient}
-  >
-    <SafeAreaView style={{ flex: 1, }}>
-      <ScrollView
+      colors={["#ffffff", "#ffffff", "#5787C8"]}
+      locations={[0, 0.5, 4]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={styles.gradient}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
         >
-      <TouchableOpacity style = {styles.backButton}
-      onPress = {() => navigation.goBack()}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back-outline"
+              size={30}
+              color={COLORS.secondary}
+            ></Ionicons>
+            <Text style={styles.backText}> Back</Text>
+          </TouchableOpacity>
+          <View style={styles.container}>
+            <Image source={forgetImage.forget} style={styles.image} />
+            <Text style={styles.title}>Forgot Password?</Text>
+            <Text style={styles.subtitle}>
+              Enter your email address below and we will send you instructions
+              to reset your password.
+            </Text>
 
-        <Ionicons name = "arrow-back-outline" size = {30} color = {COLORS.secondary}> </Ionicons>
-        < Text style = {styles.backText}> Back</Text>
-      </TouchableOpacity>
-      <View style={styles.container}>
-      <Image source={forgetImage.forget} style={styles.image} />
-        <Text style={styles.title}>Forgot Password?</Text>
-        <Text style={styles.subtitle}>
-          Enter your email address below and we will send you instructions to
-          reset your password.
-        </Text>
-
-        <View style={styles.formContainer}>
-          <View style={{ marginBottom: 10, marginTop: 10 }}>
-          <Text
+            <View style={styles.formContainer}>
+              <View style={{ marginBottom: 10, marginTop: 10 }}>
+                <Text
                   style={{
                     fontSize: 16,
                     fontFamily: fonts.Medium,
@@ -65,51 +70,58 @@ export default function Forget() {
                     color: COLORS.primary,
                     marginLeft: 15,
                     marginTop: -5,
-                  }}> Email </Text>
+                  }}
+                >
+                  Email
+                </Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="example@gmail.com"
-          placeholderTextColor="#A9A9A9"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
-          <Text style={styles.buttonText}>Send</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
-      <Text style={styles.footerText}>
-          Remember your password? <Text style={styles.link}>Log in</Text>
-        </Text>
-      </View>
-      </ScrollView>
-    </SafeAreaView>
+                <TextInput
+                  style={styles.input}
+                  placeholder="example@gmail.com"
+                  placeholderTextColor="#A9A9A9"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleForgotPassword}
+                >
+                  <Text style={styles.buttonText}>Send</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={styles.footerText}>
+              Remember your password?{" "}
+              <Text onPress={() => navigation.goBack()} style={styles.link}>
+                Log in
+              </Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     padding: 20,
-   
   },
   gradient: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 38,
     fontWeight: "bold",
     textAlign: "left",
     marginBottom: -30,
-    maxWidth: '90%',
+    maxWidth: "90%",
     color: COLORS.secondary,
     padding: 20,
     marginTop: -30,
@@ -135,29 +147,28 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.secondary,
-    padding: 14,
+    padding: 10,
     borderRadius: 5,
     alignItems: "center",
     width: 250,
-    height: 50,
     marginLeft: 15,
-    marginTop: -20,   
+    marginTop: -20,
   },
   buttonText: {
     color: COLORS.white,
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
   },
   footerText: {
     textAlign: "center",
     marginTop: -20,
     marginBottom: 150,
-    color: COLORS.black
-    
+    color: COLORS.primary,
+    fontFamily: fonts.SemiBold,
   },
   link: {
-    color: COLORS.white, // Set your link color
-    fontWeight: "bold",
+    color: COLORS.white,
+    fontWeight: fonts.SemiBold,
   },
   image: {
     width: "30%",
@@ -178,7 +189,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 5,
     marginBottom: 40,
-    marginTop: -10
+    marginTop: -10,
   },
 
   backButton: {
@@ -187,14 +198,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginVertical: 10,
     marginBottom: 15,
-    
   },
   backText: {
     fontSize: 24,
-    marginLeft: 10,
+    marginLeft: 5,
     color: COLORS.secondary,
-    fontFamily:fonts.SemiBold,
-    textAlign: "center"
-  }
-
+    fontFamily: fonts.SemiBold,
+    textAlign: "center",
+  },
 });

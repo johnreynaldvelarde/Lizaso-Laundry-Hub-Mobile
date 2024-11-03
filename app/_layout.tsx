@@ -28,6 +28,13 @@ export default function RootLayout() {
                   animation: "ios",
                 }}
               />
+              <Stack.Screen
+                name="auth/forget/forget"
+                options={{
+                  presentation: "modal",
+                  animation: "ios",
+                }}
+              />
               {/* <Stack.Screen
                 name="auth/forget/forget"
                 options={{
