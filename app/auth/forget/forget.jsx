@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from "react-native";
 import COLORS from "../../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,15 +22,31 @@ export default function Forget() {
   const handleForgotPassword = () => {
     // Handle the password reset logic here
     console.log("Password reset link sent to:", email);
-  };
+  }; 
 
   const forgetImage = {
     forget: require("@/assets/images/f_lock.png"),
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <LinearGradient
+    colors={["#ffffff", "#ffffff", "#5787C8"]}
+    locations={[0, 0.5, 4]}
+    start={{ x: 0.5, y: 0 }}
+    end={{ x: 0.5, y: 1 }}
+    style={styles.gradient}
+  >
+    <SafeAreaView style={{ flex: 1, }}>
+      <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
+      <TouchableOpacity style = {styles.backButton}
+      onPress = {() => navigation.goBack()}>
 
+        <Ionicons name = "arrow-back-outline" size = {30} color = {COLORS.secondary}> </Ionicons>
+        < Text style = {styles.backText}> Back</Text>
+      </TouchableOpacity>
       <View style={styles.container}>
       <Image source={forgetImage.forget} style={styles.image} />
         <Text style={styles.title}>Forgot Password?</Text>
@@ -45,7 +63,8 @@ export default function Forget() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 15
+                    marginLeft: 15,
+                    marginTop: -5,
                   }}> Email </Text>
 
         <TextInput
@@ -66,16 +85,24 @@ export default function Forget() {
           Remember your password? <Text style={styles.link}>Log in</Text>
         </Text>
       </View>
+      </ScrollView>
     </SafeAreaView>
+    </LinearGradient>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: COLORS.white,
+   
+  },
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 38,
@@ -124,11 +151,12 @@ const styles = StyleSheet.create({
   footerText: {
     textAlign: "center",
     marginTop: -20,
-    marginBottom: 150
+    marginBottom: 150,
+    color: COLORS.black
     
   },
   link: {
-    color: COLORS.primary, // Set your link color
+    color: COLORS.white, // Set your link color
     fontWeight: "bold",
   },
   image: {
@@ -137,7 +165,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 50,
     marginStart: 110,
-    marginTop: 40,
+    marginTop: 30,
   },
   formContainer: {
     flex: 1,
@@ -148,10 +176,25 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     margin: 10,
     padding: 10,
-    elevation: 6,
+    elevation: 5,
     marginBottom: 40,
     marginTop: -10
-   
   },
+
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 20,
+    marginVertical: 10,
+    marginBottom: 15,
+    
+  },
+  backText: {
+    fontSize: 24,
+    marginLeft: 10,
+    color: COLORS.secondary,
+    fontFamily:fonts.SemiBold,
+    textAlign: "center"
+  }
 
 });

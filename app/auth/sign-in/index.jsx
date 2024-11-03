@@ -144,7 +144,14 @@ export default function SignIn() {
   };
 
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <LinearGradient
+      colors={["#ffffff", "#ffffff", "#5787C8"]}
+      locations={[0, 0.5, 4]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={styles.gradient}
+    >
+      <SafeAreaView style={{ flex: 1, }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -184,14 +191,14 @@ export default function SignIn() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 25,
+                  
                   }}
                 >
                   Username
                 </Text>
                 <View
                   style={{
-                    width: "85%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.password
                       ? COLORS.error
@@ -201,7 +208,7 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-                    marginLeft: 25
+                  
                   }}
                 >
                   <TextInput
@@ -236,14 +243,14 @@ export default function SignIn() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 25,
+                   
                   }}
                 >
                   Password
                 </Text>
                 <View
                   style={{
-                    width: "85%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.password
                       ? COLORS.error
@@ -253,7 +260,6 @@ export default function SignIn() {
                     alignItems: "center",
                     justifyContent: "center", //hereeeee
                     paddingLeft: 22,
-                    marginLeft: 25
                   }}
                 >
                   <TextInput
@@ -296,7 +302,7 @@ export default function SignIn() {
                     color: COLORS.primary,
                     marginVertical: 5,
                     fontFamily: fonts.Regular,
-                    marginRight: 25,
+                    
                   }}
                 >
                   Forget Password?
@@ -313,8 +319,8 @@ export default function SignIn() {
                   padding: 10,
                   opacity: loading ? 0.7 : 1,
                   height: 50,
-                  width: 250,
-                  marginLeft: 25,
+                  width: 270,
+         
                   justifyContent: "center",
                 }}
               >
@@ -341,6 +347,7 @@ export default function SignIn() {
                   fontSize: 14,
                   fontFamily: fonts.Regular,
                   color: COLORS.primary,
+                 
                 }}
               >
                 or continue with
@@ -354,11 +361,11 @@ export default function SignIn() {
                   borderWidth: 2,
                   borderColor: COLORS.grayMedium,
                   borderRadius: 40,
-                  width: 250,
+                  width: 270,
                   justifyContent: "center",
                   alignItems: "center",
                   padding: 8,
-                  marginLeft: 25,
+      
                   marginBottom: 10,
                 }}
               >
@@ -393,18 +400,19 @@ export default function SignIn() {
                   gap: 2,
                   marginBottom: 50,
                   marginTop: -10,
+                  
 
                 }}
               >
                 <Text
-                  style={{ color: COLORS.primary, fontFamily: fonts.Regular }}
+                  style={{ color: COLORS.black, fontFamily: fonts.Regular }}
                 >
                   Don't have an account?
                 </Text>
                 <TouchableOpacity onPress={() => router.push("/auth/sign-up")}>
                   <Text
                     style={{
-                      color: COLORS.secondary,
+                      color: COLORS.white,
                       fontFamily: fonts.SemiBold,
                     }}
                   >
@@ -414,7 +422,7 @@ export default function SignIn() {
               </View>
         </ScrollView>
       </SafeAreaView>
-      
+      </LinearGradient>
   );
 }
 
@@ -422,46 +430,44 @@ export default function SignIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    padding: 5,
+  
   },
+
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   logoContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    marginTop: 10
   },
   logo: {
-    backgroundColor: COLORS.white,
-    borderRadius: 100,
-    width: 100,
-    height: 100,
-    resizeMode: "contain",
-    shadowColor: "#000", // Shadow color
-    shadowOffset: {
-      width: 0, // Horizontal shadow offset
-      height: 2, // Vertical shadow offset
-    },
-    shadowOpacity: 0.3, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
-    elevation: 5, // For Android shadow
+    width: 150,
+    height: 150,
   },
-
-  welcomeText: {
-    marginTop: -50,
-    fontSize: 18,
+    welcomeText: {
+    marginTop: -40,
+    fontSize: 20,
     color: COLORS.primary,
     textAlign: "center",
-    fontFamily: fonts.Medium
+    fontFamily: fonts.Medium,
+    marginBottom: -6
   },
 
   lizasoText:{
-    fontSize: 24,
+    fontSize: 30,
     color: COLORS.secondary,
     fontFamily:fonts.SemiBold,
     
   },
   laundryhubText:{
-    fontSize: 24,
+    fontSize: 30,
     color: COLORS.primary,
     fontFamily:fonts.Medium,
 
@@ -475,8 +481,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     margin: 20,
-    padding: 10,
-    elevation: 6,
+    padding: 20,
+    elevation: 5,
     marginBottom: 30,
    
     
@@ -493,5 +499,10 @@ const styles = StyleSheet.create({
   },
   errorBorder: {
     borderColor: "red",
+  },
+
+  titleContainer: {
+    marginTop: 20,
+
   },
 });

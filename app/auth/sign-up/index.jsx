@@ -1,4 +1,4 @@
-import {
+import { LinearGradient } from "expo-linear-gradient";import {
   View,
   Text,
   TouchableOpacity,
@@ -212,20 +212,36 @@ export default function SignUp() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <LinearGradient
+    colors={["#ffffff", "#ffffff", "#5787C8"]}
+    locations={[0, 0.5, 4]}
+    start={{ x: 0.5, y: 0 }}
+    end={{ x: 0.5, y: 1 }}
+    style={styles.gradient}
+  >
+    <SafeAreaView style={{ flex: 1, }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
+        <TouchableOpacity style = {styles.backButton}
+      onPress={() => navigation.goBack()}>
+
+        <Ionicons name = "arrow-back-sharp" size={30} color={COLORS.secondary}></Ionicons>
+        <Text style = {styles.backText}>Back</Text>
+      </TouchableOpacity>
+
         <View style={{ flex: 1, marginHorizontal: 22 }}>
           <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 marginTop: 15,
-                fontSize: 22,
+                fontSize: 30,
                 fontFamily: fonts.Bold,
                 marginVertical: 12,
-                color: COLORS.primary,
+                color: COLORS.secondary,
+                marginLeft: 10,
+                marginTop: -5,
               }}
             >
               Create an Account
@@ -235,27 +251,32 @@ export default function SignUp() {
                 fontSize: 15,
                 fontFamily: fonts.Regular,
                 color: COLORS.primary,
+                marginLeft:10,
+                marginTop: -10
               }}
             >
               Fast and easy laundry service at hand!
             </Text>
           </View>
 
+          <View style = {styles.formContainer}>
           {/* MOBILE NUMBER */}
-          <View style={{ marginBottom: 12 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text
               style={{
                 fontSize: 16,
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
+                marginTop: 20,
               }}
             >
               Mobile Number
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.phoneNumber ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -263,7 +284,8 @@ export default function SignUp() {
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                paddingLeft: 22,
+                paddingLeft: 15,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -271,7 +293,7 @@ export default function SignUp() {
                 placeholderTextColor={COLORS.primary}
                 editable={false}
                 style={{
-                  width: "12%",
+                  width: "13%",
                   borderRightWidth: 1,
                   borderRightColor: errors.phoneNumber
                     ? COLORS.error
@@ -312,13 +334,14 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Email
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.email ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -326,6 +349,7 @@ export default function SignUp() {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingLeft: 22,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -360,13 +384,14 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Firstname
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.firstname ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -374,6 +399,7 @@ export default function SignUp() {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingLeft: 22,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -408,20 +434,22 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Middlename
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: COLORS.primary,
                 borderWidth: 1,
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 22,
+                paddingLeft: 10,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -443,13 +471,14 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Lastname
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.lastname ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -457,6 +486,7 @@ export default function SignUp() {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingLeft: 22,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -491,13 +521,14 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Username
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.username ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -505,6 +536,7 @@ export default function SignUp() {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingLeft: 22,
+                marginLeft: 13,
               }}
             >
               <TextInput
@@ -539,13 +571,14 @@ export default function SignUp() {
                 fontFamily: fonts.Medium,
                 marginVertical: 8,
                 color: COLORS.primary,
+                marginLeft: 13,
               }}
             >
               Password
             </Text>
             <View
               style={{
-                width: "100%",
+                width: "90%",
                 height: 48,
                 borderColor: errors.password ? COLORS.error : COLORS.primary,
                 borderWidth: 1,
@@ -553,6 +586,8 @@ export default function SignUp() {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingLeft: 22,
+                marginLeft: 13,
+                marginBottom: 10,
               }}
             >
               <TextInput
@@ -589,9 +624,10 @@ export default function SignUp() {
               </Text>
             )}
           </View>
+          </View>
 
           {/* Terms and Conditons */}
-          <View style={{ marginBottom: 5 }}>
+          <View style={{ marginBottom: 5, marginLeft: 13 }}>
             <View style={{ flexDirection: "row", marginVertical: 6 }}>
               <Checkbox
                 value={isChecked}
@@ -601,7 +637,7 @@ export default function SignUp() {
               />
               <Text
                 style={{
-                  color: COLORS.primary,
+                  color: COLORS.black,
                   fontSize: 13,
                   fontFamily: fonts.Regular,
                 }}
@@ -611,7 +647,7 @@ export default function SignUp() {
               <TouchableOpacity onPress={handleTermAndConditons}>
                 <Text
                   style={{
-                    color: COLORS.secondary,
+                    color: COLORS.white,
                     fontSize: 13,
                     fontFamily: fonts.Regular,
                   }}
@@ -626,12 +662,14 @@ export default function SignUp() {
             onPress={handleSignup}
             disabled={loading}
             style={{
-              backgroundColor: COLORS.secondary,
+              backgroundColor: COLORS.white,
               borderRadius: 10,
               marginTop: 10,
               padding: 10,
               opacity: loading ? 0.7 : 1,
               height: 50,
+              width: 280,
+              marginLeft: 10,
               justifyContent: "center",
             }}
           >
@@ -640,7 +678,7 @@ export default function SignUp() {
             ) : (
               <Text
                 style={{
-                  color: COLORS.white,
+                  color: COLORS.secondary,
                   fontSize: 15,
                   fontFamily: fonts.Bold,
                   textAlign: "center",
@@ -661,12 +699,12 @@ export default function SignUp() {
               gap: 2,
             }}
           >
-            <Text style={{ color: COLORS.primary, fontFamily: fonts.Regular }}>
+            <Text style={{ color: COLORS.black, fontFamily: fonts.Regular }}>
               Already have account?
             </Text>
             <TouchableOpacity onPress={() => router.navigate("/auth/sign-in")}>
               <Text
-                style={{ color: COLORS.secondary, fontFamily: fonts.SemiBold }}
+                style={{ color: COLORS.white, fontFamily: fonts.SemiBold }}
               >
                 Sign in
               </Text>
@@ -675,21 +713,20 @@ export default function SignUp() {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 16,
-    backgroundColor: "#fff",
+    padding: 5,
+  
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   input: {
     height: 40,
@@ -700,11 +737,29 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   backButton: {
-    marginTop: 20,
+    flexDirection: "row",
     alignItems: "center",
+    marginLeft: 20,
+    marginVertical: 10,
+    marginBottom: 15,
   },
-  backButtonText: {
-    color: "#007bff",
-    fontSize: 16,
+ backText: {
+    fontSize: 24,
+    marginLeft: 20,
+    color: COLORS.secondary,
+    fontFamily:fonts.SemiBold,
+    textAlign: "center"
+  },
+  formContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    elevation: 6,
+    marginBottom: 15,
+
+
   },
 });
