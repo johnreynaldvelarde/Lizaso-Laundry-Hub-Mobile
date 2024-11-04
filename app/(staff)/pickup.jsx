@@ -659,10 +659,14 @@ export default function Pickup() {
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, justifyContent: "center" }}>
-            {loading && !pickupData.length ? (
+            {loading && pickupData.length ? (
               <ActivityIndicator size="large" color={COLORS.secondary} />
             ) : error ? (
               <ActivityIndicator size="large" color={COLORS.secondary} />
+            ) : !pickupData.length ? (
+              <Text style={{ textAlign: "center", color: COLORS.secondary }}>
+                No Data
+              </Text>
             ) : (
               <FlashList
                 data={sortedServices}

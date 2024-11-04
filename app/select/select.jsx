@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
@@ -89,7 +90,6 @@ export default function Select() {
           setQrCodeData(response.qr_code);
           setModalVisible(true);
         } else {
-          console.log(response);
           Alert.alert("Attention", response.message);
           return;
         }

@@ -64,76 +64,76 @@ export default function SignIn() {
   };
 
   const handleLogin = async () => {
-    router.push("/(customer)/home");
+    // router.push("/(customer)/home");
     const newErrors = validateFields();
     setErrors(newErrors);
 
-    // if (Object.keys(newErrors).length === 0) {
-    //   setLoading(true);
+    if (Object.keys(newErrors).length === 0) {
+      setLoading(true);
 
-    //   const data = {
-    //     username: username,
-    //     password: password,
-    //   };
+      const data = {
+        username: username,
+        password: password,
+      };
 
-    //   try {
-    //     const response = await login(data);
+      try {
+        const response = await login(data);
 
-    //     if (response.success) {
-    //       await AsyncStorage.setItem("accessToken", response.accessToken);
+        if (response.success) {
+          await AsyncStorage.setItem("accessToken", response.accessToken);
 
-    //       await fetchUserDetails(response.accessToken);
+          await fetchUserDetails(response.accessToken);
 
-    //       // if (userDetails.user_type === "Customer") {
-    //       //   const details = await getCheckCustomerDetails(userDetails.userId);
+          // if (userDetails.user_type === "Customer") {
+          //   const details = await getCheckCustomerDetails(userDetails.userId);
 
-    //       //   if (details.success !== false) {
-    //       //     const { storeIdIsNull, addressIdIsNull } = details.data;
-    //       //     if (storeIdIsNull || addressIdIsNull) {
-    //       //       router.push("/auth/complete/address");
-    //       //     } else {
-    //       //       router.push("/(customer)/home");
-    //       //     }
-    //       //   }
-    //       // } else {
-    //       //   console.log(1);
-    //       // }
-    //     } else {
-    //       setErrors((prevErrors) => ({
-    //         ...prevErrors,
-    //         username: response.message,
-    //       }));
-    //     }
-    //   } catch (error) {
-    //     setLoading(false);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
+          //   if (details.success !== false) {
+          //     const { storeIdIsNull, addressIdIsNull } = details.data;
+          //     if (storeIdIsNull || addressIdIsNull) {
+          //       router.push("/auth/complete/address");
+          //     } else {
+          //       router.push("/(customer)/home");
+          //     }
+          //   }
+          // } else {
+          //   console.log(1);
+          // }
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: response.message,
+          }));
+        }
+      } catch (error) {
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
-  // useEffect(() => {
-  //   if (userDetails.user_type) {
-  //     if (userDetails.user_type === "Customer") {
-  //       const fetchDetails = async () => {
-  //         const details = await getCheckCustomerDetails(userDetails.userId);
-  //         if (details.success !== false) {
-  //           const { storeIdIsNull, addressIdIsNull } = details.data;
-  //           if (storeIdIsNull || addressIdIsNull) {
-  //             router.push("/auth/complete/address");
-  //           } else {
-  //             router.push("/(customer)/home");
-  //           }
-  //         } else {
-  //           console.log(details);
-  //         }
-  //       };
-  //       fetchDetails();
-  //     } else {
-  //       router.push("/(staff)/pickup");
-  //     }
-  //   }
-  // }, [userDetails]);
+  useEffect(() => {
+    if (userDetails.user_type) {
+      if (userDetails.user_type === "Customer") {
+        const fetchDetails = async () => {
+          const details = await getCheckCustomerDetails(userDetails.userId);
+          if (details.success !== false) {
+            const { storeIdIsNull, addressIdIsNull } = details.data;
+            if (storeIdIsNull || addressIdIsNull) {
+              router.push("/auth/complete/address");
+            } else {
+              router.push("/(customer)/home");
+            }
+          } else {
+            console.log(details);
+          }
+        };
+        fetchDetails();
+      } else {
+        router.push("/(staff)/pickup");
+      }
+    }
+  }, [userDetails]);
 
   const handleGoogleSignIn = () => {
     navigation.navigate("auth/google/google", {});
