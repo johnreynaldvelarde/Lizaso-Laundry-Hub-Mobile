@@ -52,6 +52,7 @@ export default function Forget() {
             ></Ionicons>
             <Text style={styles.backText}> Back</Text>
           </TouchableOpacity>
+          
           <View style={styles.container}>
             <Image source={forgetImage.forget} style={styles.image} />
             <Text style={styles.title}>Forgot Password?</Text>

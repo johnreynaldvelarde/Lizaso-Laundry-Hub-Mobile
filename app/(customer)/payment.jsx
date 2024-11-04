@@ -1,57 +1,109 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../../constants/colors";
 import { fonts } from "../../constants/fonts";
+import { useRouter } from "expo-router";
+
+
 
 export default function Payment() {
+  const router = useRouter();
+
+
+
   // Sample payment history data
   const paymentHistory = [
     {
       id: "1",
-      date: "2024-10-01",
-      amount: "$20.00",
+      date: "Yesterday",
+      time: "2:05 PM",
+      type: "Wash",
+      amount: "260",
       status: "Completed",
+      referenceNumber: "1234567890",
     },
     {
       id: "2",
-      date: "2024-09-25",
-      amount: "$15.00",
+      date: "Oct 29, 2024",
+      time: "11.00 AM",
+      type: "Dry",
+      amount: "180",
       status: "Pending",
+      referenceNumber: "0987654321"
     },
     {
       id: "3",
-      date: "2024-09-10",
-      amount: "$30.00",
+      date: "Oct 22, 2024",
+      time: "10:30 PM",
+      type: "Dry & Fold",
+      amount: "380",
       status: "Completed",
+      referenceNumber: "2345678901"
     },
     {
       id: "4",
-      date: "2024-08-30",
-      amount: "$25.00",
+      date: "Oct 15, 2024 ",
+      time: "1:15 PM",
+      type: "Fold",
+      amount: "190",
       status: "Failed",
+      referenceNumber: "3456789012"
+    },
+    {
+      id: "5",
+      date: "Oct 08, 2024 ",
+      time: "1:15 PM",
+      type: "Fold",
+      amount: "190",
+      status: "Failed",
+      referenceNumber: "4567890123"
     },
   ];
 
+  const handlePaymentDetails = (item) => {
+    router.push({
+        pathname: "/view_payment/view_payment",
+        params: {
+            date: item.date,
+            time: item.time,
+            amount: item.amount,
+            referenceNumber: item.referenceNumber,
+        },
+    });
+};
+
+  
+
   // Render item for FlatList
   const renderItem = ({ item }) => (
+    <View style = {styles.dateItems}>
+      <Text style = {styles.paymentDate}>{item.date}</Text>
     <View style={styles.paymentItem}>
-      <Text style={styles.paymentDate}>Date: {item.date}</Text>
-      <Text style={styles.paymentAmount}>Amount: {item.amount}</Text>
-      <Text
-        style={[
-          styles.paymentStatus,
-          item.status === "Completed"
-            ? styles.statusCompleted
-            : item.status === "Pending"
-            ? styles.statusPending
-            : styles.statusFailed,
-        ]}
-      >
-        Status: {item.status}
-      </Text>
-    </View>
+      <View style = {styles.itemHeader}>
+      <Text styles = {styles.paymentType}>Service: {item.type}</Text>
+      <Text style = {[
+        styles.paymentStatus,
+        item.status === "Completed"
+        ? styles.statusCompleted
+        :item.status === "Pending"
+        ? styles.statusPending
+        :styles.statusFailed,
+      ]}> {item.status}
+      </Text> 
+      </View>
+      <Text style = {styles.paymentAmount}>Amount: ₱ {item.amount}.00</Text>
+      <View style = {styles.itemFooter}>
+      <Text style = {styles.paymentTime}>Time: {item.time}</Text>
+      <TouchableOpacity onPress={() => handlePaymentDetails(item)}>
+        <Text style={{ fontSize: 12, fontFamily: fonts.SemiBold, color: COLORS.secondary, }}>
+            See More
+          </Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+     </View>
   );
 
   return (
@@ -63,10 +115,14 @@ export default function Payment() {
       style={{ flex: 1 }}
     >
       <SafeAreaView style={styles.container}>
+      <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
         <View style={styles.carouselContainer}>
           <Text style={styles.carouselTitle}>Payment History</Text>
         </View>
-
+  
         <View style={styles.bottomContainer}>
           <View style={styles.listContainer}>
             <FlatList
@@ -78,6 +134,7 @@ export default function Payment() {
             />
           </View>
         </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -97,32 +154,55 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: fonts.Bold,
     color: COLORS.white,
+
   },
   bottomContainer: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.background, 
   },
   listContainer: {
     flex: 1,
     marginBottom: 40,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    marginTop: 10,
   },
   paymentItem: {
     backgroundColor: COLORS.white,
     padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    borderWidth: 1,
+    marginBottom: 5,
+    borderBottomWidth: 1,
     borderColor: COLORS.border,
+  },
+  itemHeader:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  itemFooter: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 5,
+  },
+  paymentType: {
+    fontSize: 16,
+    fontFamily: fonts.SemiBold,
+    color: COLORS.text2,
+    marginBottom: 5,
   },
   paymentDate: {
     fontSize: 16,
     fontFamily: fonts.SemiBold,
     color: COLORS.primary,
+    margin: 10,
+  },
+  paymentTime:{
+    fontSize: 12,
+    fontFamily: fonts.SemiBold,
+    color: COLORS.text2,
   },
   paymentAmount: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: fonts.SemiBold,
     color: COLORS.text3,
     marginBottom: 5,
