@@ -33,6 +33,7 @@ export default function Term() {
             By using our laundry service, you agree to comply with and be bound
             by the following terms and conditions. These terms apply to all
             users of the service.
+
           </Text>
 
           {/* Divider */}
@@ -63,8 +64,10 @@ export default function Term() {
 
           <Text style={styles.subHeader}>4. Payment</Text>
           <Text style={styles.paragraph}>
-            All payments must be made through the app using the available
-            payment methods. Payment is required before or at the time of
+            For walk-in customers at our store, payments are accepted in cash and Gcash.
+            For online laundry services through the Lizaso Laundry Hub app,
+            customers can choose between cash on delivery or GCash as their
+            payment method. All payments must be made prior to or at the time ofs
             service delivery. Failure to provide payment may result in the
             suspension of your account.
           </Text>
@@ -76,24 +79,16 @@ export default function Term() {
           <Text style={styles.paragraph}>
             While we take utmost care with your laundry, we are not responsible
             for any loss or damage of items beyond the cost of the service fee.
-            We recommend not sending valuable or irreplaceable items.
+            We recommend not sending valuable or irreplaceable items. 
+            We recomend to double check your laundry, to ensure that there are no
+            valuables such as money, jewelry, etc.
+
           </Text>
 
           {/* Divider */}
           <View style={styles.divider} />
 
           <Text style={styles.subHeader}>6. Cancellations and Refunds</Text>
-          <Text style={styles.paragraph}>
-            You may cancel your order within 30 minutes of placing it via the
-            app. Refunds will only be issued for cancellations made within this
-            time frame. No refunds will be issued once your laundry has been
-            collected or processed.
-          </Text>
-
-          {/* Divider */}
-          <View style={styles.divider} />
-
-          <Text style={styles.subHeader}>7. Termination</Text>
           <Text style={styles.paragraph}>
             We reserve the right to terminate your access to our services at any
             time for any reason, including but not limited to violation of these
@@ -103,11 +98,24 @@ export default function Term() {
           {/* Divider */}
           <View style={styles.divider} />
 
-          <Text style={styles.subHeader}>8. Changes to Terms</Text>
+          <Text style={styles.subHeader}>7. Termination</Text>
           <Text style={styles.paragraph}>
             We reserve the right to modify these terms at any time. Any changes
             will be effective immediately upon posting in the app. Continued use
             of the service will indicate your acceptance of the new terms.
+
+          </Text>
+
+          {/* Divider */}
+          <View style={styles.divider} />
+
+          <Text style={styles.subHeader}>8. Changes to Terms</Text>
+          <Text style={styles.paragraph}>
+            We may collect and use customer data for analytics purposes to
+            improve our services and enhance user experience. This data will be
+            handled in accordance with our privacy policy and will not be shared
+            with third parties without your consent.
+
           </Text>
 
           {/* Divider */}
@@ -115,8 +123,8 @@ export default function Term() {
 
           <Text style={styles.subHeader}>9. Contact Information</Text>
           <Text style={styles.paragraph}>
-            If you have any questions or concerns about these terms, please
-            contact us via the customer support section in the app.
+          If you have any questions or concerns about these terms, please
+          contact us via the customer support section in the app.
           </Text>
 
           <Text style={styles.footer}>Effective Date: October 22, 2024</Text>
