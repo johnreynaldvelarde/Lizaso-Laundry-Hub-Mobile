@@ -659,7 +659,15 @@ export default function Pickup() {
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, justifyContent: "center" }}>
-            {loading && pickupData.length ? (
+            <FlashList
+              data={sortedServices}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.request_id.toString()}
+              contentContainerStyle={{ paddingBottom: 60 }}
+              showsVerticalScrollIndicator={false}
+              estimatedItemSize={100}
+            />
+            {/* {loading && pickupData.length ? (
               <ActivityIndicator size="large" color={COLORS.secondary} />
             ) : error ? (
               <ActivityIndicator size="large" color={COLORS.secondary} />
@@ -668,15 +676,8 @@ export default function Pickup() {
                 No Data
               </Text>
             ) : (
-              <FlashList
-                data={sortedServices}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.request_id.toString()}
-                contentContainerStyle={{ paddingBottom: 60 }}
-                showsVerticalScrollIndicator={false}
-                estimatedItemSize={100}
-              />
-            )}
+              
+            )} */}
           </View>
         </View>
         {/* For Pending */}
