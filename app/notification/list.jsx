@@ -12,26 +12,93 @@ import COLORS from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { fonts } from "../../constants/fonts";
 
+
 // Sample notifications data
 const initialNotifications = [
   {
+    //Step 1: Pickup Process
     id: "1",
-    message: "Your laundry is ready for pickup",
-    time: "2 hours ago",
-    icon: "checkmark-circle-outline", // Notification icon (Ionicons)
+    stage: "Pending Pickup:",
+    message: "Your clothes are scheduled for pickup",
+    time: "10:00 AM",
+    icon: "calendar", // Notification icon (Ionicons)
   },
   {
     id: "2",
-    message: "New promotion: 20% off for new customers!",
-    time: "1 day ago",
-    icon: "pricetag-outline",
+    stage: "Ongoing Pickup:",
+    message: "Your clothes are being picked up by our rider",
+    time: "10:15 AM",
+    icon: "bicycle", // Notification icon (Ionicons)
   },
   {
     id: "3",
-    message: "Reminder: Your laundry will be picked up tomorrow",
-    time: "2 days ago",
-    icon: "time-outline",
+    stage: "Complete Pickup:",
+    message: "Your clothes have been successfully picked up by our rider.",
+    time: "10:20 AM",
+    icon: "checkmark-circle", // Notification icon (Ionicons)
   },
+
+  //Stage 2: Laundry Process
+  {
+    id: "4",
+    stage: "At Store:",
+    message: "Your clothes have arrived at the laundry store.",
+    time: "11:05 AM",
+    icon: "storefront", // Notification icon (Ionicons)
+  },
+  {
+    id: "5",
+    stage: "In Queue:",
+    message: "Your clothes are in queue, waiting for an available laundry machine.",
+    time: "11:15 AM",
+    icon: "hourglass", // Notification icon (Ionicons)
+  },
+  {
+    id: "6",
+    stage: "In Laundry:",
+    message: "Your clothes are being washed and dried.",
+    time: "11:30 AM",
+    icon: "water", // Notification icon (Ionicons)
+  },
+  {
+    id: "7",
+    stage: "Laundry Completed:",
+    message: "Your clothes have finished the laundry process.",
+    time: "01:10 PM",
+    icon: "basket", // Notification icon (Ionicons)
+  },
+
+  //Step 3: Delivery Process
+  {
+    id: "8",
+    stage: "Ready for Delivery:",
+    message: "Your clothes are ready for delivery and will be returned soon.",
+    time: "01:30 PM",
+    icon: "cube", // Notification icon (Ionicons)
+  },
+  {
+    id: "9",
+    stage: "Out for Delivery:",
+    message: "Your clothes are on the way to your location.",
+    time: "01:35 PM",
+    icon: "bicycle", // Notification icon (Ionicons)
+  },
+  {
+    id: "10",
+    stage: "Completed Delivery:",
+    message: "Your clothes have been delivered successfully. Thank you for using our service!",
+    time: "01:45 PM",
+    icon: "home", // Notification icon (Ionicons)
+  },
+
+  // Optional: Cancellation
+  { id: "11", 
+    stage: "Canceled", 
+    message: "Your service request has been canceled. Please contact support if you need assistance.", 
+    icon: "remove-circle", 
+    time: "N/A" },
+
+
 ];
 
 export default function Notification() {
@@ -52,10 +119,13 @@ export default function Notification() {
           <Ionicons name={item.icon} size={32} color={COLORS.primary} />
         </View>
 
-        {/* Message and Time */}
+        {/* Stage, Message and Time */}
         <View style={styles.textContainer}>
+          <View style = {styles.topContainer}>
+            <Text style = {styles.notificationstage}>{item.stage}</Text>
+            <Text style={styles.notificationTime}>{item.time}</Text>
+          </View>
           <Text style={styles.notificationMessage}>{item.message}</Text>
-          <Text style={styles.notificationTime}>{item.time}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -135,6 +205,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Medium,
     fontSize: 14,
   },
+  topContainer:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
+    marginStart: 10,
+    marginEnd: 10,
+  },
   notificationList: {
     paddingVertical: 20,
   },
@@ -156,6 +234,11 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
+  notificationstage:{
+    fontSize: 18,
+    fontFamily: fonts.Bold,
+    color: COLORS.secondary,
+  },
   notificationMessage: {
     fontSize: 16,
     fontFamily: fonts.Medium,
@@ -165,7 +248,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: fonts.Regular,
     color: COLORS.primary,
-    marginTop: 5,
   },
   noNotifications: {
     flex: 1,
