@@ -519,12 +519,15 @@ export default function Pickup() {
                 gap: 15,
               }}
             >
+              {/*Pending Design*/}
               <View
                 style={{
                   height: 80,
                   width: "45%",
-                  backgroundColor: COLORS.accent,
+                  backgroundColor: "#fde4d3",
                   borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: '#ff7043',
                   justifyContent: "center",
                   alignItems: "center",
                   // Shadow Section
@@ -549,7 +552,7 @@ export default function Pickup() {
                     style={{
                       fontFamily: fonts.Bold,
                       fontSize: 24,
-                      color: COLORS.white,
+                      color: "#ff7043",
                     }}
                   >
                     {pendingCount}
@@ -558,7 +561,7 @@ export default function Pickup() {
                     style={{
                       fontFamily: fonts.Medium,
                       fontSize: 16,
-                      color: COLORS.white,
+                      color: "#ff7043",
                       marginTop: 2,
                     }}
                   >
@@ -566,12 +569,15 @@ export default function Pickup() {
                   </Text>
                 </View>
               </View>
+              {/*Ongoing Design*/}
               <View
                 style={{
                   height: 80,
                   width: "45%",
-                  backgroundColor: COLORS.success,
+                  backgroundColor: "#e4f8e4",
                   borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: "#4caf50",
                   justifyContent: "center",
                   alignItems: "center",
                   // Shadow Section
@@ -596,7 +602,7 @@ export default function Pickup() {
                     style={{
                       fontFamily: fonts.Bold,
                       fontSize: 24,
-                      color: COLORS.white,
+                      color: "#4caf50",
                     }}
                   >
                     {ongoingCount}
@@ -605,7 +611,7 @@ export default function Pickup() {
                     style={{
                       fontFamily: fonts.Medium,
                       fontSize: 16,
-                      color: COLORS.white,
+                      color: "#4caf50",
                       marginTop: 2,
                     }}
                   >
