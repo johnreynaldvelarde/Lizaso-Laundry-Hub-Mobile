@@ -37,10 +37,7 @@ export default function Forget() {
       style={styles.gradient}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
+        
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
@@ -53,6 +50,10 @@ export default function Forget() {
             <Text style={styles.backText}> Back</Text>
           </TouchableOpacity>
           
+          <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
           <View style={styles.container}>
             <Image source={forgetImage.forget} style={styles.image} />
             <Text style={styles.title}>Forgot Password?</Text>

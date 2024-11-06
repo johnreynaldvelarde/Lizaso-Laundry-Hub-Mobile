@@ -1,9 +1,9 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BASE_URL = "http://192.168.254.162:3002/api";
+// const BASE_URL = "http://192.168.254.162:3002/api";
 // const BASE_URL = "http://192.168.254.139:3002/api";
-// const BASE_URL = "http://192.168.100.63:3002/api";
+ const BASE_URL = "http://192.168.254.107:3002/api";
 
 // Create an instance of axios
 export const api = axios.create({
@@ -29,21 +29,6 @@ api.interceptors.request.use(
   }
 );
 
-// Response Interceptor
-api.interceptors.response.use(
-  (response) => {
-    return response; // Return only the data from the response
-  },
-  (error) => {
-    // Handle any errors
-    console.error(
-      "API Error:",
-      error.response ? error.response.data : error.message
-    );
-    return Promise.reject(error); // Pass error to the calling function
-  }
-);
-
 // Request Interceptor
 // api.interceptors.request.use(
 //   (config) => {
@@ -58,6 +43,21 @@ api.interceptors.response.use(
 //     return Promise.reject(error);
 //   }
 // );
+
+// Response Interceptor
+api.interceptors.response.use(
+  (response) => {
+    return response; // Return only the data from the response
+  },
+  (error) => {
+    // Handle any errors
+    console.error(
+      "API Error:",
+      error.response ? error.response.data : error.message
+    );
+    return Promise.reject(error); // Pass error to the calling function
+  }
+);
 
 // import axios from "axios";
 // const API_URL = "http://localhost:3002/api";
