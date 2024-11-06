@@ -64,7 +64,8 @@ export default function SignIn() {
   };
 
   const handleLogin = async () => {
-    router.push("/(customer)/home");
+    // router.push("/(customer)/home");
+    router.push("/(staff)/pickup");
     const newErrors = validateFields();
     setErrors(newErrors);
 
