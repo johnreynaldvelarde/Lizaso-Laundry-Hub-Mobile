@@ -136,6 +136,10 @@ export default function SignIn() {
     }
   }, [userDetails]);
 
+  const handleGoogleSignIn = () => {
+    navigation.navigate("auth/google/google", {});
+  };
+
   const handleForgetPassword = () => {
     navigation.navigate("auth/forget/forget", {});
   };
@@ -159,6 +163,9 @@ export default function SignIn() {
                 source={require("../../../assets/images/lizaso_logo.png")}
                 style={styles.logo}
               />
+            </View>
+
+            <View style={styles.titleContainer}>
               <Text style={styles.welcomeText}> Welcome to</Text>
               <View
                 style={{
@@ -173,9 +180,7 @@ export default function SignIn() {
                 <Text style={styles.lizasoText}> Lizaso</Text>
                 <Text style={styles.laundryhubText}> Laundry Hub </Text>
               </View>
-            </View>
 
-            <View style={styles.titleContainer}>
               <View style={styles.formContainer}>
                 {/* Username Field */}
                 <View style={{ marginBottom: 10 }}>
@@ -328,6 +333,49 @@ export default function SignIn() {
                     </Text>
                   )}
                 </TouchableOpacity>
+
+                <Text
+                  style={{
+                    textAlign: "center",
+                    marginVertical: 10,
+                    fontSize: 14,
+                    fontFamily: fonts.Regular,
+                    color: COLORS.primary,
+                  }}
+                >
+                  or continue with
+                </Text>
+
+                {/* Google Login Button 
+                <TouchableOpacity
+                  onPress={handleGoogleSignIn}
+                  style={{
+                    flexDirection: "row",
+                    borderWidth: 2,
+                    borderColor: COLORS.grayMedium,
+                    borderRadius: 40,
+                    width: 270,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 8,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/google_icon.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: COLORS.primary,
+                      fontFamily: fonts.Medium,
+                      marginLeft: 8,
+                    }}
+                  >
+                    Google
+                  </Text>
+                </TouchableOpacity>*/}
               </View>
             </View>
           </View>
@@ -380,15 +428,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  logoContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    marginTop: 10,
+  },
   logo: {
     width: 150,
     height: 150,
   },
   welcomeText: {
+    marginTop: -40,
     fontSize: 20,
     color: COLORS.subtitle,
     textAlign: "center",
     fontFamily: fonts.Regular,
+    marginBottom: -6,
   },
 
   lizasoText: {
@@ -401,6 +458,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontFamily: fonts.Bold,
   },
+
   formContainer: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -408,6 +466,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
+    margin: 20,
     padding: 20,
     elevation: 5,
     marginBottom: 30,

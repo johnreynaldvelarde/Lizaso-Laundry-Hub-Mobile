@@ -281,7 +281,7 @@ export default function Pickup() {
       statusText = "Pending";
     } else if (item.request_status === "Ongoing Pickup") {
       backgroundColor = COLORS.success;
-      // iconComponent = <AnimatedIcon />;
+      iconComponent = <AnimatedIcon />;
       statusText = "Ongoing";
     } else if (item.request_status === "Cancel") {
       iconName = "book-cancel-outline";
@@ -527,7 +527,7 @@ export default function Pickup() {
                   backgroundColor: "#fde4d3",
                   borderRadius: 10,
                   borderWidth: 1,
-                  borderColor: '#ff7043',
+                  borderColor: "#ff7043",
                   justifyContent: "center",
                   alignItems: "center",
                   // Shadow Section
@@ -791,7 +791,7 @@ export default function Pickup() {
                               maxWidth: "80%",
                             }}
                           >
-                            {selectedService.address_line1}
+                            {selectedService.address_line}
                           </Text>
                         </View>
                         <View style={{ flexDirection: "row", gap: 5 }}>
@@ -1037,7 +1037,7 @@ export default function Pickup() {
                               maxWidth: "80%",
                             }}
                           >
-                            {selectedService.address_line1}
+                            {selectedService.address_line}
                           </Text>
                         </View>
                       </View>
