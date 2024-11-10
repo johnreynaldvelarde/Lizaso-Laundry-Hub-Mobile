@@ -119,11 +119,9 @@ export const getReceipt = async (assignmentId) => {
 };
 
 // #PAYMENT HISTORY
-export const getTransactionHistory = async (userId) => {
+export const getPaymentHistory = async (userId) => {
   try {
-    const response = await api.get(
-      `/customers/${userId}/get-transaction-history`
-    );
+    const response = await api.get(`/customers/${userId}/get-payment-history`);
     return response.data;
   } catch (error) {
     throw error;
