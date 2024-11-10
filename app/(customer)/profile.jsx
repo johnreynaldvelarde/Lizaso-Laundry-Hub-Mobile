@@ -69,11 +69,11 @@ export default function Profile() {
   const [errors, setErrors] = useState({});
 
   const user = {
-    name: "John Reynald P. Velarde",
-    username: "macArthur16",
+    name: userDetails.fullname,
+    username: userDetails.username,
     // profilePicture: "https://via.placeholder.com/150",
     profilePicture: "",
-    mobileNumber: "09472727061",
+    mobileNumber: userDetails.mobile_number,
   };
 
   useEffect(() => {
@@ -249,7 +249,7 @@ export default function Profile() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             activeOpacity={1}
             onPress={() => openSheet("Manage Notifications")}
           >
@@ -270,7 +270,7 @@ export default function Profile() {
                 />
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity activeOpacity={1} onPress={handleLogout}>
             <View style={styles.outlineBox}>
