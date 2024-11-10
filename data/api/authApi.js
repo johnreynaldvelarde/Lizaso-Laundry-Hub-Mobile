@@ -26,3 +26,12 @@ export const updateProfile = async (userId, data) => {
     throw error;
   }
 };
+
+export const updateAddressCustomer = async (userId, data) => {
+  try {
+    const response = await api.put(`/customers/${userId}/update-address`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

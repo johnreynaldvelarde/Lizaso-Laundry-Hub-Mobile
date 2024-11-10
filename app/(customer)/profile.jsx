@@ -25,6 +25,8 @@ import {
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
+  FontAwesome,
+  FontAwesome6,
 } from "@expo/vector-icons";
 import COLORS from "../../constants/colors";
 import { fonts } from "../../constants/fonts";
@@ -134,6 +136,10 @@ export default function Profile() {
     navigation.navigate("edit/customer/edit_profile");
   };
 
+  const handleEditAddress = () => {
+    navigation.navigate("edit/customer/edit_address");
+  };
+
   return (
     <LinearGradient
       colors={["#5787C8", "#71C7DA"]}
@@ -178,6 +184,30 @@ export default function Profile() {
           >
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => handleEditAddress()}
+          >
+            <View style={styles.outlineBox}>
+              <View style={styles.rowContainer}>
+                <FontAwesome6
+                  name="address-card"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.icon}
+                />
+                <Text style={styles.boxText}>Address</Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.arrow}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+
           <TouchableOpacity
             activeOpacity={1}
             // onPress={() => openSheet("Manage Notifications")}
@@ -673,7 +703,7 @@ const styles = StyleSheet.create({
   boxText: {
     fontFamily: fonts.SemiBold,
     fontSize: 16,
-    color: COLORS.primary,
+    color: COLORS.subtitle,
     textAlign: "center",
   },
   rowContainer: {

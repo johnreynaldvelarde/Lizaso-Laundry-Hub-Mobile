@@ -14,11 +14,14 @@ import COLORS from "../../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { fonts } from "../../../constants/fonts";
 import { useNavigation } from "expo-router";
-import { updateProfile } from "../../../data/api/authApi";
+import {
+  updateAddressCustomer,
+  updateProfile,
+} from "../../../data/api/authApi";
 import { useAuth } from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Edit_Profile() {
+export default function Edit_Address() {
   const { userDetails, fetchUserDetails } = useAuth();
   const navigation = useNavigation();
 
@@ -87,7 +90,7 @@ export default function Edit_Profile() {
     }));
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateAddress = async () => {
     const newErrors = validateFields();
     setErrors(newErrors);
 
@@ -104,7 +107,7 @@ export default function Edit_Profile() {
       setLoading(true);
 
       try {
-        const response = await updateProfile(userDetails.userId, data);
+        const response = await updateAddressCustomer(userDetails.userId, data);
 
         if (response.success) {
           await fetchUserDetails(await AsyncStorage.getItem("accessToken"));
@@ -156,7 +159,7 @@ export default function Edit_Profile() {
                 color: COLORS.primary,
               }}
             >
-              Edit Profile
+              Edit Address
             </Text>
           </View>
 
@@ -463,7 +466,7 @@ export default function Edit_Profile() {
             }}
           >
             <TouchableOpacity
-              onPress={handleUpdateProfile}
+              onPress={handleUpdateAddress}
               disabled={loading}
               style={{
                 backgroundColor: COLORS.secondary,
