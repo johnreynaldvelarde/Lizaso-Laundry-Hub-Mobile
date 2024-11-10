@@ -35,13 +35,20 @@ export default function RootLayout() {
                   animation: "ios",
                 }}
               />
-              {/* <Stack.Screen
-                name="auth/forget/forget"
+              <Stack.Screen
+                name="edit/customer/edit_profile"
                 options={{
                   presentation: "modal",
-                  animation: "slide_from_right",
+                  animation: "ios",
                 }}
-              />*/}
+              />
+              <Stack.Screen
+                name="edit/customer/edit_address"
+                options={{
+                  presentation: "modal",
+                  animation: "ios",
+                }}
+              />
               <Stack.Screen
                 name="receipt/receipt"
                 options={{
