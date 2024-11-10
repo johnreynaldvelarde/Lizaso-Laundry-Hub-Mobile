@@ -29,12 +29,12 @@ export default function Edit_Address() {
 
   const [addressLine, setAddressLine] = useState(userDetails.header_address);
   const [country, setCountry] = useState("Philippines");
-  const [region, setRegion] = useState("");
-  const [province, setProvince] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [region, setRegion] = useState(userDetails.sub_region);
+  const [province, setProvince] = useState(userDetails.sub_province);
+  const [city, setCity] = useState(userDetails.sub_city);
+  const [postalCode, setPostalCode] = useState(userDetails.postal_code);
+  const [latitude, setLatitude] = useState(userDetails.latitude);
+  const [longitude, setLongitude] = useState(userDetails.longitude);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -43,6 +43,11 @@ export default function Edit_Address() {
 
     if (!addressLine) {
       newErrors.addressLine = "Address is required";
+    } else if (addressLine.length < 5) {
+      newErrors.addressLine = "Address must be at least 5 characters long";
+    } else if (!/[a-zA-Z0-9\s,.-]/.test(addressLine)) {
+      newErrors.addressLine =
+        "Address can only contain letters, numbers, spaces, commas, periods, and hyphens";
     }
 
     if (!country) {
@@ -106,27 +111,31 @@ export default function Edit_Address() {
 
     if (Object.keys(newErrors).length === 0) {
       const data = {
-        // mobile_number: phoneNumber,
-        // email: email,
-        // username: username,
-        // firstname: firstname,
-        // middlename: middlename,
-        // lastname: lastname,
+        address_line: addressLine,
+        country: country,
+        region: region,
+        province: province,
+        city: city,
+        postal_code: postalCode,
+        latitude: latitude,
+        longitude: longitude,
       };
+
+      console.log(data);
 
       setLoading(true);
 
       try {
-        const response = await updateAddressCustomer(userDetails.userId, data);
+        const response = await updateAddressCustomer(
+          userDetails.addressId,
+          data
+        );
 
         if (response.success) {
           await fetchUserDetails(await AsyncStorage.getItem("accessToken"));
           Alert.alert("Success", response.message);
         } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            username: response.message,
-          }));
+          Alert.alert("Warning", response.message);
         }
       } catch (error) {
         setLoading(false);
@@ -169,7 +178,7 @@ export default function Edit_Address() {
                 color: COLORS.primary,
               }}
             >
-              Edit Address
+              Update Address
             </Text>
           </View>
 
@@ -521,7 +530,7 @@ export default function Edit_Address() {
                   style={{
                     color: COLORS.white,
                     fontSize: 15,
-                    fontFamily: fonts.Bold,
+                    fontFamily: fonts.SemiBold,
                     textAlign: "center",
                   }}
                 >

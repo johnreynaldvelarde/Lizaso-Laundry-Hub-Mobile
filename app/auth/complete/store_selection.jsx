@@ -18,11 +18,12 @@ import useAuth from "../../context/AuthContext";
 import { getStoreList } from "../../../data/api/getApi";
 import { updateCustomerDetails } from "../../../data/api/putApi";
 import { calculateDistance } from "../../../constants/method";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Store_Selection() {
   const route = useRoute();
   const { data } = route.params;
-  const { userDetails } = useAuth();
+  const { userDetails, fetchUserDetails } = useAuth();
   const navigation = useNavigation();
   const [store, setStore] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -99,6 +100,7 @@ export default function Store_Selection() {
       store_id: selectedStoreId,
       address_line: data.addressLine,
       country: data.country,
+      region: data.region,
       province: data.province,
       city: data.city,
       latitude: data.latitude,
@@ -113,6 +115,7 @@ export default function Store_Selection() {
       );
 
       if (response.success) {
+        await fetchUserDetails(await AsyncStorage.getItem("accessToken"));
         router.push("/auth/sign-in");
       }
     } catch (error) {

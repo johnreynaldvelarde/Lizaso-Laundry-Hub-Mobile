@@ -27,6 +27,7 @@ import {
   MaterialIcons,
   FontAwesome,
   FontAwesome6,
+  FontAwesome5,
 } from "@expo/vector-icons";
 import COLORS from "../../constants/colors";
 import { fonts } from "../../constants/fonts";
@@ -140,6 +141,10 @@ export default function Profile() {
     navigation.navigate("edit/customer/edit_address");
   };
 
+  const handleChangePassword = () => {
+    navigation.navigate("edit/customer/edit_change_password");
+  };
+
   return (
     <LinearGradient
       colors={["#5787C8", "#71C7DA"]}
@@ -197,7 +202,53 @@ export default function Profile() {
                   color={COLORS.secondary}
                   style={styles.icon}
                 />
-                <Text style={styles.boxText}>Address</Text>
+                <Text style={styles.boxText}>Update Your Address</Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.arrow}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => handleChangePassword()}
+          >
+            <View style={styles.outlineBox}>
+              <View style={styles.rowContainer}>
+                <MaterialCommunityIcons
+                  name="key-change"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.icon}
+                />
+                <Text style={styles.boxText}>Update Your Password</Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.arrow}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => handleEditAddress()}
+          >
+            <View style={styles.outlineBox}>
+              <View style={styles.rowContainer}>
+                <FontAwesome5
+                  name="store-alt"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.icon}
+                />
+                <Text style={styles.boxText}>Change Stores</Text>
                 <Ionicons
                   name="chevron-forward"
                   size={24}
@@ -656,7 +707,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 20,
+    padding: 30,
     marginTop: 10,
     // Shadow Section
     shadowColor: "#000",
@@ -691,14 +742,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     backgroundColor: COLORS.white,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 1,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.5,
+    // elevation: 1,
   },
   boxText: {
     fontFamily: fonts.SemiBold,

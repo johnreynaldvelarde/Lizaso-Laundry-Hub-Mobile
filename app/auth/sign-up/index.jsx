@@ -51,14 +51,22 @@ export default function SignUp() {
 
     if (!phoneNumber) {
       newErrors.phoneNumber = "Phone number is required";
+    } else if (!/^\d+$/.test(phoneNumber)) {
+      newErrors.phoneNumber = "Phone number must contain only numbers";
+    } else if (phoneNumber.length < 10) {
+      newErrors.phoneNumber = "Phone number must be at least 10 digits";
     }
 
     if (!email) {
       newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Email must be a valid format";
     }
 
     if (!username) {
       newErrors.username = "Username is required";
+    } else if (username.length < 5) {
+      newErrors.username = "Username must be at least 5 characters long";
     }
 
     if (!firstname) {
@@ -71,9 +79,24 @@ export default function SignUp() {
 
     if (!password) {
       newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    } else if (!/[A-Z]/.test(password)) {
+      newErrors.password =
+        "Password must contain at least one uppercase letter";
+    } else if (!/[a-z]/.test(password)) {
+      newErrors.password =
+        "Password must contain at least one lowercase letter";
+    } else if (!/[0-9]/.test(password)) {
+      newErrors.password = "Password must contain at least one number";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      newErrors.password =
+        "Password must contain at least one special character";
     }
+
     return newErrors;
   };
+
   const handleInputChange = (field) => (value) => {
     // Update state based on the field
     switch (field) {
@@ -326,7 +349,7 @@ export default function SignUp() {
                       fontFamily: fonts.Regular,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.phoneNumber}
@@ -361,7 +384,7 @@ export default function SignUp() {
                   }}
                 >
                   <TextInput
-                    placeholder="Enter your email address"
+                    placeholder="e.g., example@domain.com"
                     placeholderTextColor={COLORS.grey}
                     keyboardType="default"
                     value={email}
@@ -376,7 +399,7 @@ export default function SignUp() {
                       color: COLORS.error,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.email}
@@ -428,7 +451,7 @@ export default function SignUp() {
                       color: COLORS.error,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.firstname}
@@ -517,7 +540,7 @@ export default function SignUp() {
                       color: COLORS.error,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.lastname}
@@ -569,7 +592,7 @@ export default function SignUp() {
                       color: COLORS.error,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.username}
@@ -637,7 +660,7 @@ export default function SignUp() {
                       color: COLORS.error,
                       fontSize: 12,
                       marginTop: 4,
-                      marginStart: 10,
+                      marginStart: 20,
                     }}
                   >
                     {errors.password}

@@ -27,9 +27,24 @@ export const updateProfile = async (userId, data) => {
   }
 };
 
-export const updateAddressCustomer = async (userId, data) => {
+export const updateAddressCustomer = async (addressId, data) => {
   try {
-    const response = await api.put(`/customers/${userId}/update-address`, data);
+    const response = await api.put(
+      `/customers/${addressId}/update-address`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateResetPassword = async (userId, data) => {
+  try {
+    const response = await api.put(
+      `/customers/${userId}/update-reset-password`,
+      data
+    );
     return response.data;
   } catch (error) {
     throw error;

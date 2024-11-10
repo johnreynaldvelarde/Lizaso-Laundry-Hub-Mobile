@@ -39,6 +39,11 @@ export default function Address() {
 
     if (!addressLine) {
       newErrors.addressLine = "Address is required";
+    } else if (addressLine.length < 5) {
+      newErrors.addressLine = "Address must be at least 5 characters long";
+    } else if (!/[a-zA-Z0-9\s,.-]/.test(addressLine)) {
+      newErrors.addressLine =
+        "Address can only contain letters, numbers, spaces, commas, periods, and hyphens";
     }
 
     if (!country) {
@@ -135,6 +140,7 @@ export default function Address() {
       const data = {
         addressLine: addressLine,
         country: country,
+        region: region,
         province: province,
         city: city,
         postal_code: postalCode,
