@@ -51,7 +51,7 @@ const getRandomDefaultImage = () => {
 export default function Profile() {
   const { userDetails, logout } = useAuth();
   const navigation = useNavigation();
-
+  // const snapPoints = useMemo(() => ["40%"], []);
   const [randomProfileImage, setRandomProfileImage] = useState(null);
   const [snapPoints, setSnapPoints] = useState(["10%"]);
   const [enablePanDownToClose, setenablePanDownToClose] = useState(true);
@@ -60,6 +60,11 @@ export default function Profile() {
   const [headerTitle, setHeaderTitle] = useState("");
 
   // Data Input
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [middlename, setMiddleName] = useState("");
+  const [lastname, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -88,40 +93,88 @@ export default function Profile() {
     []
   );
 
-  // const openSheet = (title) => {
-  //   setHeaderTitle(title);
-  //   if (title === "Edit Profile") {
-  //     setSnapPoints(["100%"]);
-  //     setenablePanDownToClose(false);
-  //     setUsername(user.username);
-  //   } else if (title === "Manage Notifications") {
-  //     setSnapPoints(["60%"]);
-  //     setenablePanDownToClose(true);
-  //   }
-  //   bottomSheetRef.current?.expand();
-  // };
+  const validateFields = () => {
+    const newErrors = {};
 
-  // const closeSheet = async () => {
-  //   Keyboard.dismiss();
-  //   await new Promise((resolve) => setTimeout(resolve, 100));
-  //   bottomSheetRef.current?.close();
-  // };
+    if (!username) {
+      newErrors.username = "Username is required";
+    }
 
-  // const handleUpdateProfile = async () => {
-  //   const newErrors = validateFields();
-  //   setErrors(newErrors);
+    if (!phoneNumber) {
+      newErrors.phoneNumber = "Phone number is required";
+    }
 
-  //   console.log(newErrors);
+    if (!firstname) {
+      newErrors.firstname = "First name is required";
+    }
 
-  //   if (Object.keys(newErrors).length === 0) {
-  //     console.log("Success");
-  //     setLoading(true);
-  //   }
-  // };
+    if (!lastname) {
+      newErrors.lastname = "Last name is required";
+    }
 
-  // const handleUpdateNotifications = async () => {
-  //   console.log("Success Update Notifications");
-  // };
+    return newErrors;
+  };
+  const handleInputChange = (field) => (value) => {
+    // Update state based on the field
+    switch (field) {
+      case "phoneNumber":
+        setPhoneNumber(value);
+        break;
+      case "firstname":
+        setFirstName(value);
+        break;
+      case "middlename":
+        setMiddleName(value);
+        break;
+      case "lastname":
+        setLastName(value);
+        break;
+      case "username":
+        setUsername(value);
+        break;
+      default:
+        break;
+    }
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
+    }));
+  };
+
+  const openSheet = (title) => {
+    setHeaderTitle(title);
+    if (title === "Edit Profile") {
+      setSnapPoints(["100%"]);
+      setenablePanDownToClose(false);
+      setUsername(user.username);
+    } else if (title === "Manage Notifications") {
+      setSnapPoints(["60%"]);
+      setenablePanDownToClose(true);
+    }
+    bottomSheetRef.current?.expand();
+  };
+
+  const closeSheet = async () => {
+    Keyboard.dismiss();
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    bottomSheetRef.current?.close();
+  };
+
+  const handleUpdateProfile = async () => {
+    const newErrors = validateFields();
+    setErrors(newErrors);
+
+    console.log(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Success");
+      setLoading(true);
+    }
+  };
+
+  const handleUpdateNotifications = async () => {
+    console.log("Success Update Notifications");
+  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -129,11 +182,6 @@ export default function Profile() {
     setLoading(false);
     navigation.navigate("auth/sign-in/index");
   };
-
-  const handleEditProfile = () => {
-    navigation.navigate("edit/customer/edit_profile");
-  };
-
   return (
     <LinearGradient
       colors={["#5787C8", "#71C7DA"]}
@@ -157,7 +205,7 @@ export default function Profile() {
               />
               <TouchableOpacity
                 style={styles.editIconContainer}
-                // onPress={() => openSheet("Update Profile Picture")}
+                onPress={() => openSheet("Update Profile Picture")}
               >
                 <Ionicons name="camera" size={24} color={COLORS.white} />
               </TouchableOpacity>
@@ -174,13 +222,13 @@ export default function Profile() {
           <TouchableOpacity
             style={styles.editButton}
             activeOpacity={1}
-            onPress={() => handleEditProfile()}
+            onPress={() => openSheet("Edit Profile")}
           >
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={1}
-            // onPress={() => openSheet("Manage Notifications")}
+            onPress={() => openSheet("Manage Notifications")}
           >
             <View style={styles.outlineBox}>
               <View style={styles.rowContainer}>
@@ -200,6 +248,30 @@ export default function Profile() {
               </View>
             </View>
           </TouchableOpacity>
+
+          {/* <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => openSheet("Manage Notifications")}
+          >
+            <View style={styles.outlineBox}>
+              <View style={styles.rowContainer}>
+                <MaterialCommunityIcons
+                  name="data-matrix-scan"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.icon}
+                />
+                <Text style={styles.boxText}>Scan Settings</Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={24}
+                  color={COLORS.secondary}
+                  style={styles.arrow}
+                />
+              </View>
+            </View>
+          </TouchableOpacity> */}
+
           <TouchableOpacity activeOpacity={1} onPress={handleLogout}>
             <View style={styles.outlineBox}>
               <View
@@ -233,7 +305,7 @@ export default function Profile() {
         </View>
 
         {/*BottomSheetModal*/}
-        {/* <Portal>
+        <Portal>
           <BottomSheet
             ref={bottomSheetRef}
             index={-1}
@@ -265,6 +337,7 @@ export default function Profile() {
                 style={{ flex: 1, minHeight: "70%" }}
               >
                 <View style={styles.editProfileContainer}>
+                  {/* Username */}
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{
@@ -312,6 +385,7 @@ export default function Profile() {
                       </Text>
                     )}
                   </View>
+                  {/* MOBILE NUMBER */}
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{
@@ -374,6 +448,7 @@ export default function Profile() {
                       </Text>
                     )}
                   </View>
+                  {/* First name */}
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{
@@ -421,6 +496,7 @@ export default function Profile() {
                       </Text>
                     )}
                   </View>
+                  {/* Middle name */}
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{
@@ -454,6 +530,7 @@ export default function Profile() {
                       />
                     </View>
                   </View>
+                  {/* Last name */}
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{
@@ -521,10 +598,12 @@ export default function Profile() {
                 >
                   <Picker.Item label="24 hours quiet" value="24h" />
                   <Picker.Item label="1 hour quiet" value="1h" />
+                  {/* Add more options as needed */}
                 </Picker>
               </View>
             ) : null}
 
+            {/* Save Button */}
             <View
               style={{ flex: 1, justifyContent: "flex-end", marginBottom: 10 }}
             >
@@ -558,7 +637,7 @@ export default function Profile() {
               </TouchableOpacity>
             </View>
           </BottomSheet>
-        </Portal> */}
+        </Portal>
       </SafeAreaView>
     </LinearGradient>
   );
