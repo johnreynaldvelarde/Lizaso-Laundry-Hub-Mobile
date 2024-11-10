@@ -218,8 +218,7 @@ export default function Pickup() {
   };
 
   const handleGoToNotification = async (id) => {
-    console.log("Message ID Customer: " + id);
-    navigation.navigate("notification/list", {});
+    navigation.navigate("notification/notification");
   };
 
   // Filter services based on the selected tab

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import COLORS from "../../../constants/colors";
@@ -20,65 +21,74 @@ import {
 } from "../../../data/api/authApi";
 import { useAuth } from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { regions, cities, provinces } from "../../../data/countrySelection";
 
 export default function Edit_Address() {
   const { userDetails, fetchUserDetails } = useAuth();
   const navigation = useNavigation();
 
-  const [phoneNumber, setPhoneNumber] = useState(userDetails.mobile_number);
-  const [email, setEmail] = useState(userDetails.email);
-  const [username, setUsername] = useState(userDetails.username);
-  const [firstname, setFirstName] = useState(userDetails.firstname);
-  const [middlename, setMiddleName] = useState(userDetails.middlename);
-  const [lastname, setLastName] = useState(userDetails.lastname);
+  const [addressLine, setAddressLine] = useState(userDetails.header_address);
+  const [country, setCountry] = useState("Philippines");
+  const [region, setRegion] = useState("");
+  const [province, setProvince] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validateFields = () => {
     const newErrors = {};
 
-    if (!phoneNumber) {
-      newErrors.phoneNumber = "Phone number is required";
+    if (!addressLine) {
+      newErrors.addressLine = "Address is required";
     }
 
-    if (!email) {
-      newErrors.email = "Email is required";
+    if (!country) {
+      newErrors.country = "Country is required";
     }
 
-    if (!username) {
-      newErrors.username = "Username is required";
+    if (!region) {
+      newErrors.region = "Region is required";
     }
 
-    if (!firstname) {
-      newErrors.firstname = "First name is required";
+    if (!province) {
+      newErrors.province = "Province is required";
     }
 
-    if (!lastname) {
-      newErrors.lastname = "Last name is required";
+    if (!city) {
+      newErrors.city = "City is required";
     }
+
+    if (!postalCode) {
+      newErrors.postalCode = "Postal Code is required";
+    }
+
     return newErrors;
   };
 
   const handleInputChange = (field) => (value) => {
-    // Update state based on the field
     switch (field) {
-      case "phoneNumber":
-        setPhoneNumber(value);
+      case "addressLine":
+        setAddressLine(value);
         break;
-      case "email":
-        setEmail(value);
+      case "country":
+        setCountry(value);
         break;
-      case "firstname":
-        setFirstName(value);
+      case "region":
+        setRegion(value);
+        setProvince("");
         break;
-      case "middlename":
-        setMiddleName(value);
+      case "province":
+        setProvince(value);
+        setCity("");
         break;
-      case "lastname":
-        setLastName(value);
+      case "city":
+        setCity(value);
         break;
-      case "username":
-        setUsername(value);
+      case "postalCode":
+        setPostalCode(value);
         break;
       default:
         break;
@@ -96,12 +106,12 @@ export default function Edit_Address() {
 
     if (Object.keys(newErrors).length === 0) {
       const data = {
-        mobile_number: phoneNumber,
-        email: email,
-        username: username,
-        firstname: firstname,
-        middlename: middlename,
-        lastname: lastname,
+        // mobile_number: phoneNumber,
+        // email: email,
+        // username: username,
+        // firstname: firstname,
+        // middlename: middlename,
+        // lastname: lastname,
       };
 
       setLoading(true);
@@ -164,7 +174,7 @@ export default function Edit_Address() {
           </View>
 
           <View style={styles.formContainer}>
-            {/* MOBILE NUMBER */}
+            {/* Address Line */}
             <View style={{ marginBottom: 10 }}>
               <Text
                 style={{
@@ -172,98 +182,304 @@ export default function Edit_Address() {
                   fontFamily: fonts.Medium,
                   marginVertical: 8,
                   color: COLORS.primary,
-                  marginTop: 20,
                 }}
               >
-                Mobile Number
+                Address
               </Text>
               <View
                 style={{
                   width: "100%",
                   height: 48,
-                  borderColor: errors.phoneNumber
+                  borderColor: errors.addressLine
                     ? COLORS.error
                     : COLORS.primary,
                   borderWidth: 1,
                   borderRadius: 8,
                   alignItems: "center",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingLeft: 15,
+                  justifyContent: "center",
+                  paddingLeft: 22,
                 }}
               >
                 <TextInput
-                  placeholder="+63"
-                  placeholderTextColor={COLORS.primary}
-                  editable={false}
+                  placeholder="Enter your address"
+                  placeholderTextColor={COLORS.grey}
+                  keyboardType="default"
+                  value={addressLine}
+                  onChangeText={handleInputChange("addressLine")}
+                  style={{ width: "100%", fontFamily: fonts.Regular }}
+                />
+              </View>
+              {errors.addressLine && (
+                <Text
                   style={{
-                    width: "13%",
-                    borderRightWidth: 1,
-                    borderRightColor: errors.phoneNumber
+                    fontFamily: fonts.Regular,
+                    color: COLORS.error,
+                    fontSize: 12,
+                    marginTop: 4,
+                    marginStart: 10,
+                  }}
+                >
+                  {errors.addressLine}
+                </Text>
+              )}
+            </View>
+
+            {/* Country */}
+            <View style={{ marginBottom: 12 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: fonts.Medium,
+                  marginVertical: 8,
+                  color: COLORS.primary,
+                }}
+              >
+                Country
+              </Text>
+              <View
+                style={{
+                  width: "100%",
+                  height: 48,
+                  borderColor: errors.country ? COLORS.error : COLORS.primary,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: 22,
+                }}
+              >
+                <TextInput
+                  placeholder="Enter your country"
+                  placeholderTextColor={COLORS.grey}
+                  keyboardType="default"
+                  value={country}
+                  onChangeText={handleInputChange("country")}
+                  style={{ width: "100%", fontFamily: fonts.Regular }}
+                  editable={false}
+                />
+              </View>
+              {errors.country && (
+                <Text
+                  style={{
+                    fontFamily: fonts.Regular,
+                    color: COLORS.error,
+                    fontSize: 12,
+                    marginTop: 4,
+                    marginStart: 10,
+                  }}
+                >
+                  {errors.country}
+                </Text>
+              )}
+            </View>
+
+            {/* Region Selection */}
+            <View style={{ marginBottom: 12 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: fonts.Medium,
+                  marginVertical: 8,
+                  color: COLORS.primary,
+                }}
+              >
+                Region
+              </Text>
+              <View
+                style={{
+                  width: "100%",
+                  height: 48,
+                  borderColor: errors.region ? COLORS.error : COLORS.primary,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  justifyContent: "center",
+                  paddingLeft: 22,
+                }}
+              >
+                <Picker
+                  selectedValue={region}
+                  onValueChange={(itemValue) =>
+                    handleInputChange("region")(itemValue)
+                  }
+                  style={{ width: "100%", fontFamily: fonts.Regular }}
+                >
+                  <Picker.Item label="Select a region" value="" />
+                  {regions.map((regionName) => (
+                    <Picker.Item
+                      key={regionName}
+                      label={regionName}
+                      value={regionName}
+                    />
+                  ))}
+                </Picker>
+              </View>
+              {errors.region && (
+                <Text
+                  style={{
+                    fontFamily: fonts.Regular,
+                    color: COLORS.error,
+                    fontSize: 12,
+                    marginTop: 4,
+                    marginStart: 10,
+                  }}
+                >
+                  {errors.region}
+                </Text>
+              )}
+            </View>
+
+            {/* Province Selection */}
+            {region && (
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                  }}
+                >
+                  Province
+                </Text>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 48,
+                    borderColor: errors.province
                       ? COLORS.error
                       : COLORS.primary,
-                    height: "100%",
-                    fontFamily: fonts.Medium,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    justifyContent: "center",
+                    paddingLeft: 22,
                   }}
-                />
+                >
+                  <Picker
+                    selectedValue={province}
+                    onValueChange={(itemValue) =>
+                      handleInputChange("province")(itemValue)
+                    }
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  >
+                    <Picker.Item label="Select a province" value="" />
+                    {provinces[region]?.map((provinceName) => (
+                      <Picker.Item
+                        key={provinceName}
+                        label={provinceName}
+                        value={provinceName}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+                {errors.province && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.province}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            {/* City Selection */}
+            {province && (
+              <View style={{ marginBottom: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: fonts.Medium,
+                    marginVertical: 8,
+                    color: COLORS.primary,
+                  }}
+                >
+                  City
+                </Text>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 48,
+                    borderColor: errors.city ? COLORS.error : COLORS.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    justifyContent: "center",
+                    paddingLeft: 22,
+                  }}
+                >
+                  <Picker
+                    selectedValue={city}
+                    onValueChange={(itemValue) =>
+                      handleInputChange("city")(itemValue)
+                    }
+                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                  >
+                    <Picker.Item label="Select a city" value="" />
+                    {cities[province]?.map((cityName) => (
+                      <Picker.Item
+                        key={cityName}
+                        label={cityName}
+                        value={cityName}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+                {errors.city && (
+                  <Text
+                    style={{
+                      fontFamily: fonts.Regular,
+                      color: COLORS.error,
+                      fontSize: 12,
+                      marginTop: 4,
+                      marginStart: 10,
+                    }}
+                  >
+                    {errors.city}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            {/* Postal Code*/}
+            <View style={{ marginBottom: 12 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: fonts.Medium,
+                  marginVertical: 8,
+                  color: COLORS.primary,
+                }}
+              >
+                Postal Code
+              </Text>
+              <View
+                style={{
+                  width: "100%",
+                  height: 48,
+                  borderColor: errors.postalCode
+                    ? COLORS.error
+                    : COLORS.primary,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: 22,
+                }}
+              >
                 <TextInput
-                  placeholder="Enter your phone number"
+                  placeholder="Enter the postal code"
                   placeholderTextColor={COLORS.grey}
                   keyboardType="numeric"
-                  value={phoneNumber}
-                  onChangeText={handleInputChange("phoneNumber")}
-                  style={{ width: "80%", fontFamily: fonts.Regular }}
-                />
-              </View>
-              {errors.phoneNumber && (
-                <Text
-                  style={{
-                    color: COLORS.error,
-                    fontFamily: fonts.Regular,
-                    fontSize: 12,
-                    marginTop: 4,
-                    marginStart: 10,
-                  }}
-                >
-                  {errors.phoneNumber}
-                </Text>
-              )}
-            </View>
-
-            {/* Email */}
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: fonts.Medium,
-                  marginVertical: 8,
-                  color: COLORS.primary,
-                }}
-              >
-                Email
-              </Text>
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: errors.email ? COLORS.error : COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your email address"
-                  placeholderTextColor={COLORS.grey}
-                  keyboardType="default"
-                  value={email}
-                  onChangeText={handleInputChange("email")}
+                  value={postalCode}
+                  onChangeText={handleInputChange("postalCode")}
                   style={{ width: "100%", fontFamily: fonts.Regular }}
                 />
               </View>
-              {errors.email && (
+              {errors.postalCode && (
                 <Text
                   style={{
                     fontFamily: fonts.Regular,
@@ -273,187 +489,7 @@ export default function Edit_Address() {
                     marginStart: 10,
                   }}
                 >
-                  {errors.email}
-                </Text>
-              )}
-            </View>
-
-            {/* First name */}
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: fonts.Medium,
-                  marginVertical: 8,
-                  color: COLORS.primary,
-                }}
-              >
-                Firstname
-              </Text>
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: errors.firstname ? COLORS.error : COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your first name"
-                  placeholderTextColor={COLORS.grey}
-                  keyboardType="default"
-                  value={firstname}
-                  onChangeText={handleInputChange("firstname")}
-                  style={{ width: "100%", fontFamily: fonts.Regular }}
-                />
-              </View>
-              {errors.firstname && (
-                <Text
-                  style={{
-                    fontFamily: fonts.Regular,
-                    color: COLORS.error,
-                    fontSize: 12,
-                    marginTop: 4,
-                    marginStart: 10,
-                  }}
-                >
-                  {errors.firstname}
-                </Text>
-              )}
-            </View>
-
-            {/* Middle name */}
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: fonts.Medium,
-                  marginVertical: 8,
-                  color: COLORS.primary,
-                }}
-              >
-                Middlename
-              </Text>
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your middle name (if applicable)"
-                  placeholderTextColor={COLORS.grey}
-                  keyboardType="default"
-                  value={middlename}
-                  onChangeText={handleInputChange("middlename")}
-                  style={{ width: "100%", fontFamily: fonts.Regular }}
-                />
-              </View>
-            </View>
-
-            {/* Last name */}
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: fonts.Medium,
-                  marginVertical: 8,
-                  color: COLORS.primary,
-                }}
-              >
-                Lastname
-              </Text>
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: errors.lastname ? COLORS.error : COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your lastname"
-                  placeholderTextColor={COLORS.grey}
-                  keyboardType="default"
-                  value={lastname}
-                  onChangeText={handleInputChange("lastname")}
-                  style={{ width: "100%", fontFamily: fonts.Regular }}
-                />
-              </View>
-              {errors.lastname && (
-                <Text
-                  style={{
-                    fontFamily: fonts.Regular,
-                    color: COLORS.error,
-                    fontSize: 12,
-                    marginTop: 4,
-                    marginStart: 10,
-                  }}
-                >
-                  {errors.lastname}
-                </Text>
-              )}
-            </View>
-
-            {/* Username */}
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: fonts.Medium,
-                  marginVertical: 8,
-                  color: COLORS.primary,
-                  marginLeft: 13,
-                }}
-              >
-                Username
-              </Text>
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: errors.username ? COLORS.error : COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 20,
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your username"
-                  placeholderTextColor={COLORS.grey}
-                  keyboardType="default"
-                  value={username}
-                  onChangeText={handleInputChange("username")}
-                  style={{ width: "100%", fontFamily: fonts.Regular }}
-                />
-              </View>
-              {errors.username && (
-                <Text
-                  style={{
-                    fontFamily: fonts.Regular,
-                    color: COLORS.error,
-                    fontSize: 12,
-                    marginTop: 4,
-                    marginStart: 10,
-                  }}
-                >
-                  {errors.username}
+                  {errors.postalCode}
                 </Text>
               )}
             </View>
@@ -489,7 +525,7 @@ export default function Edit_Address() {
                     textAlign: "center",
                   }}
                 >
-                  Update Account
+                  Update Address
                 </Text>
               )}
             </TouchableOpacity>
@@ -536,6 +572,5 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 15,
     padding: 5,
-    justifyContent: "center",
   },
 });

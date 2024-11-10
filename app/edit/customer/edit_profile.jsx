@@ -486,7 +486,7 @@ export default function Edit_Profile() {
                     textAlign: "center",
                   }}
                 >
-                  Update Account
+                  Update Profile
                 </Text>
               )}
             </TouchableOpacity>

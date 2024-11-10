@@ -52,7 +52,7 @@ export default function Home() {
 
   const handleGoToNotification = () => {
     console.log("Navigating to notifications");
-    navigation.navigate("notification/list", {});
+    navigation.navigate("notification/notification");
   };
 
   const toggleExpanded = (id) => {

@@ -12,7 +12,6 @@ import COLORS from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { fonts } from "../../constants/fonts";
 
-
 // Sample notifications data
 const initialNotifications = [
   {
@@ -49,7 +48,8 @@ const initialNotifications = [
   {
     id: "5",
     stage: "In Queue:",
-    message: "Your clothes are in queue, waiting for an available laundry machine.",
+    message:
+      "Your clothes are in queue, waiting for an available laundry machine.",
     time: "11:15 AM",
     icon: "hourglass", // Notification icon (Ionicons)
   },
@@ -86,19 +86,21 @@ const initialNotifications = [
   {
     id: "10",
     stage: "Completed Delivery:",
-    message: "Your clothes have been delivered successfully. Thank you for using our service!",
+    message:
+      "Your clothes have been delivered successfully. Thank you for using our service!",
     time: "01:45 PM",
     icon: "home", // Notification icon (Ionicons)
   },
 
   // Optional: Cancellation
-  { id: "11", 
-    stage: "Canceled", 
-    message: "Your service request has been canceled. Please contact support if you need assistance.", 
-    icon: "remove-circle", 
-    time: "N/A" },
-
-
+  {
+    id: "11",
+    stage: "Canceled",
+    message:
+      "Your service request has been canceled. Please contact support if you need assistance.",
+    icon: "remove-circle",
+    time: "N/A",
+  },
 ];
 
 export default function Notification() {
@@ -121,8 +123,8 @@ export default function Notification() {
 
         {/* Stage, Message and Time */}
         <View style={styles.textContainer}>
-          <View style = {styles.topContainer}>
-            <Text style = {styles.notificationstage}>{item.stage}</Text>
+          <View style={styles.topContainer}>
+            <Text style={styles.notificationstage}>{item.stage}</Text>
             <Text style={styles.notificationTime}>{item.time}</Text>
           </View>
           <Text style={styles.notificationMessage}>{item.message}</Text>
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Medium,
     fontSize: 14,
   },
-  topContainer:{
+  topContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
-  notificationstage:{
+  notificationstage: {
     fontSize: 18,
     fontFamily: fonts.Bold,
     color: COLORS.secondary,
