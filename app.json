@@ -55,6 +55,14 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/lizaso_logo.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        }
       ]
     ],
     "experiments": {

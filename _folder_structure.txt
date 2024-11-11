@@ -51,6 +51,18 @@
 
 
 
+[
+  "expo-notifications",
+  {
+    "icon": "./local/assets/lizaso_logo.png",
+    "color": "#ffffff",
+    "defaultChannel": "default",
+    "sounds": [
+      "./local/assets/notification-sound.wav",
+      "./local/assets/notification-sound-other.wav"
+    ]
+  }
+]
 
 
 

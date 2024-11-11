@@ -55,7 +55,7 @@ eas update
 eas build --platform android
  Build Credentials eW8mJTUU4W
 eas build --platform android
-
+npx expo install expo-device
 
 
 

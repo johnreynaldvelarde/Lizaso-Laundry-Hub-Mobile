@@ -18,11 +18,15 @@ import useAuth from "../context/AuthContext";
 import usePolling from "../../hooks/usePolling";
 import noNotification from "../../assets/images/no_data_table.jpg";
 import { formatTimeNotification, iconMapping } from "../../constants/method";
+import * as Notifications from "expo-notifications";
+import { useNotifications } from "../../hooks/useNotifications";
 
 export default function Notification() {
   const { userDetails } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
+  const [notifications, setNotifications] = useState([]);
+  const { schedulePushNotification } = useNotifications();
 
   const fetchNotification = useCallback(async () => {
     try {
@@ -58,6 +62,10 @@ export default function Notification() {
 
   const clearNotifications = () => {
     // setNotifications([]);
+  };
+
+  const handleSampleNotificationsShow = async () => {
+    await schedulePushNotification();
   };
 
   const renderNotification = ({ item }) => {
@@ -108,7 +116,7 @@ export default function Notification() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notification</Text>
         <TouchableOpacity
-          onPress={clearNotifications}
+          onPress={handleSampleNotificationsShow}
           style={styles.clearButton}
         >
           <Text style={styles.clearButtonText}>Clear</Text>
