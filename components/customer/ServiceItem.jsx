@@ -13,6 +13,12 @@ import COLORS from "../../constants/colors";
 import { getCurrentDay } from "../../constants/method";
 import { fonts } from "../../constants/fonts";
 
+import wash from "../../assets/images/wash.jpg";
+import dry from "../../assets/images/dry.jpg";
+import wash_dry from "../../assets/images/wash_dry.jpg";
+import wash_dry_fold from "../../assets/images/wash_dry_fold.jpg";
+import fold from "../../assets/images/fold.jpg";
+
 export const ServiceItem = ({ item, isExpanded, onToggle }) => {
   const navigation = useNavigation();
 
@@ -28,12 +34,26 @@ export const ServiceItem = ({ item, isExpanded, onToggle }) => {
     return item.valid_days.includes(currentDay);
   };
 
-  // Determine if the promo should be displayed based on active status and current day
   const showPromo = item.isActive === 1 && isPromoVisible();
 
   return (
     <View style={styles.serviceItem}>
-      <Image style={styles.serviceImage} />
+      <Image
+        style={styles.serviceImage}
+        source={
+          item.service_name === "Wash"
+            ? wash
+            : item.service_name === "Wash/Dry"
+            ? wash_dry
+            : item.service_name === "Dry"
+            ? dry
+            : item.service_name === "Wash/Dry/Fold"
+            ? wash_dry_fold
+            : item.service_name === "Fold"
+            ? fold
+            : null
+        }
+      />
 
       <View style={styles.serviceInfo}>
         <View style={{ flex: 1, flexDirection: "row" }}>

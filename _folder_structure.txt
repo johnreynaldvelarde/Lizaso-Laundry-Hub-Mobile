@@ -6,7 +6,7 @@
         │   ├── (staff)/
         │   │   ├── _layout.jsx
         │   │   ├── delivery.jsx
-        │   │   ├── d_messages.jsx
+        │   │   ├── inbox.jsx
         │   │   ├── pickup.jsx
         │   │   └── profile.jsx
         │   ├── auth/

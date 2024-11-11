@@ -138,7 +138,7 @@ export default function Receipt() {
               <View style={styles.serviceContainer}>
                 <View style={styles.serviceRow}>
                   <Text style={styles.serviceHeader}>Service Type</Text>
-                  <Text style={styles.serviceHeader}>Weight</Text>
+                  <Text style={styles.serviceHeader}>Load</Text>
                   <Text style={styles.serviceHeader}>Amount</Text>
                 </View>
                 <View style={styles.serviceRow}>
@@ -182,7 +182,7 @@ export default function Receipt() {
                   </View>
 
                   <View>
-                    <Text style={styles.serviceText}>{receipt.weight}kg</Text>
+                    <Text style={styles.serviceText}>{receipt.weight}</Text>
                   </View>
 
                   <Text style={styles.serviceText}>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   headerTitle: {
-    marginLeft: 20,
+    marginLeft: 10,
     fontSize: 18,
     fontFamily: fonts.Bold,
     color: COLORS.white,

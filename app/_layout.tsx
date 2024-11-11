@@ -56,6 +56,13 @@ export default function RootLayout() {
                 }}
               />
               <Stack.Screen
+                name="edit/customer/edit_change_password"
+                options={{
+                  presentation: "modal",
+                  animation: "ios",
+                }}
+              />
+              <Stack.Screen
                 name="receipt/receipt"
                 options={{
                   presentation: "modal",

@@ -45,12 +45,17 @@ export default function Payment() {
     }, [])
   );
 
-  const handleViewRecipt = async (id) => {
+  const handleViewRecipt = async (
+    id,
+    payment_method,
+    base_price,
+    service_name
+  ) => {
     navigaton.navigate("receipt/receipt", {
       assignment_id: id,
-      payment_method: "SDSd",
-      base_price: "DSd",
-      service_name: "SDsds",
+      payment_method: payment_method,
+      base_price: base_price,
+      service_name: service_name,
     });
   };
 
@@ -155,7 +160,14 @@ export default function Payment() {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => handleViewRecipt(transaction.assignment_id)}
+              onPress={() =>
+                handleViewRecipt(
+                  transaction.assignment_id,
+                  transaction.payment_method,
+                  transaction.default_price,
+                  transaction.service_name
+                )
+              }
               style={styles.iconButton}
             >
               <FontAwesome5 name="receipt" size={20} color={COLORS.white} />

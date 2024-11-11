@@ -1,10 +1,11 @@
 import * as Crypto from "expo-crypto";
 import CryptoJS from "crypto-js";
 import Constants from "expo-constants";
+import { format, isToday, isYesterday, parseISO } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 const SECRET_KEY = Constants.expoConfig.extra.secretKey;
 
-import { format, isToday, isYesterday, parseISO } from "date-fns";
 export const haversineDistance = (lat1, lon1, lat2, lon2) => {
   const toRadians = (degrees) => (degrees * Math.PI) / 180;
 
@@ -95,19 +96,22 @@ export const getCurrentDay = () => {
   return daysOfWeek[today.getDay()];
 };
 
-// export const encryptMessage = async (message) => {
-//   const encryptedMessage = await Crypto.digestStringAsync(
-//     Crypto.CryptoDigestAlgorithm.SHA256,
-//     message + SECRET_KEY
-//   );
-//   return encryptedMessage;
-// };
+export const formatTimeNotification = (dateString) => {
+  const notificationDate = new Date(dateString);
 
-// export const decryptMessage = async (encryptedMessage) => {
-//   const decrypted = await Crypto.digestStringAsync(
-//     Crypto.CryptoDigestAlgorithm.SHA256,
-//     encryptedMessage + SECRET_KEY
-//   );
+  if (isToday(notificationDate)) {
+    return format(notificationDate, "hh:mm a");
+  } else {
+    return format(notificationDate, "MMMM d, yyyy");
+  }
+};
 
-//   return decrypted;
-// };
+export const iconMapping = {
+  "Pending Pickup": "calendar",
+  "Ongoing Pickup": "car-outline",
+  COMPLETED_PICKUP: "checkmark-done-outline",
+  AT_STORE: "storefront-outline",
+  IN_QUEUE: "ellipsis-horizontal-circle-outline",
+  IN_LAUNDRY: "water-outline",
+  LAUNDRY_COMPLETED: "shirt-outline",
+};

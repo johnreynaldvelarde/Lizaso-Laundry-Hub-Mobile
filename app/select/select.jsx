@@ -73,6 +73,7 @@ export default function Select() {
       const data = {
         store_id: userDetails.storeId,
         service_type_id: service_id,
+        service_name: service_name,
         customer_name: name,
         notes: notes,
         payment_method: selectedPayment,
@@ -323,8 +324,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   backText: {
-    fontSize: 16,
-    fontFamily: fonts.Bold,
+    fontSize: 20,
+    fontFamily: fonts.SemiBold,
     color: COLORS.secondary,
     marginLeft: 5,
   },

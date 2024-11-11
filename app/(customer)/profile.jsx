@@ -190,131 +190,335 @@ export default function Profile() {
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => handleEditAddress()}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ marginBottom: 55 }}
           >
-            <View style={styles.outlineBox}>
-              <View style={styles.rowContainer}>
-                <FontAwesome6
-                  name="address-card"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.icon}
-                />
-                <Text style={styles.boxText}>Update Your Address</Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.arrow}
-                />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => handleEditAddress()}
+            >
+              <View style={styles.outlineBox}>
+                <View style={styles.rowContainer}>
+                  <FontAwesome6
+                    name="address-card"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.boxText}>Update Your Address</Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.arrow}
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => handleChangePassword()}
-          >
-            <View style={styles.outlineBox}>
-              <View style={styles.rowContainer}>
-                <MaterialCommunityIcons
-                  name="key-change"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.icon}
-                />
-                <Text style={styles.boxText}>Update Your Password</Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.arrow}
-                />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => handleChangePassword()}
+            >
+              <View style={styles.outlineBox}>
+                <View style={styles.rowContainer}>
+                  <MaterialCommunityIcons
+                    name="key-change"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.boxText}>Update Your Password</Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.arrow}
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => handleEditAddress()}
-          >
-            <View style={styles.outlineBox}>
-              <View style={styles.rowContainer}>
-                <FontAwesome5
-                  name="store-alt"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.icon}
-                />
-                <Text style={styles.boxText}>Change Stores</Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.arrow}
-                />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => handleEditAddress()}
+            >
+              <View style={styles.outlineBox}>
+                <View style={styles.rowContainer}>
+                  <FontAwesome5
+                    name="store-alt"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.boxText}>Change Stores</Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.arrow}
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={1}
-            // onPress={() => openSheet("Manage Notifications")}
-          >
-            <View style={styles.outlineBox}>
-              <View style={styles.rowContainer}>
-                <Entypo
-                  name="notification"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.icon}
-                />
-                <Text style={styles.boxText}>Notifications</Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={24}
-                  color={COLORS.secondary}
-                  style={styles.arrow}
-                />
+            <TouchableOpacity
+              activeOpacity={1}
+              // onPress={() => openSheet("Manage Notifications")}
+            >
+              <View style={styles.outlineBox}>
+                <View style={styles.rowContainer}>
+                  <Entypo
+                    name="notification"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.boxText}>Notifications</Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={24}
+                    color={COLORS.secondary}
+                    style={styles.arrow}
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1} onPress={handleLogout}>
-            <View style={styles.outlineBox}>
-              <View
-                style={[
-                  styles.rowContainer,
-                  loading && styles.loadingContainer,
-                ]}
-              >
-                {loading ? (
-                  <ActivityIndicator size="large" color={COLORS.secondary} />
-                ) : (
-                  <>
-                    <MaterialCommunityIcons
-                      name="logout"
-                      size={24}
-                      color={COLORS.secondary}
-                      style={styles.icon}
-                    />
-                    <Text style={styles.boxText}>Logout</Text>
-                    <Ionicons
-                      name="chevron-forward"
-                      size={24}
-                      color={COLORS.secondary}
-                      style={styles.arrow}
-                    />
-                  </>
-                )}
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} onPress={handleLogout}>
+              <View style={styles.outlineBox}>
+                <View
+                  style={[
+                    styles.rowContainer,
+                    loading && styles.loadingContainer,
+                  ]}
+                >
+                  {loading ? (
+                    <ActivityIndicator size="large" color={COLORS.secondary} />
+                  ) : (
+                    <>
+                      <MaterialCommunityIcons
+                        name="logout"
+                        size={24}
+                        color={COLORS.secondary}
+                        style={styles.icon}
+                      />
+                      <Text style={styles.boxText}>Logout</Text>
+                      <Ionicons
+                        name="chevron-forward"
+                        size={24}
+                        color={COLORS.secondary}
+                        style={styles.arrow}
+                      />
+                    </>
+                  )}
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
 
         {/*BottomSheetModal*/}
-        {/* <Portal>
+      </SafeAreaView>
+    </LinearGradient>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f2f2f2",
+    padding: 20,
+  },
+  upperContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginVertical: 10,
+  },
+  profileContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  profileImageContainer: {
+    position: "relative",
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: COLORS.white,
+    padding: 10,
+  },
+  editIconContainer: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: COLORS.secondary,
+    borderRadius: 15,
+    padding: 5,
+  },
+  name: {
+    fontSize: 24,
+    fontFamily: fonts.Bold,
+    color: COLORS.white,
+  },
+  username: {
+    fontFamily: fonts.Medium,
+    fontSize: 15,
+    color: COLORS.white,
+  },
+  bio: {
+    fontSize: 14,
+    color: "#777",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  bottomContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 30,
+    marginTop: 10,
+    // Shadow Section
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  editButton: {
+    backgroundColor: COLORS.secondary,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginVertical: 10,
+    alignItems: "center", // Center horizontally
+    justifyContent: "center", // Center vertically
+  },
+  editButtonText: {
+    fontFamily: fonts.SemiBold,
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
+  outlineBox: {
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+    borderRadius: 5,
+    padding: 15,
+    height: 60,
+    alignItems: "center",
+    marginVertical: 10,
+    backgroundColor: COLORS.white,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.5,
+    // elevation: 1,
+  },
+  boxText: {
+    fontFamily: fonts.SemiBold,
+    fontSize: 16,
+    color: COLORS.subtitle,
+    textAlign: "center",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", // Space out elements
+    width: "100%", // Ensure it takes the full width
+  },
+  loadingContainer: {
+    justifyContent: "center", // Center content horizontally
+    alignItems: "center", // Center content vertically
+  },
+  icon: {
+    marginRight: 10, // Space between icon and text
+  },
+
+  arrow: {
+    marginLeft: 10, // Space between text and arrow
+  },
+  closeButton: {
+    backgroundColor: COLORS.light,
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  headerTitle: {
+    fontFamily: fonts.SemiBold,
+    fontSize: 18,
+    color: COLORS.primary,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.border,
+    marginBottom: 5,
+    width: "100%",
+  },
+  editProfileContainer: {
+    padding: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 5,
+  },
+  notificationsContainer: {
+    padding: 20,
+  },
+  switchLabel: {
+    fontFamily: fonts.SemiBold,
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  notificationFrequencyLabel: {
+    fontFamily: fonts.SemiBold,
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  saveButton: {
+    backgroundColor: COLORS.secondary, // Use your primary color
+    paddingVertical: 15,
+    borderRadius: 10,
+    margin: 20, // Margin to separate from edges
+    alignItems: "center",
+  },
+  saveButtonText: {
+    color: COLORS.white,
+    fontFamily: fonts.SemiBold,
+    fontSize: 16,
+  },
+});
+
+{
+  /* <Portal>
           <BottomSheet
             ref={bottomSheetRef}
             index={-1}
@@ -639,200 +843,5 @@ export default function Profile() {
               </TouchableOpacity>
             </View>
           </BottomSheet>
-        </Portal> */}
-      </SafeAreaView>
-    </LinearGradient>
-  );
+        </Portal> */
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f2f2f2",
-    padding: 20,
-  },
-  upperContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    marginVertical: 10,
-  },
-  profileContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-  profileImageContainer: {
-    position: "relative",
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-    borderWidth: 2,
-    borderColor: COLORS.white,
-    padding: 10,
-  },
-  editIconContainer: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: COLORS.secondary,
-    borderRadius: 15,
-    padding: 5,
-  },
-  name: {
-    fontSize: 24,
-    fontFamily: fonts.Bold,
-    color: COLORS.white,
-  },
-  username: {
-    fontFamily: fonts.Medium,
-    fontSize: 15,
-    color: COLORS.white,
-  },
-  bio: {
-    fontSize: 14,
-    color: "#777",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  bottomContainer: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    padding: 30,
-    marginTop: 10,
-    // Shadow Section
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-  },
-  editButton: {
-    backgroundColor: COLORS.secondary,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginVertical: 10,
-    alignItems: "center", // Center horizontally
-    justifyContent: "center", // Center vertically
-  },
-  editButtonText: {
-    fontFamily: fonts.SemiBold,
-    color: COLORS.white,
-    fontSize: 16,
-    textAlign: "center",
-  },
-  outlineBox: {
-    borderWidth: 1,
-    borderColor: COLORS.secondary,
-    borderRadius: 5,
-    padding: 15,
-    height: 60,
-    alignItems: "center",
-    marginVertical: 10,
-    backgroundColor: COLORS.white,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.5,
-    // elevation: 1,
-  },
-  boxText: {
-    fontFamily: fonts.SemiBold,
-    fontSize: 16,
-    color: COLORS.subtitle,
-    textAlign: "center",
-  },
-  rowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between", // Space out elements
-    width: "100%", // Ensure it takes the full width
-  },
-  loadingContainer: {
-    justifyContent: "center", // Center content horizontally
-    alignItems: "center", // Center content vertically
-  },
-  icon: {
-    marginRight: 10, // Space between icon and text
-  },
-
-  arrow: {
-    marginLeft: 10, // Space between text and arrow
-  },
-  closeButton: {
-    backgroundColor: COLORS.light,
-    borderRadius: 15,
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    fontFamily: fonts.SemiBold,
-    fontSize: 18,
-    color: COLORS.primary,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: COLORS.border,
-    marginBottom: 5,
-    width: "100%",
-  },
-  editProfileContainer: {
-    padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.secondary,
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 5,
-  },
-  notificationsContainer: {
-    padding: 20,
-  },
-  switchLabel: {
-    fontFamily: fonts.SemiBold,
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  notificationFrequencyLabel: {
-    fontFamily: fonts.SemiBold,
-    fontSize: 16,
-    marginVertical: 10,
-  },
-  saveButton: {
-    backgroundColor: COLORS.secondary, // Use your primary color
-    paddingVertical: 15,
-    borderRadius: 10,
-    margin: 20, // Margin to separate from edges
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: COLORS.white,
-    fontFamily: fonts.SemiBold,
-    fontSize: 16,
-  },
-});

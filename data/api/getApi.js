@@ -1,6 +1,43 @@
 import { api } from "../axios";
 
 // ALL AROUND API
+// #NOTIFICATION
+export const getNotification = async (id, userType) => {
+  try {
+    const url =
+      userType === "Customer"
+        ? `/mobile-customer-staff/${id}/get-notification-customer`
+        : `/mobile-customer-staff/${id}/get-notification-staff`;
+
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// export const getNotification = async (userId, userTyoe) => {
+//   try {
+//     const response = await api.get(
+//       `/mobile-customer-staff/${userId}/get-notification`
+//     );
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+export const getNotificationCount = async (userId) => {
+  try {
+    const response = await api.get(
+      `/mobile-customer-staff/${userId}/get-notification-count`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // #MESSAGE MODULE
 export const getMessages = async (user_one_id, user_two_id) => {
   try {
@@ -28,28 +65,6 @@ export const getCountForBottomNavigationBar = async (userId) => {
   try {
     const response = await api.get(
       `/mobile-customer-staff/${userId}/get-navigation-count`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getNotification = async (userId) => {
-  try {
-    const response = await api.get(
-      `/mobile-customer-staff/${userId}/get-notification`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getNotificationCount = async (userId) => {
-  try {
-    const response = await api.get(
-      `/mobile-customer-staff/${userId}/get-notification-count`
     );
     return response.data;
   } catch (error) {
