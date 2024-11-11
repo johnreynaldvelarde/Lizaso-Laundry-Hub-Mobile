@@ -16,6 +16,52 @@ export const getNotification = async (id, userType) => {
   }
 };
 
+export const getNotificationShowFront = async (id, userType) => {
+  try {
+    const url =
+      userType === "Customer"
+        ? `/mobile-customer-staff/${id}/get-notification-customer`
+        : `/mobile-customer-staff/${id}/get-notification-staff`;
+
+    const response = await api.get(url);
+
+    // Ensure response.data is an array and has data
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      // Sort by created_at if needed (if the API doesn't do it)
+      const sortedNotifications = response.data.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // Get the latest notification (first after sorting)
+      return sortedNotifications[0]; // The latest notification
+    } else {
+      return null; // No notifications
+    }
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    throw new Error("Failed to fetch notifications.");
+  }
+};
+
+// export const getNotificationShowFront = async (id, userType) => {
+//   try {
+//     const url =
+//       userType === "Customer"
+//         ? `/mobile-customer-staff/${id}/get-notification-customer`
+//         : `/mobile-customer-staff/${id}/get-notification-staff`;
+
+//     const response = await api.get(url);
+
+//     // Assuming the response is an array of notifications sorted by created_at or a similar field.
+//     const latestNotification =
+//       response.data.length > 0 ? response.data[0] : null; // Get the latest notification
+
+//     return latestNotification; // Only return the latest notification
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
 // export const getNotification = async (userId, userTyoe) => {
 //   try {
 //     const response = await api.get(

@@ -97,8 +97,17 @@ export const getCurrentDay = () => {
 };
 
 export const formatTimeNotification = (dateString) => {
+  if (!dateString) {
+    return "No date available";
+  }
+
   const notificationDate = new Date(dateString);
 
+  if (isNaN(notificationDate.getTime())) {
+    return "Invalid date";
+  }
+
+  // Format the date
   if (isToday(notificationDate)) {
     return format(notificationDate, "hh:mm a");
   } else {

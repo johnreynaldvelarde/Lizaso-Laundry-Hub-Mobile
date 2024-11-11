@@ -79,7 +79,7 @@ export default function Notification() {
                 {item.notification_type}
               </Text>
               <Text style={styles.notificationTime}>
-                {formatTimeNotification(item.created_at)}
+                {formatTimeNotification(item.created_at || "")}
               </Text>
             </View>
             <Text style={styles.notificationMessage}>

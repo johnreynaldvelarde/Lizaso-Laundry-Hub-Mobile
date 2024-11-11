@@ -13,7 +13,13 @@
       "backgroundColor": "#ffffff"
     },
     "extra": {
-      "secretKey": "lizaso_laundry_hub"
+      "secretKey": "lizaso_laundry_hub",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "136439ce-a143-469a-9a5d-d8a61695aafa"
+      }
     },
     "ios": {
       "supportsTablet": true
@@ -22,7 +28,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.anonymous.lizasolaundryhubmobile"
     },
     "web": {
       "bundler": "metro",

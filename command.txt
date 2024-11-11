@@ -45,4 +45,18 @@ npx expo install expo-constants
 npm install crypto-js@3.3.0 --save
 npm install @react-navigation/stack
 npx expo install react-native-view-shot expo-media-library
+npx expo prebuild -> react native to android studio
+npx expo publish
+npm install -g eas-cli
+eas login
+eas build:configure
+eas credentials
+eas update
+eas build --platform android
+ Build Credentials eW8mJTUU4W
+eas build --platform android
+
+
+
+
 
