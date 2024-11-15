@@ -37,15 +37,6 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleClear = () => {
-    setPhoneNumber("");
-    setUsername("");
-    setFirstName("");
-    setMiddleName("");
-    setLastName("");
-    setPassword("");
-    setIsChecked(false);
-  };
   const validateFields = () => {
     const newErrors = {};
 
@@ -207,29 +198,6 @@ export default function SignUp() {
       }
     }
   };
-
-  // useEffect(() => {
-  //   if (userDetails.user_type) {
-  //     if (userDetails.user_type === "Customer") {
-  //       const fetchDetails = async () => {
-  //         const details = await getCheckCustomerDetails(userDetails.userId);
-  //         if (details.success !== false) {
-  //           const { storeIdIsNull, addressIdIsNull } = details.data;
-  //           if (storeIdIsNull || addressIdIsNull) {
-  //             router.push("/auth/complete/address");
-  //           } else {
-  //             router.push("/(customer)/home");
-  //           }
-  //         } else {
-  //           console.log(details);
-  //         }
-  //       };
-  //       fetchDetails();
-  //     } else {
-  //       router.push("/(staff)/pickup");
-  //     }
-  //   }
-  // }, [userDetails]);
 
   const handleTermAndConditons = () => {
     navigation.navigate("auth/term/term", {});
@@ -481,12 +449,12 @@ export default function SignUp() {
                     borderRadius: 8,
                     alignItems: "center",
                     justifyContent: "center",
-                    paddingLeft: 10,
+                    paddingLeft: 22,
                     marginLeft: 13,
                   }}
                 >
                   <TextInput
-                    placeholder="Enter your middle name (if applicable)"
+                    placeholder="Enter your middle name (optional)"
                     placeholderTextColor={COLORS.grey}
                     keyboardType="default"
                     value={middlename}

@@ -6,9 +6,10 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import COLORS from "../../../constants/colors";
 import { fonts } from "../../../constants/fonts";
 import { useNavigation, useRouter } from "expo-router";
@@ -33,6 +34,22 @@ export default function Address() {
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const backAction = () => {
+      // Prevent the back action
+      return true;
+    };
+
+    // Add the listener
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    // Cleanup the listener
+    return () => backHandler.remove();
+  }, []);
 
   const validateFields = () => {
     const newErrors = {};

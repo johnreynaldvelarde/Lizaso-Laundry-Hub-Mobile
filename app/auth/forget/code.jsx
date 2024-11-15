@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { fonts } from "../../../constants/fonts";
 
-export default function Forget() {
+export default function Code() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
 

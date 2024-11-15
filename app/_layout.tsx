@@ -34,6 +34,20 @@ export default function RootLayout() {
                   }}
                 />
                 <Stack.Screen
+                  name="(customer)"
+                  options={{
+                    presentation: "modal",
+                    animation: "default",
+                  }}
+                />
+                <Stack.Screen
+                  name="(staff)"
+                  options={{
+                    presentation: "modal",
+                    animation: "default",
+                  }}
+                />
+                <Stack.Screen
                   name="auth/sign-up/index"
                   options={{
                     presentation: "modal",
@@ -41,7 +55,28 @@ export default function RootLayout() {
                   }}
                 />
                 <Stack.Screen
+                  name="auth/term/term"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
                   name="auth/forget/forget"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/complete/address"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/complete/store_selection"
                   options={{
                     presentation: "modal",
                     animation: "ios",
@@ -98,7 +133,7 @@ export default function RootLayout() {
                   }}
                 />
                 {/* <Stack.Screen name="notification/noit" /> */}
-                <Stack.Screen name="auth/complete/store_selection" />
+                {/* <Stack.Screen name="auth/complete/store_selection" /> */}
               </Stack>
             </NotificationsContextProvider>
           </AuthProvider>
