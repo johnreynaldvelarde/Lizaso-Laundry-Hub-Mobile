@@ -485,18 +485,6 @@ export default function Delivery() {
                 <Text style={Styles.value}>{selectedService.service_name}</Text>
               </View>
               <View style={Styles.detailsContainer}>
-                <Text style={Styles.label}>Pickup Date:</Text>
-                <Text style={Styles.value}>
-                  {new Date(selectedService.pickup_date).toLocaleString()}
-                </Text>
-              </View>
-              <View style={Styles.detailsContainer}>
-                <Text style={Styles.label}>Request Date:</Text>
-                <Text style={Styles.value}>
-                  {new Date(selectedService.request_date).toLocaleString()}
-                </Text>
-              </View>
-              <View style={Styles.detailsContainer}>
                 <Text style={Styles.label}>Payment Method:</Text>
                 <Text style={Styles.value}>
                   {selectedService.payment_method}
@@ -531,13 +519,4 @@ export default function Delivery() {
       </Portal>
     </SafeAreaView>
   );
-}
-
-{
-  /* <ReadyBottomSheet
-        ref={bottomReadyDeliverySheet}
-        selectedService={selectedService}
-        closePendingModal={closeReadyDeliveryModal}
-        handleGetLaundry={handleGetReadyDelivery}
-      /> */
 }
