@@ -1,5 +1,14 @@
 import { api } from "../axios";
 
+export const login = async (data) => {
+  try {
+    const response = await api.post("/login-mobile", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const register = async (data) => {
   try {
     const response = await api.post("/register-mobile", data);
@@ -9,9 +18,9 @@ export const register = async (data) => {
   }
 };
 
-export const login = async (data) => {
+export const isEmailExist = async (data) => {
   try {
-    const response = await api.post("/login-mobile", data);
+    const response = await api.post("/is-email-exist", data);
     return response.data;
   } catch (error) {
     throw error;

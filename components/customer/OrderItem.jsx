@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import Collapsible from "react-native-collapsible";
 import { Portal } from "@gorhom/portal";
 import { fonts } from "../../constants/fonts";
 import COLORS from "../../constants/colors";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { format } from "date-fns";
 import QRCode from "react-native-qrcode-svg";
 import { getCurrentDay } from "../../constants/method";
+import { updateByCustomerCancelRequest } from "../../data/api/putApi";
 
 export default function OrderItem({ item, index }) {
   const navigaton = useNavigation();
   const currentDay = getCurrentDay();
+  const [loading, setLoading] = useState(false);
   const [collapsedStates, setCollapsedStates] = useState(
     item.progress.map(() => true)
   );
@@ -50,6 +59,53 @@ export default function OrderItem({ item, index }) {
       base_price: service_default_price,
       service_name: service_name,
     });
+  };
+
+  const handleCancelRequest = async (id) => {
+    Alert.alert(
+      "Cancel Request",
+      "Do you want to cancel this request?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Request not canceled"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              await cancelRequest(id);
+            } catch (error) {
+              console.error("Error canceling request:", error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const cancelRequest = async (id) => {
+    setLoading(true);
+
+    try {
+      const response = await updateByCustomerCancelRequest(id);
+
+      console.log(response.message);
+
+      if (response.success) {
+        console.log("Request canceled successfully");
+      } else {
+        console.error(response.message);
+        Alert.alert("Attention", response.message);
+      }
+    } catch (error) {
+      console.error("Error canceling request:", error);
+      Alert.alert("Error", "There was an error canceling your request.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -273,14 +329,10 @@ export default function OrderItem({ item, index }) {
                 </>
               ) : (
                 <TouchableOpacity
-                  disabled
-                  style={[styles.messageButton, { opacity: 0.5 }]}
+                  onPress={() => handleCancelRequest(id)}
+                  style={styles.cancelButton}
                 >
-                  <Ionicons
-                    name="chatbubble-ellipses-outline"
-                    size={24}
-                    color={COLORS.secondary}
-                  />
+                  <MaterialIcons name="cancel" size={24} color={COLORS.white} />
                 </TouchableOpacity>
               )}
             </View>
@@ -432,6 +484,15 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: COLORS.secondary,
+    borderRadius: 10,
+    alignItems: "center",
+    marginLeft: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  cancelButton: {
+    padding: 8,
+    backgroundColor: COLORS.error,
     borderRadius: 10,
     alignItems: "center",
     marginLeft: 10,

@@ -25,6 +25,15 @@ export const updateCustomerDetails = async (userId, data) => {
   }
 };
 
+export const updateByCustomerCancelRequest = async (id) => {
+  try {
+    const response = await api.put(`/customers/${id}/update-request-cancel`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // STAFF SECTION API REQUEST
 // For pending cancel request
 export const updateServiceRequestCancel = async (requestId, data) => {
