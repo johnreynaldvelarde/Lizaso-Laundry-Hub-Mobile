@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { fonts } from "../../constants/fonts";
@@ -29,14 +29,18 @@ import useAuth from "../context/AuthContext";
 import { useHandleGoToMessage } from "../../components/method/useHandleGoToMessage";
 import { Styles } from "../style/deliveryStyle";
 import { ReadyBottomSheet } from "../../components/staff/ReadyBottomSheet";
-import { updateServiceRequestReadyDelivery } from "../../data/api/putApi";
+import {
+  updateServiceRequestOngoingDelivery,
+  updateServiceRequestReadyDelivery,
+} from "../../data/api/putApi";
 
 export default function Delivery() {
   const { userDetails } = useAuth();
   const handleGoToMessage = useHandleGoToMessage();
   const [filter, setFilter] = useState("All");
   const bottomReadyDeliverySheet = useRef(null);
-  const snapPoints = useMemo(() => ["70%"], []);
+  const bottomOngoingSheet = useRef(null);
+  const snapPoints = useMemo(() => ["60%"], []);
   const [selectedService, setSelectedService] = useState([]);
   const [isloading, setisLoading] = useState(false);
 
@@ -65,7 +69,7 @@ export default function Delivery() {
     loading,
     error,
     setIsPolling,
-  } = usePolling(fetchLaundryDelivery, 10000);
+  } = usePolling(fetchLaundryDelivery, 2000);
 
   useFocusEffect(
     useCallback(() => {
@@ -103,8 +107,8 @@ export default function Delivery() {
         service.request_status === "Out for Delivery"
       );
     }
-    if (filter === "Completed Delivery")
-      return service.request_status === "Completed Delivery";
+    if (filter === "Attempted Delivery")
+      return service.request_status === "Attempted Delivery";
     return true;
   });
 
@@ -140,6 +144,14 @@ export default function Delivery() {
     bottomReadyDeliverySheet.current?.expand();
   };
 
+  const openOngoingModal = (service) => {
+    setSelectedService(service);
+    bottomOngoingSheet.current?.expand();
+  };
+  const closeOngoingModal = () => {
+    bottomOngoingSheet.current?.close();
+  };
+
   const closeReadyDeliveryModal = () => {
     bottomReadyDeliverySheet.current?.close();
   };
@@ -152,15 +164,38 @@ export default function Delivery() {
     setisLoading(true);
     try {
       const response = await updateServiceRequestReadyDelivery(id);
-      if (response) {
+      if (response && response.success) {
         bottomReadyDeliverySheet.current?.close();
       } else {
-        console.error("Failed to get request:", response.message);
       }
     } catch (error) {
-      console.error("Error getting request:", error);
+      console.error("Error getting request:", error.message || error);
     } finally {
-      bottomReadyDeliverySheet.current?.close();
+      // Ensure this is only called once
+      if (bottomReadyDeliverySheet.current) {
+        bottomReadyDeliverySheet.current.close();
+      }
+      setisLoading(false); // Reset the loading state after the process finishes
+    }
+  };
+
+  const handleFinishDelivery = async (id) => {
+    setisLoading(true);
+    try {
+      const response = await updateServiceRequestOngoingDelivery(id);
+      if (response && response.success) {
+        // Assuming `response.success` is a success indicator
+        bottomOngoingSheet.current?.close();
+      } else {
+      }
+    } catch (error) {
+      console.error("Error finishing delivery:", error.message || error);
+    } finally {
+      // Ensure this is only called once, even if there's an error
+      if (bottomOngoingSheet.current) {
+        bottomOngoingSheet.current.close();
+      }
+      setisLoading(false); // Reset the loading state
     }
   };
 
@@ -207,7 +242,7 @@ export default function Delivery() {
           if (item.request_status === "Ready for Delivery") {
             openReadyDeliveryModal(item);
           } else if (item.request_status === "Out for Delivery") {
-            // openOngoingModal(item);
+            openOngoingModal(item);
           } else {
           }
         }}
@@ -429,6 +464,22 @@ export default function Delivery() {
               Nearest
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              Styles.tab,
+              filter === "Attempted Delivery" && Styles.activeTab,
+            ]}
+            onPress={() => setFilter("Attempted Delivery")}
+          >
+            <Text
+              style={[
+                Styles.tabText,
+                filter === "Return" && Styles.activeTabText,
+              ]}
+            >
+              Return
+            </Text>
+          </TouchableOpacity>
         </View>
         <FlashList
           data={sortedServices}
@@ -494,12 +545,12 @@ export default function Delivery() {
                 <Text style={Styles.label}>Distance:</Text>
                 <Text style={Styles.value}>{selectedService.distance}</Text>
               </View>
-              <View style={Styles.detailsContainer}>
+              {/* <View style={Styles.detailsContainer}>
                 <Text style={Styles.label}>Total Price:</Text>
                 <Text style={Styles.success}>
                   ₱{selectedService.default_price}
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
           {/* Button Bottom */}
@@ -514,6 +565,91 @@ export default function Delivery() {
                 <Text style={Styles.submitButtonText}>Proceed to delivery</Text>
               )}
             </TouchableOpacity>
+          </View>
+        </BottomSheet>
+      </Portal>
+
+      {/* For Ongoing */}
+      <Portal>
+        <BottomSheet
+          ref={bottomOngoingSheet}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          backgroundStyle={{ backgroundColor: COLORS.white }}
+          handleIndicatorStyle={{ backgroundColor: COLORS.primary }}
+          backdropComponent={renderBackdrop}
+        >
+          {/* Header */}
+          <View style={Styles.headerContainer}>
+            <Text style={Styles.headerTitle}>Ongoing Delivery</Text>
+
+            <TouchableOpacity
+              style={Styles.closeButton}
+              onPress={closeOngoingModal}
+            >
+              <MaterialIcons name="close" size={24} color={COLORS.secondary} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Divider */}
+          <View style={Styles.divider} />
+
+          {/* Content */}
+          <View style={Styles.contentContainer}>
+            <View style={Styles.detailsCard}>
+              {/* Customer Details */}
+              <View style={Styles.detailsContainer}>
+                <Text style={Styles.label}>Customer Name:</Text>
+                <Text style={Styles.value}>
+                  {selectedService.customer_fullname}
+                </Text>
+              </View>
+              <View style={Styles.detailsContainer}>
+                <Text style={Styles.label}>Address:</Text>
+                <Text style={Styles.value}>{selectedService.address_line}</Text>
+              </View>
+              <View style={Styles.detailsContainer}>
+                <Text style={Styles.label}>Service Name:</Text>
+                <Text style={Styles.value}>{selectedService.service_name}</Text>
+              </View>
+              <View style={Styles.detailsContainer}>
+                <Text style={Styles.label}>Payment Method:</Text>
+                <Text style={Styles.value}>
+                  {selectedService.payment_method}
+                </Text>
+              </View>
+              <View style={Styles.detailsContainer}>
+                <Text style={Styles.label}>Distance:</Text>
+                <Text style={Styles.value}>{selectedService.distance}</Text>
+              </View>
+            </View>
+          </View>
+          {/* Button Bottom */}
+          <View style={Styles.buttonContainer}>
+            <TouchableOpacity
+              style={Styles.finishButton}
+              onPress={() => handleFinishDelivery(selectedService.request_id)}
+            >
+              {isloading ? (
+                <ActivityIndicator size="large" color={COLORS.white} />
+              ) : (
+                <Text style={Styles.submitButtonText}>Complete Delivery</Text>
+              )}
+            </TouchableOpacity>
+
+            {/* <TouchableOpacity
+              style={Styles.finishButton}
+              onPress={() => handleAttemptDelivery(selectedService.request_id)} // Handle the attempt delivery
+            >
+              {isloading ? (
+                <ActivityIndicator size="large" color={COLORS.white} />
+              ) : (
+                <>
+                  <AntDesign name="back" size={24} color={COLORS.white} />
+                </>
+              )}
+            </TouchableOpacity> */}
           </View>
         </BottomSheet>
       </Portal>
