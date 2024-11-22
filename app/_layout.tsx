@@ -37,14 +37,14 @@ export default function RootLayout() {
                   name="(customer)"
                   options={{
                     presentation: "modal",
-                    animation: "default",
+                    animation: "fade_from_bottom",
                   }}
                 />
                 <Stack.Screen
                   name="(staff)"
                   options={{
                     presentation: "modal",
-                    animation: "default",
+                    animation: "fade_from_bottom",
                   }}
                 />
                 <Stack.Screen

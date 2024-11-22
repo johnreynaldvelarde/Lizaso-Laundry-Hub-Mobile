@@ -205,7 +205,7 @@ export default function SignUp() {
       end={{ x: 0.5, y: 1 }}
       style={styles.gradient}
     >
-      <SafeAreaView style={{ flex: 1, margin: 10 }}>
+      <SafeAreaView style={{ flex: 1, margin: 2 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -786,8 +786,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    elevation: 6,
+    elevation: 5,
     marginBottom: 15,
-    padding: 25,
+    padding: 20,
   },
 });

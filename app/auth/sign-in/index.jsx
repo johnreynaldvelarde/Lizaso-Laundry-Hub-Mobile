@@ -104,16 +104,12 @@ export default function SignIn() {
           const details = await getCheckCustomerDetails(userDetails.userId);
           if (details.success !== false) {
             const { storeIdIsNull, addressIdIsNull, isVerified } = details.data;
-
             if (!isVerified) {
-              navigation.navigate("auth/verify_account/verify_account", {
-                username: username,
-                password: password,
-              });
+              navigation.navigate("auth/verify_account/verify_account");
             } else if (storeIdIsNull || addressIdIsNull) {
-              router.push("/auth/complete/address");
+              navigation.navigate("auth/complete/address");
             } else {
-              router.push("/(customer)/home");
+              navigation.navigate("(customer)");
             }
           } else {
             console.log(details);
@@ -121,7 +117,7 @@ export default function SignIn() {
         };
         fetchDetails();
       } else {
-        router.push("/(staff)/pickup");
+        navigation.navigate("(staff)");
       }
     }
   }, [userDetails]);

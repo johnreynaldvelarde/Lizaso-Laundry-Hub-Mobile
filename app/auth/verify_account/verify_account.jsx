@@ -8,6 +8,7 @@ import {
   Image,
   ImageBackground,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import useAuth from "../../context/AuthContext";
 import COLORS from "../../../constants/colors";
@@ -23,27 +24,58 @@ import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet/";
 import {
   login,
   register,
+  updateAccountIsVerified,
   updateEmailForVerified,
 } from "../../../data/api/authApi";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
+import {
+  generateRandomCode,
+  sendVerificationEmail,
+} from "../../../utils/emailUtils";
+import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
 export default function Verify_Account() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { userDetails, fetchUserDetails } = useAuth();
-  const { username, password } = route.params;
+  const { userDetails } = useAuth();
   const [snapPoints, setSnapPoints] = useState(["40%"]);
   const bottomSheetRef = useRef(null);
   const [email, setEmail] = useState(userDetails.email);
   const [isVerified, setIsVerified] = useState(false);
   const [code, setCode] = useState(["", "", "", ""]);
+  const [generatedCode, setGeneratedCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [isloading, setIsLoading] = useState(false);
+  const [isResendLoading, setIsResendLoading] = useState(false);
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResendDisabled, setIsResendDisabled] = useState(false);
+  const [timer, setTimer] = useState(60);
   const inputRefs = useRef([]);
+
+  useEffect(() => {
+    if (email) {
+      const newCode = generateRandomCode();
+      setGeneratedCode(newCode);
+      sendVerificationEmail(email, newCode);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    let interval;
+
+    if (isResendDisabled && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setIsResendDisabled(false);
+      setTimer(60);
+    }
+
+    return () => clearInterval(interval);
+  }, [isResendDisabled, timer]);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -55,7 +87,6 @@ export default function Verify_Account() {
     ),
     []
   );
-
   const openModal = () => {
     bottomSheetRef.current?.expand();
   };
@@ -88,7 +119,6 @@ export default function Verify_Account() {
   };
 
   const handleInputChange = (field) => (value) => {
-    // Update state based on the field
     switch (field) {
       case "email":
         setEmail(value);
@@ -103,19 +133,6 @@ export default function Verify_Account() {
     }));
   };
 
-  useEffect(() => {
-    if (email !== "") {
-      setIsLoading(true);
-      setTimeout(() => {
-        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        setIsVerified(isValidEmail);
-        setIsLoading(false);
-      }, 1000);
-    } else {
-      setIsVerified(false);
-    }
-  }, [email]);
-
   const handleUpdateEmail = async () => {
     const newErrors = validateFields();
     setErrors(newErrors);
@@ -129,14 +146,18 @@ export default function Verify_Account() {
         const response = await updateEmailForVerified(userDetails.userId, data);
 
         if (response.success) {
-          // const login_response = await login({
-          //   username: username,
-          //   password: password,
-          // });
-          // await AsyncStorage.setItem("accessToken", login_response.accessToken);
-          // await fetchUserDetails(login_response.accessToken);
-          // alert("Email updated successfully!", "", () => {});
-          closeModal();
+          Alert.alert(
+            "Email Changed",
+            "Your email has been successfully updated.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  closeModal();
+                },
+              },
+            ]
+          );
         } else {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -162,16 +183,87 @@ export default function Verify_Account() {
 
     setIsSubmitting(true);
 
-    // Simulating verification (Replace with actual API call)
     setTimeout(() => {
       setIsSubmitting(false);
-      if (enteredCode === "1234") {
-        alert("Account verified successfully!");
+      if (enteredCode === generatedCode) {
+        Alert.alert("Success", "Account verified successfully!", [
+          {
+            text: "OK",
+            onPress: async () => {
+              try {
+                const response = await updateAccountIsVerified(
+                  userDetails.userId
+                );
+                if (response.success) {
+                  const details = await getCheckCustomerDetails(
+                    userDetails.userId
+                  );
+                  if (details.success !== false) {
+                    const { storeIdIsNull, addressIdIsNull } = details.data;
+
+                    if (storeIdIsNull || addressIdIsNull) {
+                      navigation.navigate("auth/complete/address");
+                    } else {
+                      navigation.navigate("(customer)");
+                    }
+                  } else {
+                    console.log(details);
+                  }
+                } else {
+                  console.log(response.message);
+                }
+              } catch (error) {
+                console.error(
+                  "Error during login or fetching user details:",
+                  error
+                );
+              }
+            },
+          },
+        ]);
       } else {
         setError("Invalid code. Please try again.");
       }
     }, 1000);
   };
+
+  const handleResendCode = () => {
+    if (isResendDisabled) return;
+    setIsResendLoading(true);
+    const newCode = generateRandomCode();
+    setGeneratedCode(newCode);
+
+    sendVerificationEmail(email, newCode)
+      .then(() => {
+        Alert.alert(
+          "Verification Code Sent",
+          "A new verification code has been sent to your email."
+        );
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Error",
+          "There was an issue resending the verification code. Please try again later."
+        );
+      })
+      .finally(() => {
+        setIsResendDisabled(true);
+        setIsResendLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (email !== "") {
+      setIsLoading(true);
+      setTimeout(() => {
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        setIsVerified(isValidEmail);
+        setIsLoading(false);
+      }, 1000);
+    } else {
+      setIsVerified(false);
+    }
+  }, [email]);
 
   return (
     <ImageBackground
@@ -260,12 +352,18 @@ export default function Verify_Account() {
               }}
             >
               <TouchableOpacity
-                onPress={() => alert("Resend code functionality triggered!")}
+                onPress={handleResendCode}
+                disabled={isResendDisabled}
               >
                 <Text
-                  style={{ color: COLORS.primary, fontFamily: fonts.SemiBold }}
+                  style={{
+                    color: isResendDisabled ? "gray" : COLORS.primary,
+                    fontFamily: fonts.SemiBold,
+                  }}
                 >
-                  Resend Code
+                  {isResendDisabled
+                    ? `Resend Code (${timer}s)` // Show remaining time
+                    : "Resend Code"}
                 </Text>
               </TouchableOpacity>
 
@@ -273,6 +371,7 @@ export default function Verify_Account() {
                 onPress={() => {
                   openModal();
                 }}
+                disabled={isResendDisabled}
               >
                 <Text
                   style={{
@@ -317,7 +416,7 @@ export default function Verify_Account() {
               <View style={styles.divider} />
               <View
                 style={{
-                  padding: 30,
+                  padding: 20,
                   justifyContent: "center",
                   alignContent: "center",
                 }}

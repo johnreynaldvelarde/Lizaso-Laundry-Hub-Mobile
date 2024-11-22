@@ -39,6 +39,15 @@ export const updateEmailForVerified = async (id, data) => {
   }
 };
 
+export const updateAccountIsVerified = async (id) => {
+  try {
+    const response = await api.put(`/customers/${id}/update-account-verified`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateProfile = async (userId, data) => {
   try {
     const response = await api.put(`/customers/${userId}/update-profile`, data);
