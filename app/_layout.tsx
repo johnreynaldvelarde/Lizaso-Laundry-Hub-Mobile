@@ -55,6 +55,13 @@ export default function RootLayout() {
                   }}
                 />
                 <Stack.Screen
+                  name="auth/verify_account/verify_account"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
                   name="auth/term/term"
                   options={{
                     presentation: "modal",

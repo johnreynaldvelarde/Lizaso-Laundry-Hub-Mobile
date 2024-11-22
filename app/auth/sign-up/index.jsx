@@ -13,13 +13,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
 import COLORS from "../../../constants/colors";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { fonts } from "../../../constants/fonts";
 import { useNavigation, useRouter } from "expo-router";
 import Checkbox from "expo-checkbox";
 import { login, register } from "../../../data/api/authApi";
 import { useAuth } from "../../context/AuthContext";
-import { getCheckCustomerDetails } from "../../../data/api/getApi";
 
 export default function SignUp() {
   const { userDetails, fetchUserDetails } = useAuth();
@@ -33,9 +32,16 @@ export default function SignUp() {
   const [middlename, setMiddleName] = useState("");
   const [lastname, setLastName] = useState("");
   const [password, setPassword] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const handleIconPress = () => {
+    setTooltipVisible(true);
+    setTimeout(() => setTooltipVisible(false), 2000);
+  };
 
   const validateFields = () => {
     const newErrors = {};
@@ -116,15 +122,26 @@ export default function SignUp() {
         break;
     }
 
-    // Clear errors related to the field
     setErrors((prevErrors) => ({
       ...prevErrors,
       [field]: "",
     }));
   };
 
+  useEffect(() => {
+    if (email !== "") {
+      setLoading(true);
+      setTimeout(() => {
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        setIsVerified(isValidEmail);
+        setLoading(false);
+      }, 1000);
+    } else {
+      setIsVerified(false);
+    }
+  }, [email]);
+
   const handleSignup = async () => {
-    // Validate fields and update error state
     const newErrors = validateFields();
     setErrors(newErrors);
 
@@ -162,29 +179,6 @@ export default function SignUp() {
           await AsyncStorage.setItem("accessToken", login_response.accessToken);
 
           await fetchUserDetails(login_response.accessToken);
-
-          // console.log(login_response.accessToken);
-
-          // if (userDetails.user_type === "Customer") {
-          //   const details = await getCheckCustomerDetails(userDetails.userId);
-
-          //   console.log(details);
-
-          //   if (details.success !== false) {
-          //     const { storeIdIsNull, addressIdIsNull } = details;
-
-          //     if (storeIdIsNull || addressIdIsNull) {
-          //       console.log(1);
-          //       // router.push("/auth/complete/complete");
-          //     } else {
-          //       console.log(2);
-          //       // router.push("/(customer)/home");
-          //     }
-          //   }
-          // } else {
-          //   console.log(3);
-          //   // router.push("/(staff)/pickup");
-          // }
         } else {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -211,7 +205,7 @@ export default function SignUp() {
       end={{ x: 0.5, y: 1 }}
       style={styles.gradient}
     >
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, margin: 10 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -265,7 +259,7 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                     marginTop: 20,
                   }}
                 >
@@ -273,7 +267,7 @@ export default function SignUp() {
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.phoneNumber
                       ? COLORS.error
@@ -284,7 +278,6 @@ export default function SignUp() {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     paddingLeft: 15,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -333,22 +326,21 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                   }}
                 >
                   Email
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.email ? COLORS.error : COLORS.primary,
                     borderWidth: 1,
                     borderRadius: 8,
+                    flexDirection: "row", // Ensures the icon is aligned horizontally with the input
                     alignItems: "center",
-                    justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -357,8 +349,37 @@ export default function SignUp() {
                     keyboardType="default"
                     value={email}
                     onChangeText={handleInputChange("email")}
-                    style={{ width: "100%", fontFamily: fonts.Regular }}
+                    style={{
+                      flex: 1,
+                      fontFamily: fonts.Regular,
+                    }}
                   />
+                  {email !== "" && (
+                    <View style={{ marginRight: 12 }}>
+                      {loading ? (
+                        <ActivityIndicator
+                          size="small"
+                          color={COLORS.secondary}
+                        />
+                      ) : (
+                        <TouchableOpacity onPress={handleIconPress}>
+                          {isVerified ? (
+                            <AntDesign
+                              name="checkcircle"
+                              size={25}
+                              color={COLORS.success}
+                            />
+                          ) : (
+                            <MaterialIcons
+                              name="cancel"
+                              size={25}
+                              color={COLORS.error}
+                            />
+                          )}
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )}
                 </View>
                 {errors.email && (
                   <Text
@@ -383,14 +404,14 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                   }}
                 >
                   Firstname
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.firstname
                       ? COLORS.error
@@ -400,7 +421,6 @@ export default function SignUp() {
                     alignItems: "center",
                     justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -435,14 +455,14 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                   }}
                 >
                   Middlename
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: COLORS.primary,
                     borderWidth: 1,
@@ -450,7 +470,6 @@ export default function SignUp() {
                     alignItems: "center",
                     justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -472,14 +491,14 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                   }}
                 >
                   Lastname
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.lastname
                       ? COLORS.error
@@ -489,7 +508,6 @@ export default function SignUp() {
                     alignItems: "center",
                     justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -524,14 +542,14 @@ export default function SignUp() {
                     fontFamily: fonts.Medium,
                     marginVertical: 8,
                     color: COLORS.primary,
-                    marginLeft: 13,
+                    marginLeft: 5,
                   }}
                 >
                   Username
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.username
                       ? COLORS.error
@@ -541,7 +559,6 @@ export default function SignUp() {
                     alignItems: "center",
                     justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                   }}
                 >
                   <TextInput
@@ -583,7 +600,7 @@ export default function SignUp() {
                 </Text>
                 <View
                   style={{
-                    width: "90%",
+                    width: "100%",
                     height: 48,
                     borderColor: errors.password
                       ? COLORS.error
@@ -593,7 +610,6 @@ export default function SignUp() {
                     alignItems: "center",
                     justifyContent: "center",
                     paddingLeft: 22,
-                    marginLeft: 13,
                     marginBottom: 10,
                   }}
                 >
@@ -737,7 +753,7 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
+    padding: 20,
   },
   gradient: {
     flex: 1,
@@ -769,12 +785,9 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     backgroundColor: COLORS.white,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderRadius: 20,
     elevation: 6,
     marginBottom: 15,
-    padding: 5,
+    padding: 25,
   },
 });

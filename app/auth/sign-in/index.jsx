@@ -103,8 +103,14 @@ export default function SignIn() {
         const fetchDetails = async () => {
           const details = await getCheckCustomerDetails(userDetails.userId);
           if (details.success !== false) {
-            const { storeIdIsNull, addressIdIsNull } = details.data;
-            if (storeIdIsNull || addressIdIsNull) {
+            const { storeIdIsNull, addressIdIsNull, isVerified } = details.data;
+
+            if (!isVerified) {
+              navigation.navigate("auth/verify_account/verify_account", {
+                username: username,
+                password: password,
+              });
+            } else if (storeIdIsNull || addressIdIsNull) {
               router.push("/auth/complete/address");
             } else {
               router.push("/(customer)/home");

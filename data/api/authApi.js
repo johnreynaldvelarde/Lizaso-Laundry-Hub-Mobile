@@ -27,6 +27,18 @@ export const isEmailExist = async (data) => {
   }
 };
 
+export const updateEmailForVerified = async (id, data) => {
+  try {
+    const response = await api.put(
+      `/customers/${id}/update-email-for-verified`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateProfile = async (userId, data) => {
   try {
     const response = await api.put(`/customers/${userId}/update-profile`, data);
