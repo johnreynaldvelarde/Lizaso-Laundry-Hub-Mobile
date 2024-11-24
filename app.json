@@ -61,7 +61,8 @@
         {
           "icon": "./local/assets/lizaso_logo.png",
           "color": "#ffffff",
-          "defaultChannel": "default"
+          "defaultChannel": "default",
+          "sounds": ["/assets/sound/notifications_sound.mp3"]
         }
       ]
     ],

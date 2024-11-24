@@ -24,8 +24,8 @@ import login_background from "../../../assets/images/login_background.jpg";
 
 export default function SignIn() {
   const { userDetails, fetchUserDetails } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("juan12");
+  const [password, setPassword] = useState("@Lizaso12345");
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
