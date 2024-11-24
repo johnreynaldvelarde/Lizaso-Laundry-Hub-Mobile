@@ -833,13 +833,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-// const user = {
-//   name: "MacArthur P. Mabilis",
-//   username: "macArthur16",
-//   bio: "Coffee lover ☕ | Traveler 🌍 | Tech enthusiast 💻",
-//   profilePicture: "https://via.placeholder.com/150",
-//   profilePicture: "",
-//   followers: 1250,
-//   following: 345,
-// };

@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api } from "@/data/axios";
+import useSocket from "../../hooks/common/useSocket";
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -39,6 +40,19 @@ export const AuthProvider = ({ children }) => {
     fullname: "",
     user_type: "",
   });
+
+  const { socket, error } = useSocket();
+
+  useEffect(() => {
+    if (socket && userDetails.userId && userDetails.storeId) {
+      socket.emit("register", {
+        userId: userDetails.userId,
+        storeId: userDetails.storeId,
+        userType: userDetails.user_type,
+      });
+      console.log("User registered with socket");
+    }
+  }, [socket, userDetails]);
 
   const fetchUserDetails = async (token) => {
     if (!token || isFetchingRef.current) return; // Prevent duplicate fetches
@@ -105,6 +119,20 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
+  // const logout = async () => {
+  //   try {
+  //     if (socket) {
+  //       socket.disconnect();
+  //       console.log("Socket disconnected");
+  //     }
+  //     await AsyncStorage.removeItem("accessToken");
+  //     setUserDetails({});
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //   }
+  // };
+
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("accessToken");
@@ -122,6 +150,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading,
     fetchUserDetails,
     logout,
+    socket,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

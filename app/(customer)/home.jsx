@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useFocusEffect, useNavigation } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,13 +15,15 @@ import COLORS from "../../constants/colors";
 import { fonts } from "../../constants/fonts";
 import { ServiceItem } from "../../components/customer/ServiceItem";
 import usePolling from "../../hooks/usePolling";
-import { getLaundryServices } from "../../data/api/getApi";
+import { getLaundryServices, getNotification } from "../../data/api/getApi";
 import useAuth from "../context/AuthContext";
+import CustomNotifications from "../../components/common/customNotifications";
 
 export default function Home() {
   const navigation = useNavigation();
-  const { userDetails } = useAuth();
+  const { userDetails, socket } = useAuth();
   const [notiCount, setNotiCount] = useState({ count: 1 });
+  const [notificationCount, setNotificationCount] = useState(0);
   const [expandedItems, setExpandedItems] = useState({});
   const bottomSelectedSheet = useRef(null);
 
@@ -23,6 +31,37 @@ export default function Home() {
     const response = await getLaundryServices(userDetails.storeId);
     return response.data;
   }, [userDetails.storeId]);
+
+  const fetchNotification = useCallback(async () => {
+    try {
+      const response = await getNotification(
+        userDetails.userId,
+        userDetails.user_type
+      );
+
+      setNotificationCount(response.data.length);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setNotificationCount(0);
+      return [];
+    }
+  }, [userDetails.storeId, userDetails.user_type]);
+
+  useEffect(() => {
+    fetchNotification();
+
+    if (socket) {
+      socket.on("notificationsModule", (data) => {
+        CustomNotifications(data.title, data.message, {});
+        fetchNotification();
+      });
+
+      return () => {
+        socket.off("notificationsModule");
+      };
+    }
+  }, [fetchNotification, socket]);
 
   const {
     data: servicesData,
@@ -52,7 +91,7 @@ export default function Home() {
 
   const handleGoToNotification = () => {
     console.log("Navigating to notifications");
-    navigation.navigate("notification/notification");
+    navigation.navigate("notification/notification_customer");
   };
 
   const toggleExpanded = (id) => {
@@ -125,15 +164,15 @@ export default function Home() {
                 size={24}
                 color={COLORS.white}
               />
-              {notiCount.count > 0 && (
+              {notificationCount > 0 && (
                 <View style={styles.badge}>
                   <Text
                     style={[
                       styles.badgeText,
-                      { fontSize: notiCount.count > 99 ? 10 : 12 },
+                      { fontSize: notificationCount > 99 ? 10 : 12 },
                     ]}
                   >
-                    {notiCount.count > 99 ? "99+" : notiCount.count}
+                    {notificationCount > 99 ? "99+" : notificationCount}
                   </Text>
                 </View>
               )}

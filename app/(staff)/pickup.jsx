@@ -32,7 +32,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { timeAgo } from "../../constants/datetime";
 import { useFocusEffect, useNavigation } from "expo-router";
-import { getLaundryPickup } from "../../data/api/getApi";
+import { getLaundryPickup, getNotification } from "../../data/api/getApi";
 import {
   updateServiceRequestBackToPending,
   updateServiceRequestCancel,
@@ -41,6 +41,7 @@ import {
 } from "../../data/api/putApi";
 import usePolling from "../../hooks/usePolling";
 import { useAuth } from "../context/AuthContext";
+import CustomNotifications from "../../components/common/customNotifications";
 
 const AnimatedIcon = () => {
   const rotation = useSharedValue(0);
@@ -65,10 +66,10 @@ const AnimatedIcon = () => {
 };
 
 export default function Pickup() {
-  const { userDetails } = useAuth();
+  const { userDetails, socket } = useAuth();
   const navigation = useNavigation();
   const userData = { user_id: userDetails.userId };
-  const [notiCount, setNotiCount] = useState({ count: 1 });
+  const [notificationCount, setNotificationCount] = useState(0);
   const [filter, setFilter] = useState("All");
   const bottomSheetRef = useRef(null);
   const bottomPendingSheet = useRef(null);
@@ -83,6 +84,38 @@ export default function Pickup() {
     );
     return response.data;
   }, [userDetails.storeId, userDetails.userId]);
+
+  const fetchNotification = useCallback(async () => {
+    try {
+      const response = await getNotification(
+        userDetails.storeId,
+        userDetails.user_type
+      );
+
+      setNotificationCount(response.data.length);
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setNotificationCount(0);
+      return [];
+    }
+  }, [userDetails.storeId, userDetails.user_type]);
+
+  useEffect(() => {
+    fetchNotification();
+
+    if (socket) {
+      socket.on("notificationsModule", (data) => {
+        CustomNotifications(data.title, data.message, {});
+        fetchNotification();
+      });
+
+      return () => {
+        socket.off("notificationsModule");
+      };
+    }
+  }, [fetchNotification, socket]);
 
   const {
     data: pickupData,
@@ -218,7 +251,7 @@ export default function Pickup() {
   };
 
   const handleGoToNotification = async (id) => {
-    navigation.navigate("notification/notification");
+    navigation.navigate("notification/notification_staff");
   };
 
   // Filter services based on the selected tab
@@ -479,15 +512,15 @@ export default function Pickup() {
                   size={24}
                   color={COLORS.white}
                 />
-                {notiCount.count > 0 && (
+                {notificationCount > 0 && (
                   <View style={styles.badge}>
                     <Text
                       style={[
                         styles.badgeText,
-                        { fontSize: notiCount.count > 99 ? 10 : 12 },
+                        { fontSize: notificationCount > 99 ? 10 : 12 },
                       ]}
                     >
-                      {notiCount.count > 99 ? "99+" : notiCount.count}
+                      {notificationCount > 99 ? "99+" : notificationCount}
                     </Text>
                   </View>
                 )}
