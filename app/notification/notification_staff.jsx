@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,69 +8,93 @@ import {
   Image,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import COLORS from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { fonts } from "../../constants/fonts";
 import { LinearGradient } from "expo-linear-gradient";
 import { getNotification } from "../../data/api/getApi";
 import useAuth from "../context/AuthContext";
-import usePolling from "../../hooks/usePolling";
 import noNotification from "../../assets/images/no_data_table.jpg";
 import { formatTimeNotification, iconMapping } from "../../constants/method";
+import {
+  updateClearAllNotificationsByCustomer,
+  updateClearAllNotificationsByStaff,
+  updateClearOneByOneNotificationsByCustomer,
+  updateClearOneByOneNotificationsByStaff,
+} from "../../data/api/putApi";
 
 export default function Notification_Staff() {
-  const { userDetails } = useAuth();
+  const { userDetails, socket } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [notification, setNotification] = useState([]);
 
   const fetchNotification = useCallback(async () => {
     try {
       let response;
-      if (userDetails.user_type === "Customer") {
-        response = await getNotification(userDetails.userId, "Customer");
-      } else {
-        response = await getNotification(userDetails.storeId, "Staff");
+      if (userDetails.user_type === "Delivery Staff") {
+        response = await getNotification(userDetails.storeId, "Delivery Staff");
       }
-
-      setNotificationCount(response.data.length);
-
-      return response.data;
+      if (response && response.data) {
+        setNotification(response.data);
+      }
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-  }, [userDetails.userId, userDetails.user_type]);
+  }, [userDetails.storeId, userDetails.user_type]);
 
-  const {
-    data: notification,
-    loading,
-    error,
-    setIsPolling,
-  } = usePolling(fetchNotification, 10000);
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsPolling(true);
-
+  useEffect(() => {
+    fetchNotification();
+    if (socket) {
+      socket.on("notificationsModule", (data) => {
+        fetchNotification();
+      });
       return () => {
-        setIsPolling(false);
+        socket.off("notificationsModule");
       };
-    }, [])
-  );
+    }
+  }, [fetchNotification, socket]);
 
-  const clearNotifications = () => {
-    // setNotifications([]);
+  // const clearAllNotifications = async () => {
+  //   try {
+  //     const response = await updateClearAllNotificationsByStaff(
+  //       userDetails.storeId
+  //     );
+  //     console.log(response.success);
+  //     if (response.success) {
+  //       setNotification([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error clearing notifications:", error);
+  //   }
+  // };
+
+  const clearOneByOneNotifications = async (notification_id) => {
+    try {
+      const response = await updateClearOneByOneNotificationsByStaff(
+        notification_id
+      );
+
+      if (response.success) {
+        // Update local state to remove the cleared notification
+        setNotification((prevNotifications) =>
+          prevNotifications.filter((notif) => notif.id !== notification_id)
+        );
+      } else {
+        console.error("Failed to clear notification:", response.message);
+      }
+    } catch (error) {
+      console.error("Error clearing notifications:", error);
+    }
   };
-
-  const handleSampleNotificationsShow = async () => {};
 
   const renderNotification = ({ item }) => {
     const iconName =
       iconMapping[item.notification_type] || "notifications-outline";
 
     return (
-      <TouchableOpacity onPress={() => console.log("Notification clicked!")}>
+      <TouchableOpacity onPress={() => clearOneByOneNotifications(item.id)}>
         <View style={styles.notificationItem}>
           {/* Left Icon */}
           <View style={styles.iconContainer}>
@@ -112,12 +136,12 @@ export default function Notification_Staff() {
           <Ionicons name="arrow-back" size={24} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notification</Text>
-        <TouchableOpacity
-          onPress={handleSampleNotificationsShow}
+        {/* <TouchableOpacity
+          onPress={clearAllNotifications}
           style={styles.clearButton}
         >
           <Text style={styles.clearButtonText}>Clear</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </LinearGradient>
 
       {/* Notification List */}

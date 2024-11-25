@@ -87,14 +87,14 @@ export default function Pickup() {
 
   const fetchNotification = useCallback(async () => {
     try {
-      const response = await getNotification(
-        userDetails.storeId,
-        userDetails.user_type
-      );
-
-      setNotificationCount(response.data.length);
-
-      return response.data;
+      let response;
+      if (userDetails.user_type === "Delivery Staff") {
+        response = await getNotification(userDetails.storeId, "Delivery Staff");
+      }
+      if (response && response.data) {
+        setNotificationCount(response.data.length);
+        return response.data;
+      }
     } catch (error) {
       console.error("Error fetching notifications:", error);
       setNotificationCount(0);
@@ -102,20 +102,24 @@ export default function Pickup() {
     }
   }, [userDetails.storeId, userDetails.user_type]);
 
-  useEffect(() => {
-    fetchNotification();
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotification();
+      if (socket) {
+        const handleNotification = (data) => {
+          console.log(data);
+          CustomNotifications(data.title, data.message, {});
+          fetchNotification();
+        };
 
-    if (socket) {
-      socket.on("notificationsModule", (data) => {
-        CustomNotifications(data.title, data.message, {});
-        fetchNotification();
-      });
+        socket.on("notificationsModule", handleNotification);
 
-      return () => {
-        socket.off("notificationsModule");
-      };
-    }
-  }, [fetchNotification, socket]);
+        return () => {
+          socket.off("notificationsModule", handleNotification);
+        };
+      }
+    }, [fetchNotification, socket])
+  );
 
   const {
     data: pickupData,

@@ -43,10 +43,30 @@ export const updateClearAllNotificationsByCustomer = async (id) => {
   }
 };
 
+export const updateClearAllNotificationsByStaff = async (id) => {
+  try {
+    const response = await api.put(`/staff/${id}/clear-all-notifications`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateClearOneByOneNotificationsByCustomer = async (id) => {
   try {
     const response = await api.put(
       `/customers/${id}/clear-one-by-on-notifications`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateClearOneByOneNotificationsByStaff = async (id) => {
+  try {
+    const response = await api.put(
+      `/staff/${id}/clear-one-by-on-notifications`
     );
     return response.data;
   } catch (error) {

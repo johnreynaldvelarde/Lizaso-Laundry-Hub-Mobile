@@ -16,15 +16,12 @@ const useSocket = (userDetails) => {
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
-      // console.log("Connected to socket server");
-
       if (userDetails?.userId && userDetails?.storeId) {
         newSocket.emit("register", {
           userId: userDetails.userId,
           storeId: userDetails.storeId,
           userType: userDetails.user_type,
         });
-        // console.log("User registered with socket");
       }
     });
 
