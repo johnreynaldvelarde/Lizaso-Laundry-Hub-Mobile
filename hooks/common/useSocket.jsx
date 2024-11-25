@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 
 const SOCKET_URL = BASE_URL.replace("/api", "");
 
-const useSocket = () => {
+const useSocket = (userDetails) => {
   const [socket, setSocket] = useState(null);
   const [error, setError] = useState(null);
 
@@ -16,7 +16,16 @@ const useSocket = () => {
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
-      console.log("Connected to socket server");
+      // console.log("Connected to socket server");
+
+      if (userDetails?.userId && userDetails?.storeId) {
+        newSocket.emit("register", {
+          userId: userDetails.userId,
+          storeId: userDetails.storeId,
+          userType: userDetails.user_type,
+        });
+        // console.log("User registered with socket");
+      }
     });
 
     newSocket.on("connect_error", (err) => {
@@ -30,7 +39,7 @@ const useSocket = () => {
       newSocket.disconnect();
       console.log("Socket disconnected");
     };
-  }, []);
+  }, [userDetails]);
 
   return { socket, error };
 };

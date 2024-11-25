@@ -118,9 +118,9 @@ export const formatTimeNotification = (dateString) => {
 export const iconMapping = {
   "Pending Pickup": "calendar",
   "Ongoing Pickup": "car-outline",
-  COMPLETED_PICKUP: "checkmark-done-outline",
-  AT_STORE: "storefront-outline",
-  IN_QUEUE: "ellipsis-horizontal-circle-outline",
-  IN_LAUNDRY: "water-outline",
-  LAUNDRY_COMPLETED: "shirt-outline",
+  "Completed Pickup": "checkmark-done-outline",
+  "At Store": "storefront-outline",
+  "In Queue": "ellipsis-horizontal-circle-outline",
+  "In Laundry": "water-outline",
+  "Laundry Complete": "shirt-outline",
 };

@@ -34,50 +34,56 @@ export default function Home() {
 
   const fetchNotification = useCallback(async () => {
     try {
-      const response = await getNotification(
-        userDetails.userId,
-        userDetails.user_type
-      );
-
-      setNotificationCount(response.data.length);
-      return response.data;
+      let response;
+      if (userDetails.user_type === "Customer") {
+        response = await getNotification(userDetails.userId, "Customer");
+      }
+      if (response && response.data) {
+        setNotificationCount(response.data.length);
+        return response.data;
+      }
     } catch (error) {
       console.error("Error fetching notifications:", error);
       setNotificationCount(0);
       return [];
     }
-  }, [userDetails.storeId, userDetails.user_type]);
+  }, [userDetails.userId, userDetails.user_type]);
 
-  useEffect(() => {
-    fetchNotification();
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotification();
 
-    if (socket) {
-      socket.on("notificationsModule", (data) => {
-        CustomNotifications(data.title, data.message, {});
-        fetchNotification();
-      });
+      if (socket) {
+        const handleNotification = (data) => {
+          console.log(data);
+          CustomNotifications(data.title, data.message, {});
+          fetchNotification();
+        };
 
-      return () => {
-        socket.off("notificationsModule");
-      };
-    }
-  }, [fetchNotification, socket]);
+        socket.on("notificationsModuleForCustomer", handleNotification);
+
+        return () => {
+          socket.off("notificationsModuleForCustomer", handleNotification);
+        };
+      }
+    }, [fetchNotification, socket])
+  );
 
   const {
     data: servicesData,
     loading,
     error,
     setIsPolling,
-  } = usePolling(fetchLaundryServices, 1000);
+  } = usePolling(fetchLaundryServices, 10000);
 
   useFocusEffect(
     useCallback(() => {
+      fetchNotification();
       setIsPolling(true);
-
       return () => {
         setIsPolling(false);
       };
-    }, [])
+    }, [fetchNotification, setIsPolling])
   );
 
   const openSelectedModal = (service) => {
@@ -90,7 +96,6 @@ export default function Home() {
   };
 
   const handleGoToNotification = () => {
-    console.log("Navigating to notifications");
     navigation.navigate("notification/notification_customer");
   };
 

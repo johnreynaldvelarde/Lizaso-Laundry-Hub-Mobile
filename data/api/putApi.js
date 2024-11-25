@@ -34,6 +34,15 @@ export const updateByCustomerCancelRequest = async (id) => {
   }
 };
 
+export const updateClearAllNotificationsByCustomer = async (id) => {
+  try {
+    const response = await api.put(`/customers/${id}/clear-all-notifications`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // STAFF SECTION API REQUEST
 // For pending cancel request
 export const updateServiceRequestCancel = async (requestId, data) => {
@@ -141,3 +150,5 @@ export const updateStaffDetails = async (userId, data) => {
     throw error;
   }
 };
+
+// UPDATE NOTIFICATIONS
