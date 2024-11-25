@@ -43,6 +43,17 @@ export const updateClearAllNotificationsByCustomer = async (id) => {
   }
 };
 
+export const updateClearOneByOneNotificationsByCustomer = async (id) => {
+  try {
+    const response = await api.put(
+      `/customers/${id}/clear-one-by-on-notifications`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // STAFF SECTION API REQUEST
 // For pending cancel request
 export const updateServiceRequestCancel = async (requestId, data) => {

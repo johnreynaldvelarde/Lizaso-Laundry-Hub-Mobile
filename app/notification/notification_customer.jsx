@@ -17,7 +17,10 @@ import { getNotification } from "../../data/api/getApi";
 import useAuth from "../context/AuthContext";
 import noNotification from "../../assets/images/no_data_table.jpg";
 import { formatTimeNotification, iconMapping } from "../../constants/method";
-import { updateClearAllNotificationsByCustomer } from "../../data/api/putApi";
+import {
+  updateClearAllNotificationsByCustomer,
+  updateClearOneByOneNotificationsByCustomer,
+} from "../../data/api/putApi";
 
 export default function Notification_Customer() {
   const { userDetails, socket } = useAuth();
@@ -65,12 +68,31 @@ export default function Notification_Customer() {
     }
   };
 
+  const clearOneByOneNotifications = async (notification_id) => {
+    try {
+      const response = await updateClearOneByOneNotificationsByCustomer(
+        notification_id
+      );
+
+      if (response.success) {
+        // Update local state to remove the cleared notification
+        setNotification((prevNotifications) =>
+          prevNotifications.filter((notif) => notif.id !== notification_id)
+        );
+      } else {
+        console.error("Failed to clear notification:", response.message);
+      }
+    } catch (error) {
+      console.error("Error clearing notifications:", error);
+    }
+  };
+
   const renderNotification = ({ item }) => {
     const iconName =
       iconMapping[item.notification_type] || "notifications-outline";
 
     return (
-      <TouchableOpacity onPress={() => console.log("Notification clicked!")}>
+      <TouchableOpacity onPress={() => clearOneByOneNotifications(item.id)}>
         <View style={styles.notificationItem}>
           {/* Left Icon */}
           <View style={styles.iconContainer}>
