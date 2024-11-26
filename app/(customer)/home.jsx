@@ -22,7 +22,6 @@ import CustomNotifications from "../../components/common/customNotifications";
 export default function Home() {
   const navigation = useNavigation();
   const { userDetails, socket } = useAuth();
-  const [notiCount, setNotiCount] = useState({ count: 1 });
   const [notificationCount, setNotificationCount] = useState(0);
   const [expandedItems, setExpandedItems] = useState({});
   const bottomSelectedSheet = useRef(null);
@@ -55,8 +54,7 @@ export default function Home() {
 
       if (socket) {
         const handleNotification = (data) => {
-          console.log(data);
-          CustomNotifications(data.title, data.message, {});
+          // CustomNotifications(data.title, data.message, {});
           fetchNotification();
         };
 

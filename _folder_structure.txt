@@ -21,6 +21,7 @@
         │   ├── _layout.tsx   
         │   └── index.tsx   
         ├── assets/
+        │    └── images/
         ├── components/
         │   ├── Onboarding.jsx
         │   ├── TabBar.jsx

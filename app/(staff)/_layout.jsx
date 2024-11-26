@@ -1,9 +1,27 @@
 import { View, StyleSheet, BackHandler } from "react-native";
-import { Tabs } from "expo-router";
-import React, { useEffect } from "react";
+import { Tabs, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect } from "react";
 import StaffTabBar from "../../components/staffTabBar";
+import useAuth from "../context/AuthContext";
+import CustomNotifications from "../../components/common/customNotifications";
 
 export default function TabLayout() {
+  const { socket } = useAuth();
+
+  useFocusEffect(
+    useCallback(() => {
+      const handleNotification = (data) => {
+        CustomNotifications(data.title, data.message, {});
+      };
+      if (socket) {
+        socket.on("notificationsModule", handleNotification);
+        return () => {
+          socket.off("notificationsModule", handleNotification);
+        };
+      }
+    }, [])
+  );
+
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp();

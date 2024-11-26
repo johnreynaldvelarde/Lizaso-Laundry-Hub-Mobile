@@ -107,8 +107,7 @@ export default function Pickup() {
       fetchNotification();
       if (socket) {
         const handleNotification = (data) => {
-          console.log(data);
-          CustomNotifications(data.title, data.message, {});
+          // CustomNotifications(data.title, data.message, {});
           fetchNotification();
         };
 

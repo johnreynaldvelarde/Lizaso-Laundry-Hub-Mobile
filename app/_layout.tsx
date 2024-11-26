@@ -23,141 +23,140 @@ export default function RootLayout() {
       <PortalProvider>
         <BottomSheetModalProvider>
           <AuthProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="auth/sign-in/index" />
-              <Stack.Screen
-                name="notification/notification"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="notification/notification_staff"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="notification/notification_customer"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="(customer)"
-                options={{
-                  presentation: "modal",
-                  animation: "fade_from_bottom",
-                }}
-              />
-              <Stack.Screen
-                name="(staff)"
-                options={{
-                  presentation: "modal",
-                  animation: "fade_from_bottom",
-                }}
-              />
-              <Stack.Screen
-                name="auth/sign-up/index"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="auth/verify_account/verify_account"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="auth/term/term"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="auth/forget/forget"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="auth/complete/address"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="auth/complete/store_selection"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="edit/customer/edit_profile"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="edit/customer/edit_address"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="edit/customer/edit_change_password"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="receipt/receipt"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="review/review"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen name="index" />
-              <Stack.Screen
-                name="message/chat"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              <Stack.Screen
-                name="select/select"
-                options={{
-                  presentation: "modal",
-                  animation: "ios",
-                }}
-              />
-              {/* <Stack.Screen name="notification/noit" /> */}
-              {/* <Stack.Screen name="auth/complete/store_selection" /> */}
-            </Stack>
-            {/* <NotificationsContextProvider>
-             
-            </NotificationsContextProvider> */}
+            <NotificationsContextProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="auth/sign-in/index" />
+                <Stack.Screen
+                  name="notification/notification"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="notification/notification_staff"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="notification/notification_customer"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="(customer)"
+                  options={{
+                    presentation: "modal",
+                    animation: "fade_from_bottom",
+                  }}
+                />
+                <Stack.Screen
+                  name="(staff)"
+                  options={{
+                    presentation: "modal",
+                    animation: "fade_from_bottom",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/sign-up/index"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/verify_account/verify_account"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/term/term"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/forget/forget"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/complete/address"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="auth/complete/store_selection"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="edit/customer/edit_profile"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="edit/customer/edit_address"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="edit/customer/edit_change_password"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="receipt/receipt"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="review/review"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen name="index" />
+                <Stack.Screen
+                  name="message/chat"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                <Stack.Screen
+                  name="select/select"
+                  options={{
+                    presentation: "modal",
+                    animation: "ios",
+                  }}
+                />
+                {/* <Stack.Screen name="notification/noit" /> */}
+                {/* <Stack.Screen name="auth/complete/store_selection" /> */}
+              </Stack>
+            </NotificationsContextProvider>
           </AuthProvider>
         </BottomSheetModalProvider>
       </PortalProvider>
